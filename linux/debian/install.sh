@@ -39,12 +39,9 @@ apt-get install --no-install-recommends --force-yes automake libogg0 libogg-dev 
 # soffice may need configuration to use --headless
 # src: http://askubuntu.com/questions/194352/install-openoffice-for-headless-use
 
-cp -rp ./misc/qt-faststart /usr/bin
+cp -rp ./qt-faststart /usr/bin
 
-# No longer necessary to link these? apt install seems to have created both
-# ln -s /usr/bin/avprobe /usr/bin/ffprobe
-
-./misc/install_entermedia_deb.sh
+./install_entermedia.sh
 
 su - entermedia -c 'service tomcat start'
 

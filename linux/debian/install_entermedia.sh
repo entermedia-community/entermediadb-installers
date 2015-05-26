@@ -11,12 +11,11 @@ echo "entermedia      hard    nofile  1024000" >> /etc/security/limits.conf
 sysctl -p
 #End Fix File Limits
 
-mkdir /home/entermedia/.ffmpeg
-cp .ffmpeg/libx264-normal.ffpreset /home/entermedia/.ffmpeg/libx264-normal.ffpreset
+cp -rp ../common/.ffmpeg /home/entermedia/.ffmpeg
 
 chown -R entermedia:entermedia /home/entermedia/.ffmpeg
 
-cp tomcat /etc/init.d/
+cp ../common/tomcat /etc/init.d/
 update-rc.d tomcat defaults
 update-rc.d tomcat start 20 3 5
 
@@ -25,12 +24,12 @@ rm -r /opt/entermedia/tomcat
 
 mkdir -p /opt/entermedia/tomcat/logs
 mkdir -p /opt/entermedia/webapp
-cp -rp ../entermedia/* /opt/entermedia/
-cp -p ../misc/delegates.xml /etc/ImageMagick/delegates.xml
+cp -rp ../tomcat /opt/entermedia/
+cp -p ../common/compile/delegates.xml /etc/ImageMagick/delegates.xml
 cd /opt/entermedia/webapp
-wget http://dev.entermediasoftware.com/jenkins/view/Demo/job/demoall/lastSuccessfulBuild/artifact/deploy/ROOT.war -O ROOT.war
-unzip ROOT.war
-rm ROOT.war
+
+#Copy webapp from repository instead of ROOT.war
+cp -rp ../../java/webapp/* .
 
 #Copy data directory out and link it
 mkdir /media
