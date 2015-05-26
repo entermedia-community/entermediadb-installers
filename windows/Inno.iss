@@ -13,7 +13,9 @@ AppPublisher=EnterMedia, Inc.
 AppPublisherURL=http://www.entermediasoftware.com/
 AppSupportURL=http://www.entermediasoftware.com/
 AppUpdatesURL=http://www.entermediasoftware.com/
-CreateAppDir=no
+CreateAppDir=yes
+DefaultDirName=C:\entermedia\
+DefaultGroupName=EnterMedia
 LicenseFile=C:\Users\Administrator\Documents\GitHub\entermediadb-installers\common\LICENSE.txt
 OutputBaseFilename=setup
 Compression=lzma
@@ -23,8 +25,8 @@ SolidCompression=yes
 Name: "english"; MessagesFile: "compiler:Default.isl"
 
 [Files]
-Source: "C:\Users\Administrator\Documents\GitHub\entermediadb-installers\windows\tools\*"; DestDir: "{win}"; Flags: ignoreversion recursesubdirs createallsubdirs
-Source: "C:\Users\Administrator\Documents\GitHub\entermediadb-installers\windows\tomcat\*"; DestDir: "{win}"; Flags: ignoreversion recursesubdirs createallsubdirs
-Source: "C:\Users\Administrator\Documents\GitHub\entermediadb-installers\common\webapp\*"; DestDir: "{win}"; Flags: ignoreversion recursesubdirs createallsubdirs
+Source: "C:\Users\Administrator\Documents\GitHub\entermediadb-installers\windows\tools\*"; DestDir: "{app}\tools"; Flags: ignoreversion recursesubdirs createallsubdirs
+Source: "C:\Users\Administrator\Documents\GitHub\entermediadb-installers\windows\tomcat\*"; DestDir: "{app}\tomcat"; Flags: ignoreversion recursesubdirs createallsubdirs
+Source: "C:\Users\Administrator\Documents\GitHub\entermediadb-installers\common\webapp\*"; DestDir: "{app}\webapp"; Flags: ignoreversion recursesubdirs createallsubdirs
 ; NOTE: Don't use "Flags: ignoreversion" on any shared system files
 
