@@ -1,0 +1,5 @@
+#
+#Tue Nov 04 16:45:17 EST 2014
+Home=Home
+File\ Manager=File Manager
+filemanager=filemanager

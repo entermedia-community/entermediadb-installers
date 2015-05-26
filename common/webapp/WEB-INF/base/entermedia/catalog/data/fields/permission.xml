@@ -1,0 +1,5 @@
+<properties>
+	<!-- This would be stuff like "Full, Partial, None -->
+	<property id="id" stored="true" index="true">ID</property>
+	<property id="name" stored="true" index="true">Name</property>	
+</properties>

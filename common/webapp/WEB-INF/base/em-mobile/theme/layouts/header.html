@@ -1,0 +1,74 @@
+                <!-- top nav -->
+              	<div class="navbar navbar-black navbar-static-top">  
+                    <div class="navbar-header" >
+                    
+                    <ul class="nav navbar-nav">
+                  	<li class="navbar-left pull-left">
+          			<a href="#" data-toggle="offcanvas"
+          				 data-urlstatesave="$home$apphome/components/userprofile/savepref.html?field=showsidebar"
+          				 class="filterbtn" ><i class=" #if( $userprofile.isEnabled("showsidebar"))press-down#else press-up#end glyphicon glyphicon-filter"></i></a>                  	
+					</li>
+                  	<li class="navbar-left  pull-left">
+                    <a href="http://entermediasoftware.com" target="_blank" class="navbar-brand logo"></a>
+                    </li>
+                    
+					</li>
+                  	<li class="pull-right">
+                      <button class="navbar-toggle" type="button" data-toggle="collapse" data-target=".navbar-collapse">
+                        <span class="sr-only">Toggle</span>
+                        <span class="icon-bar"></span>
+          				<span class="icon-bar"></span>
+          				<span class="icon-bar"></span>
+                      </button>
+                     </li>
+                    </ul>
+					
+                      
+                  	</div>
+                  	<nav class="collapse navbar-collapse" role="navigation">
+                  	
+                  	<ul class="nav navbar-nav">
+                  	<li class="navbar-left">
+                    <form class="navbar-form" name="searchform" action="$home$apphome/views/search/search.html" method="POST">
+                        <div class="input-group input-group-sm" >
+							<input type="hidden" name="field" value="description" />
+							<input type="hidden" name="operation" value="freeform" />                        
+                        	#set( $input = "") 
+							#set( $input = $hits.getInput("description") )
+						  <input type="text"  placeholder="[[Search Collections]]" id="assetsearchinput" class="form-control field" name="description.value" value="$!input" />
+                          <div class="input-group-btn">
+                            <button class="btn btn-default" type="submit"><i class="glyphicon glyphicon-search"></i></button>
+                          </div>
+                        </div>
+                    </form>
+                    </li>
+                      <li>
+                        <a href="$home$apphome/index.html?page=1"><i class="glyphicon glyphicon-home"></i> Home</a>
+                      </li>
+                      <li>
+                        <a href="#upload" id="openupload"><i class="glyphicon glyphicon-plus"></i> Add Media</a>
+                        <form id="uploadform" style="position:absolute; top:-300px;" name="wizard" method="post" enctype="multipart/form-data"	action="$home/${applicationid}/components/upload/finish.html">
+				          <input id="filepicker" type="file"  name="file.0" />
+				          #set($selected = $userprofile.get("last_selected_library" ) )
+				          #if($selected )
+				          <input  type="hidden"  name="field" value="library" />
+				          <input  type="hidden"  name="library.value" value="$selected" />
+				          #end
+				        </form>  
+                      </li>
+                    </ul>
+                    <ul class="nav navbar-nav navbar-right">
+                      <li class="dropdown">
+                        <a href="#" class="dropdown-toggle" data-toggle="dropdown"><i class="glyphicon glyphicon-user"></i></a>
+                        <ul class="dropdown-menu">
+                          <li><a href="">More</a></li>
+                          <li><a href="">More</a></li>
+                          <li><a href="">More</a></li>
+                          <li><a href="">More</a></li>
+                          <li><a href="">More</a></li>
+                        </ul>
+                      </li>
+                    </ul>
+                  	</nav>
+                </div>
+                <!-- /top nav -->

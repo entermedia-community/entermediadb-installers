@@ -1,0 +1,5 @@
+#
+#Thu Feb 12 12:30:46 EST 2015
+Base=Basis
+View=Ansicht
+Inline\ Edit=Inline Edit

@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<group id="uploaders">
+  <group-name>Uploaders</group-name>
+  <permissions/>
+  <properties>
+    <property name="enabled" value="true"/>
+    <property name="uploadpermission" value="full"/>
+  </properties>
+</group>

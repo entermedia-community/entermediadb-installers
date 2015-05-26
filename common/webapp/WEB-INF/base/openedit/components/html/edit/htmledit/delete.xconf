@@ -1,0 +1,8 @@
+<page>
+	<page-action name="WorkFlow.deleteDraft" />
+	
+	<permission name="view">
+		<user />
+	</permission>	
+	
+</page>

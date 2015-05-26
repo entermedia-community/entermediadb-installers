@@ -1,0 +1,22 @@
+<beans>
+
+<!--  Upraded 
+
+	<bean id="publishqueueSearcher" bean="dataSearcher"/>
+	<bean id="catalogsettingsSearcher" bean="folderSearcher"/>
+	<bean id="viewSearcher" bean="folderSearcher"/>
+
+-->
+<!--  real data -->
+   
+
+
+<!--  menus -->
+
+
+
+   
+   
+   
+  
+</beans>
