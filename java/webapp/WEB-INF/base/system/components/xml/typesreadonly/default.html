@@ -1,0 +1,11 @@
+##API -
+## $detail
+## $searcher
+## $val
+## $searcherManager
+#if($detail.render && $data)
+	#set($label = $searcherManager.getValue($detail.getListCatalogId(), $detail.render, $data.properties))
+	#esc( $label )
+#else
+	#esc($!val)
+#end

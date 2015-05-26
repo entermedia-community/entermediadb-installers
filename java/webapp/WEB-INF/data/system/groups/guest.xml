@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<group id="guest">
+  <group-name>Guest</group-name>
+  <permissions/>
+  <properties>
+    <property name="ldap_prefix" value="uid="/>
+    <property name="enabled" value="true"/>
+    <property name="ldap_postfix" value=",ou=People,dc=company,dc=com"/>
+    <property name="ldapserver" value="servername.com"/>
+  </properties>
+</group>

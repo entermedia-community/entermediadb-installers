@@ -1,0 +1,37 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<page>
+	<generator  name="velocityGenerator" mimetypes="text/html"/>
+	<generator  name="velocityGenerator" mimetypes="text/json"/>
+
+  	<property name="applicationid">em-mobile</property>
+	<property name="catalogid">media/catalogs/public</property>
+  	<property name="allowguestregistration">false</property>
+  	<property name="loginokpage">/${applicationid}/index.html</property>
+ 	<property name="login-path">/${applicationid}/views/authentication/nopermissions.html</property>
+	<property name="errorpage">/${applicationid}/theme/layouts/errorpage.html</property>
+ 	
+	<path-action name="Admin.loadPermissions"/>
+	<path-action name="Admin.allowViewing" />
+	<permission name="view">
+		<user />
+	</permission>	
+  	
+ 	<path-action name="MediaArchiveModule.loadApplicationId" />
+  	<path-action name="ProfileModule.loadUserProfile" />
+  	  
+  	  
+    <path-action alltypes="true" name="MediaArchiveModule.getMediaArchive"/>
+		<path-action name="Admin.loadPermissions"/>
+	<path-action name="Admin.allowViewing" />
+	
+	<script id="jquery" src="/${applicationid}/theme/bootstrap/js/jquery.js" />
+	<script id="bootstrap" src="/${applicationid}/theme/bootstrap/js/bootstrap.js" />
+	<style id="bootstrap" href='/${applicationid}/theme/bootstrap/css/bootstrap.min.css' />
+	<script id="docs" src="/${applicationid}/components/javascript/mobile.js" />
+	<style id="theme" href='/${applicationid}/theme/styles/theme.css' />
+	<style id="styles" href='/${applicationid}/theme/styles/entermedia.css' />
+ 
+ <inner-layout>/${applicationid}/theme/layouts/layout.html</inner-layout>
+	<property name="title">EnterMediaDB Client</property>
+</page>
