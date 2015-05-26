@@ -1,9 +1,0 @@
-#
-#Thu Feb 12 14:27:47 EST 2015
-Logout=Logout
-Edit\ Mode=Bearbeitungsmodus
-Live\ Mode=Live-Modus
-Debug\ Mode=Debug-Modus
-Home=nach hause
-File\ Manager=Dateimanager
-filemanager=Dateimanager

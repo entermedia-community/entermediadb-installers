@@ -1,2 +1,0 @@
-$pages.include("./orderdetails.json")
-##Will need to poll for the order status?

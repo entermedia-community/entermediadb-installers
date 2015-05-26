@@ -1,5 +1,0 @@
-<page>
-	<path-action name="JsonAdminModule.preprocess"  alltypes="true" />
-
-	<path-action name="DataEditModule.reindex" alltypes="true"/>
-</page>

@@ -1,7 +1,0 @@
-<page>
-	<path-action name="JsonDataModule.createData" method="POST"/>
-
-	<path-action name="MediaAdminModule.saveModule" method="PUT"/>
-	<path-action name="ProfileModule.loadUserProfile" allowduplicates="true" />
-
-</page>

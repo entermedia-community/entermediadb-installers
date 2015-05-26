@@ -1,8 +1,0 @@
-<?xml version="1.0"?>
-
-<page>
-	<permission name="view">
-		<permission name="oe.edit"/>
-	</permission>	
-	<inner-layout>/openedit/display/listinnerlayout.html</inner-layout>
-</page>

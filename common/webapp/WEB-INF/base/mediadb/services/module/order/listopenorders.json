@@ -1,2 +1,0 @@
-$context.putPageValue("hits",$orders)
-$pages.include("./search.json",$context)

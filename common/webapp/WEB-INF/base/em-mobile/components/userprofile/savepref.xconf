@@ -1,6 +1,0 @@
-<page>
-
-	<layout />
-	<inner-layout />
-	<path-action name="ProfileModule.toggleUserPreference" />
-</page>

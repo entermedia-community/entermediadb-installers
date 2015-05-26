@@ -1,4 +1,0 @@
-<properties beanname="folderSearcher">
-	<property id="id" editable="true" stored="true" index="true">ID</property>
-	<property id="name" editable="true" stored="true" index="true">Theme Name</property>	
-</properties>

@@ -1,4 +1,0 @@
-<page>
-	<path-action name="AttachmentModule.uploadAttachments" alltypes="true"/>
-	<path-action name="AttachmentModule.listChildren" alltypes="true"/>
-</page>

@@ -1,6 +1,0 @@
-<page>
-
-	<path-action name="JsonDataModule.createData" alltypes="true" method="POST">
-		<property name="catalogid">system</property>
-	</path-action> 
-</page>

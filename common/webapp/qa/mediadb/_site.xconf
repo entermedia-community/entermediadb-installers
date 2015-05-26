@@ -1,8 +1,0 @@
-<?xml version="1.0" encoding="UTF-8"?>
-
-<page>
-  <property name="fallbackdirectory">/WEB-INF/base/mediadb</property>
-  <property name="appmodule">asset</property>
-  <property name="catalogid">qa/catalog</property>
-  <property name="applicationid">qa/mediadb</property>
-</page>

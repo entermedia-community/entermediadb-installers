@@ -1,9 +1,0 @@
-#
-#Mon Mar 09 15:02:04 EDT 2015
-Edit\ Status=Bearbeitungsstatus
-Filters=Filter
-Create\ New=neue
-Projects=Projekte
-File\ Format=Dateiformat
-Asset\ Type=Asset-Typ
-Collections=Sammlungen
