@@ -26,9 +26,6 @@
 - name: cp -rp qt-faststart /usr/bin
   copy: src=misc/qt-faststart dest=/usr/bin/qt-faststart
 
-#- name: ln -s /usr/bin/avprobe /usr/bin/ffprobe
-#  file: src=/usr/bin/avprobe dest=/usr/bin/ffprobe owner=root group=root state=link
-
 - name: Add groups
   group: name={{ item }} state=present
   with_items:
@@ -39,13 +36,8 @@
 - name: add user - entermedia
   user: name=entermedia shell=/bin/bash groups=entermedia,vboxsf append=yes
 
-## Not needed for XFS
-## Fix File Limits
-#echo "fs.file-max = 10000000" >> /etc/sysctl.conf
-#echo "entermedia      soft    nofile  409600" >> /etc/security/limits.conf
-#echo "entermedia      hard    nofile  1024000" >> /etc/security/limits.conf
-#sysctl -p
-##End Fix File Limits
+- name: Fix filesize limits
+  copy: src=etc/security/limits.d/entermedia dest=/etc/security/limits.d/entermedia owner=root group=root
 
 - name: mkdir /home/entermedia/.ffmpeg
   file: path=/home/entermedia/.ffmpeg state=directory owner=entermedia group=entermedia mode=0644
@@ -62,8 +54,11 @@
 - name: cp -p ../misc/delegates.xml /etc/ImageMagick/delegates.xml
   copy: src=etc/ImageMagick-6/delegates.xml dest=/etc/ImageMagick-6/delegates.xml owner=root group=root mode=0644
 
-- name: cp tomcat-users.xml /etc/tomcat/
-  copy: src=etc/tomcat/tomcat-users.xml dest=/etc/tomcat/tomcat-users.xml owner=tomcat group=tomcat mode=0660
+#- name: cp tomcat-users.xml /etc/tomcat/
+#  copy: src=etc/tomcat/tomcat-users.xml dest=/etc/tomcat/tomcat-users.xml owner=tomcat group=tomcat mode=0660
+
+- name: install tomcat-users.xml /etc/tomcat/
+  template: src=etc/tomcat/tomcat-users.xml.j2 dest=/etc/tomcat/tomcat-users.xml owner=tomcat group=tomcat mode=0660
 
 - name: Check to see if there is an old ROOT folder in Tomcat
   stat: path=/var/lib/tomcat/webapps/ROOT
