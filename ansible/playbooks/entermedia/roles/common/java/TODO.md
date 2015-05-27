@@ -1,1 +1,0 @@
-* Make JMX SSL work

@@ -1,2 +1,6 @@
 ---
 server_log_location: "/usr/share/tomcat/logs"
+tomcat_mgr_user: "tomcat"
+tomcat_mgr_password: "tomcat"
+tomcat_admin_user: "admin"
+tomcat_admin_password: "adminadmin"
