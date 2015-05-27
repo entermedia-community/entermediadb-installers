@@ -1,0 +1,3 @@
+# allow zabbix probes
+-A INPUT -p tcp --destination-port 10050 -j ACCEPT
+-A INPUT -p tcp --destination-port 10051 -j ACCEPT

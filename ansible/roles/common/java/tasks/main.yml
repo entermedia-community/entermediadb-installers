@@ -1,0 +1,21 @@
+---
+- name: install java 1.7.0 openjdk sdk
+  yum: name=java-1.7.0-openjdk-devel
+
+- name: change java keystore password
+  command: /usr/bin/keytool -noprompt -storepasswd -storepass changeit -keystore /etc/pki/java/cacerts -new "{{java_keystore_password}}"
+  ignore_errors: True
+
+- name: install red hat is ca into java keystore
+  command: /usr/bin/keytool -noprompt -importcert -trustcacerts -alias "{{item.alias}}" -file "{{item.file}}" -storepass "{{java_keystore_password}}" -keystore /etc/pki/java/cacerts
+  ignore_errors: True
+  with_items:
+    - { alias: "Eng Ops CA", file: /etc/pki/ca-trust/source/anchors/Eng_Ops_CA.crt }
+    - { alias: "Red Hat IS CA", file: /etc/pki/ca-trust/source/anchors/Red_Hat_IS_CA.crt }
+
+- include: jmx.yml
+
+- name: setup java options
+  set_fact:
+  args:
+    java_jvm_options: "{{java_jmx_options|union(java_jvm_default_options)}}"

@@ -1,0 +1,27 @@
+---
+- name: setup java JMX options
+  set_fact:
+  args:
+    java_jmx_options:
+      - "-Dcom.sun.management.jmxremote.password.file=/etc/java/security/security.d/jmxremote.password"
+      - "-Dcom.sun.management.jmxremote.access.file=/etc/java/security/security.d/jmxremote.access"
+      - "-Djavax.net.ssl.keyStore=/etc/pki/java/cacerts"
+      - "-Djavax.net.ssl.keyStorePassword={{java_keystore_password}}"
+      - "-Dcom.sun.management.jmxremote.authenticate=true"
+      - "-Dcom.sun.management.jmxremote.ssl={{java_jmx_ssl|lower}}"
+      - "-Dcom.sun.management.jmxremote.port={{java_jmx_port}}"
+      - "-Dcom.sun.management.jmxremote.rmi.port={{java_jmx_port}}"
+      - "-Dcom.sun.management.jmxremote=true"
+  when: java_remote_jmx
+
+- name: install JMX firewall
+  template: src=etc/sysconfig/iptables.d/jmx.j2 dest=/etc/sysconfig/iptables.d/jmx
+  notify: update firewall
+  when: java_remote_jmx
+
+- name: install JMX security files
+  template: src=etc/java/security/security.d/{{item}} dest=/etc/java/security/security.d/{{item}} mode=0600 owner="{{java_user}}"
+  when: java_remote_jmx
+  with_items:
+    - jmxremote.access
+    - jmxremote.password

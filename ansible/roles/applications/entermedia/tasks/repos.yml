@@ -1,0 +1,13 @@
+---
+- name: Install the epel and rpm-forge repos
+  yum: name={{item}} state=present disable_gpg_check=yes
+  with_items:
+     - https://dl.fedoraproject.org/pub/epel/7/x86_64/e/epel-release-7-5.noarch.rpm
+     - http://pkgs.repoforge.org/rpmforge-release/rpmforge-release-0.5.3-1.el7.rf.x86_64.rpm
+## The following do not work with RHEL7
+     - http://download1.rpmfusion.org/free/fedora/rpmfusion-free-release-{{ansible_distribution_major_version}}.noarch.rpm
+     - http://download1.rpmfusion.org/nonfree/fedora/rpmfusion-nonfree-release-{{ansible_distribution_major_version}}.noarch.rpm
+     ## Hopfulley will work with RHEL7
+     - http://rpms.famillecollet.com/enterprise/remi-release-7.rpm
+#     - http://download1.rpmfusion.org/free/fedora/rpmfusion-free-release-21.noarch.rpm
+#     - http://download1.rpmfusion.org/nonfree/fedora/rpmfusion-nonfree-release-21.noarch.rpm

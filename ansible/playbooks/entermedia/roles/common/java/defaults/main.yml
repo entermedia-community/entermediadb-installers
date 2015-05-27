@@ -1,0 +1,18 @@
+java_jvm_default_options:
+  - "-Xmn{{java_jvm_heap_new}}"
+  - "-Xms{{java_jvm_heap_mem}}"
+  - "-Xmx{{java_jvm_heap_mem}}"
+  - "-XX:PermSize={{java_jvm_heap_perm}}"
+  - "-XX:MaxPermSize={{java_jvm_heap_perm}}"
+  - "-verbose:gc"
+  - "-XX:+PrintGCDateStamps"
+  - "-XX:+PrintGCTimeStamps"
+  - "-XX:+PrintGCDetails"
+  - "-XX:+PrintGCApplicationStoppedTime"
+  - "-XX:+PrintGCApplicationConcurrentTime"
+  - "-Xloggc:{{java_gc_log}}"
+java_remote_jmx: false
+java_jmx_port: 8199
+java_keystore_password: changeit
+java_jmx_options: []
+java_jmx_ssl: false

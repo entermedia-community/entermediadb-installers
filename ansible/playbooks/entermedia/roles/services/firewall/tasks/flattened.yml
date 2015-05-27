@@ -1,0 +1,33 @@
+---
+  - name: Add the OS specific variables
+    include_vars: "{{ansible_distribution}}{{ansible_distribution_major_version}}.yml"
+
+  - name: install iptables rpms
+    yum: name={{ item }} state=installed
+    with_items: firewall_pkgs
+
+  - name: disable firewalld (RHEL 7) with iptables
+    service: name=firewalld state=stopped enabled=no
+    when: ansible_distribution == "RedHat" and ansible_distribution_major_version == "7" 
+
+  - name: setup fragments directory - ipv4
+    file: path=/etc/sysconfig/iptables.d state=directory
+    always_run: true
+
+  - name: setup fragments directory - ipv6
+    file: path=/etc/sysconfig/ip6tables.d state=directory
+    always_run: true
+
+  - name: copy over flattened iptables config - ipv4
+    synchronize: src=iptables.d dest=/etc/sysconfig recursive=yes archive=no checksum=yes
+
+  - name: copy over flattened iptables config - ipv6
+    synchronize: src=ip6tables.d dest=/etc/sysconfig recursive=yes archive=no checksum=yes
+
+  - name: update firewall - ipv4
+    assemble: src=/etc/sysconfig/iptables.d dest=/etc/sysconfig/iptables delimiter='\n'
+    notify: reload iptables
+
+  - name: update firewall - ipv6
+    assemble: src=/etc/sysconfig/ip6tables.d dest=/etc/sysconfig/ip6tables delimiter='\n'
+    notify: reload ip6tables

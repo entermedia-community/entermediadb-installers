@@ -1,0 +1,5 @@
+---
+firewall_pkgs:
+    - iptables-services
+    - rsync
+# the rsync package is needed for syncronise module to work.

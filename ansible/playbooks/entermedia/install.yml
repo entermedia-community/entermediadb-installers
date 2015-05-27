@@ -1,0 +1,7 @@
+---
+- hosts: em-stage
+#  pre_tasks:
+#    - name: include secret variables
+#      include_vars: "{{secret_repo}}/{{ hostname }}/main.yml"
+  roles:
+    - applications/entermedia

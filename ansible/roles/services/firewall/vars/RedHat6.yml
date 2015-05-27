@@ -1,0 +1,4 @@
+---
+firewall_pkgs:
+    - iptables
+    - iptables-ipv6

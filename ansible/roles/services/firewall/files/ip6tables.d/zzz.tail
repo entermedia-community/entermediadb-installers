@@ -1,0 +1,9 @@
+# tail
+-A INPUT -j LOGNDROP
+-A LOGNDROP -p tcp -m limit --limit 5/min -j LOG --log-prefix "Denied TCP: " --log-level 7
+-A LOGNDROP -p udp -m limit --limit 5/min -j LOG --log-prefix "Denied UDP: " --log-level 7
+-A LOGNDROP -p icmp -m limit --limit 5/min -j LOG --log-prefix "Denied ICMP: " --log-level 7
+-A LOGNDROP -p tcp -j REJECT --reject-with tcp-reset
+-A LOGNDROP -p udp -j REJECT --reject-with icmp6-port-unreachable
+-A LOGNDROP -j REJECT --reject-with icmp6-adm-prohibited
+COMMIT

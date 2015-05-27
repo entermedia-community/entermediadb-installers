@@ -1,0 +1,81 @@
+---
+entermedia_pkgs:
+  - figlet
+  - wget
+  - automake
+  - ufraw
+  - ufraw-common
+  - ufraw-gimp
+  - lcms2
+  - ImageMagick
+  - ImageMagick-c++
+  - ImageMagick-c++-devel
+  - ImageMagick-doc
+  - ImageMagick-perl
+  - libavc1394
+  - libavc1394-devel
+  - libogg
+  - libogg-devel
+  - libogg-devel-docs
+  - liboggz
+  - liboggz-devel
+  - liboggz-doc
+  - libvorbis
+  - libvorbis-devel
+  - libvpx
+  - libvpx-devel
+  - libvpx-utils
+#     - x264
+#     - x264-devel
+  - openjpeg
+  - openjpeg-devel
+  - openjpeg-libs
+  - java-1.8.0-openjdk
+  - lame
+  - faac
+  - ghostscript
+  - perl-Image-ExifTool
+  - libreoffice-headless
+  - libreoffice-writer
+  - libreoffice-calc
+  - libreoffice-impress
+  - libreoffice-draw
+  - libreoffice-pdfimport
+  - libreoffice-math
+  - libreoffice-core
+  - yasm
+  - unzip
+  - git
+  - ilmbase
+  - OpenEXR-libs
+  - libtool-ltdl
+  - librsvg2
+  - libwmf-lite
+  - libXt
+  - libgomp
+  - libtiff
+  - cfitsio
+  - gtkimageview
+  - ffmpeg
+  - tomcat
+  - apache-commons-collections
+  - apache-commons-daemon
+  - apache-commons-dbcp
+  - apache-commons-pool
+  - ecj
+  - htop
+  - geronimo-jta
+  - tomcat-el-2.2-api
+  - tomcat-jsp-2.2-api
+  - tomcat-lib
+  - tomcat-admin-webapps
+  - tomcat-docs-webapp
+  - tomcat-native
+  - tomcat-webapps
+
+
+entermedia_service: em
+
+entermedia_conf_dir: "/etc/"
+
+entermedia_message: "Install complete. see: http://{{inventory_hostname}}:8080/emshare"

@@ -1,0 +1,3 @@
+{% for user in java_jmx_users %}
+{{user.username}} {{user.role}}
+{% endfor %}

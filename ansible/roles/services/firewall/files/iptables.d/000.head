@@ -1,0 +1,11 @@
+# head
+*filter
+:INPUT ACCEPT [0:0]
+:FORWARD DROP [0:0]
+:LOGNDROP - [0:0]
+:OUTPUT ACCEPT [0:0]
+:TCP - [0:0]
+:UDP - [0:0]
+-A INPUT -m state --state RELATED,ESTABLISHED -j ACCEPT
+-A INPUT -i lo -j ACCEPT
+-A INPUT -p icmp -m icmp --icmp-type 8 -m conntrack --ctstate NEW -j ACCEPT

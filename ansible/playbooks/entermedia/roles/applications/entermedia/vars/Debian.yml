@@ -1,0 +1,9 @@
+---
+entermedia_pkgs:
+  - libselinux-python
+  - mysql-server
+  - MySQL-python
+
+entermedia_service: em
+
+entermedia_conf_dir: "/etc/"

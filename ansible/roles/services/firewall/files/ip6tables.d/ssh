@@ -1,0 +1,2 @@
+# allow ssh access
+-A INPUT -p tcp --destination-port 22 -j ACCEPT

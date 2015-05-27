@@ -1,0 +1,17 @@
+---
+puppet-version: 3
+dbmon_user: "dbmonuser"
+dbmon_pass: "dbmonpass"
+rdu2_vnx5400_nfs_ip: 10.8.88.1
+bos_vnx5400_nfs_ip: 10.19.216.10
+secret_repo: "{{ inventory_dir }}/../../secret-files/"
+munin_services: false
+behind_f5: false
+foreman_master: foreman.infra.prod.eng.rdu2.redhat.com
+ldaphost: "ldap.corp.redhat.com"
+ldapport: 636
+ldapprotocol: "ldaps"
+ldaprootdn: "dc=redhat,dc=com"
+ldapuserbase: "ou=Users"
+ldapgroupbase: "ou=Groups"
+ldapfilter: "uid={0}"
