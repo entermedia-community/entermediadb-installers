@@ -1,0 +1,87 @@
+#!/bin/bash
+# Assumes that EnterMedia has been installed in /usr/share/entermediadb
+# Should we have a config file?
+DEFAULT_ROOT=/usr/share/entermediadb
+COMMAND=$1
+
+function valid_port() {
+
+	if [[ -z "$PORT" ]]; then
+		echo "Error: Port argument required!"
+		exit 0
+	elif [[ $PORT -lt 1095 ]]
+		# just make sure nobody uses a port that requires root or is generally used by system
+		# maybe do something else here to prevent duplicates
+		echo "$PORT is a reserved port. Please choose a value larger than 1025"
+		exit 0
+	fi
+
+}
+
+function confirm() {
+
+	MSG=$1
+	echo $MSG
+	read -r -p "Continue? [y/N] " response
+	case $response in
+    	[yY][eE][sS]|[yY]) 
+        	return 1
+        	;;
+    	*)
+        	echo Cancelling...
+			exit
+        	;;
+esac
+}
+
+function deploy() {
+
+	ENDPOINT=$1
+	DATA=$2
+	PORT=$3
+	if [[ -z "$ENDPOINT" ]]; then
+		ENDPOINT=/opt/entermedia
+	fi
+	if [[ -d "$ENDPOINT" ]]; then
+		mkdir -p $ENDPOINT
+	fi
+	# Use $DEFAULT_ROOT
+	if [[ -z `getent passwd entermedia` ]]; then
+		echo Creating entermedia user...
+		adduser entermedia
+	fi
+	# make links and copy stuff
+	ln -s $DEFAULT_ROOT/webapp/WEB-INF/{bin,base,lib,web.xml} $ENDPOINT/WEB-INF/
+	mkdir -p $ENDPOINT/tomcat && cp -rp $DEFAULT_ROOT/tomcat/{conf,bin} $ENDPOINT/tomcat
+	sed "s/%PORT/$PORT/g" <$DEFAULT_ROOT/tomcat/conf/server.xml.template >$ENDPOINT/tomcat/conf/server.xml
+	cd $DEFAULT_ROOT/webapp/WEB-INF && rm -rf data && ln -s $DATA data
+	chown -R entermedia. $ENDPOINT
+	cd $ENDPOINT/tomcat/bin && ./startup.sh
+}
+
+case $COMMAND in
+'install')
+	#gather info, confirm, and deploy
+	echo "Where do you want to install to? (default: /opt/entermedia)"
+	read WHERE
+	echo "Where will the data be located? (default: /media/data)"
+	read DATA
+	echo "What port do you want tomcat to listen on? (default: 8080)"
+	read PORT
+	valid_port $PORT
+	confirm "This will set up EntermediaDB at $WHERE with data at $DATA and tomcat on port $PORT."	&& deploy $WHERE $DATA $PORT
+
+	;;
+'delete')
+	WHERE=$1
+	cd $WHERE/tomcat/bin
+	confirm "Are you sure you want to delete the $WHERE installation?"
+	./shutdown.sh
+	# stop running tomcat
+	rm -rf $WHERE
+	echo Deleted EntermediaDB from $WHERE.
+	;;
+*)
+	echo "Invalid command `$COMMAND`";
+	exit 0;
+	;;
