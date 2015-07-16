@@ -9,7 +9,7 @@ function valid_port() {
 	if [[ -z "$PORT" ]]; then
 		echo "Error: Port argument required!"
 		exit 0
-	elif [[ $PORT -lt 1095 ]]
+	elif [[ $PORT -lt 1095 ]]; then
 		# just make sure nobody uses a port that requires root or is generally used by system
 		# maybe do something else here to prevent duplicates
 		echo "$PORT is a reserved port. Please choose a value larger than 1025"
@@ -85,3 +85,5 @@ case $COMMAND in
 	echo "Invalid command `$COMMAND`";
 	exit 0;
 	;;
+esac
+
