@@ -1,4 +1,4 @@
-#!/bin/bash 
+#!/bin/bash
 # Assumes that EnterMedia has been installed in /usr/share/entermediadb
 # Should we have a config file?
 COMMAND=$1
@@ -60,7 +60,7 @@ function deploy() {
 		exit
 	fi
 
-	if [[ -d "$ENDPOINT" ]]; then
+	if [[ ! -d "$ENDPOINT" ]]; then
 		mkdir -p $ENDPOINT
 	fi
 	if [[ -z `getent passwd entermedia` ]]; then
@@ -73,9 +73,14 @@ function deploy() {
 	ln -s $ENTERMEDIADB_HOME/webapp/WEB-INF/{bin,base,lib,web.xml} $ENDPOINT/webapp/WEB-INF/
 	
 	mkdir -p $ENDPOINT/tomcat/logs && cp -rp $ENTERMEDIADB_HOME/tomcat/conf $ENDPOINT/tomcat && cp -rp $ENTERMEDIADB_HOME/tomcat/bin $ENDPOINT/tomcat
-	sed "s/%PORT/$PORT/g" <$ENTERMEDIADB_HOME/tomcat/conf/server.xml.template >$ENDPOINT/tomcat/conf/server.xml
-	mv $ENDPOINT/webapp/WEB-INF/data $DATA && ln -s $DATA $ENDPOINT/webapp/WEB-INF/data
+	sed "s/%PORT%/$PORT/g" <$ENTERMEDIADB_HOME/tomcat/conf/server.xml.template >$ENDPOINT/tomcat/conf/server.xml
+	if [[ ! -d "$DATA" ]]; then
+	      mkdir -p $DATA
+              cp -rp $ENTERMEDIADB_HOME/webapp/WEB-INF/data/* $DATA 
+	fi
+	ln -s $DATA $ENDPOINT/webapp/WEB-INF/data
 	chown -R entermedia. $ENDPOINT
+	chown -R entermedia. $DATA
 	cd $ENDPOINT/tomcat/bin 
 	su entermedia -c "$ENDPOINT/tomcat/bin/startup.sh"
 }

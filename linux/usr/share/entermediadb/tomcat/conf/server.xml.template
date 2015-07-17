@@ -1,5 +1,5 @@
 <?xml version='1.0' encoding='utf-8'?>
-<Server port="%PORT%5" shutdown="SHUTDOWN">
+<Server port="5%PORT%" shutdown="SHUTDOWN">
   <Listener className="org.apache.catalina.core.AprLifecycleListener" SSLEngine="on" />
   <Listener className="org.apache.catalina.core.JreMemoryLeakPreventionListener" />
   <Listener className="org.apache.catalina.mbeans.GlobalResourcesLifecycleListener" />
