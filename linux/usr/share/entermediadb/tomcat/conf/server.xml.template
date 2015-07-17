@@ -29,7 +29,7 @@
         		<Valve className="org.apache.catalina.valves.AccessLogValve" directory="logs"
                 	prefix="localhost_access_log." suffix=".txt"
 					pattern="%h %l %u %t &quot;%r&quot; %s %b" />
-				<Context path="/" docBase="${catalina.home}/../webapp" debug="false" reloadable="false" processTlds="false">
+				<Context path="/" docBase="${catalina.base}/../webapp" debug="false" reloadable="false" processTlds="false">
 
 			 		<Parameter name="entermedianodeid" value="emdb%PORT%"  override="false"/>
 
