@@ -7,7 +7,7 @@ cp -rp ../../linux/usr ${TMPDEST}
 cp -rp ../../linux/usr/share/entermediadb/conf/ffmpeg ${TMPDEST}/home/entermedia/.ffmpeg
 cp -rp ../../linux/centos/qt-faststart ${TMPDEST}/usr/bin
 
-wget  -N -nd  http://dev.entermediasoftware.com/jenkins/job/demoall/lastSuccessfulBuild/artifact/deploy/ROOT.war -O /tmp/ROOT.WAR
+wget  -N  http://dev.entermediasoftware.com/jenkins/job/demoall/lastSuccessfulBuild/artifact/deploy/ROOT.war -O /tmp/ROOT.WAR
 
 mkdir -p ${TMPDEST}/usr/share/entermediadb/webapp
 unzip  /tmp/ROOT.WAR -d ${TMPDEST}/usr/share/entermediadb/webapp > /dev/null
