@@ -1,0 +1,107 @@
+#!/bin/bash -x
+# Assumes that EnterMedia has been installed in /usr/share/entermediadb
+# Should we have a config file?
+COMMAND=$1
+ENTERMEDIADB_HOME=/usr/share/entermediadb
+DEFAULT_PORT=8080
+DEFAULT_DATA=/media/data
+DEFAULT_ROOT=/opt/entermediadb
+
+function valid_port() {
+
+	if [[ -z "$1" ]]; then
+		# just make sure nobody uses a port that requires root or is generally used by system
+		# maybe do something else here to prevent duplicates
+		echo "$1 is a reserved port. Please choose a value larger than 1025"
+		exit 0
+	fi
+
+}
+
+function confirm() {
+
+	MSG=$1
+	read -r -p "$MSG\nContinue? [y/N] " response
+	case $response in
+    	[yY]) 
+        	return 1
+        	;;
+    	*)
+        	return 0
+        	;;
+	esac
+}
+
+function deploy() {
+
+	ENDPOINT=$1
+	DATA=$2
+	PORT=$3
+	
+	# Make sure defaults are set if nothing given
+	[[ -z "$ENDPOINT" ]] && ENDPOINT=$DEFAULT_ROOT
+	[[ -z "$PORT" ]] && PORT=$DEFAULT_PORT
+	[[ -z "$DATA" ]] && DATA=$DEFAULT_DATA
+
+	valid_port $PORT
+
+	$(confirm "This will set up EntermediaDB at $ENDPOINT with data at $DATA and tomcat on port $PORT.")
+	CONFIRMED=$?
+	if [[ $CONFIRMED != 1 ]]; then
+		echo Cancelling...
+		exit
+	fi
+
+	if [[ -d "$ENTERMEDIA_HOME" ]]; then
+		# Meaningless to deploy without Entermedia
+		echo Entermedia NOT FOUND at $ENTERMEDIA_HOME! Cannot proceed.
+		exit
+	fi
+
+	if [[ -d "$ENDPOINT" ]]; then
+		mkdir -p $ENDPOINT
+	fi
+	if [[ -z `getent passwd entermedia` ]]; then
+		# Just in case we are deploying where EMDB is on a network mount
+		echo Creating entermedia user...
+		adduser entermedia
+	fi
+	# make links and copy stuff
+	ln -s $ENTERMEDIA_HOME/webapp/WEB-INF/{bin,base,lib,web.xml} $ENDPOINT/WEB-INF/
+	mkdir -p $ENDPOINT/tomcat && cp -rp $ENTERMEDIA_HOME/tomcat/{conf,bin} $ENDPOINT/tomcat
+	sed "s/%PORT/$PORT/g" <$ENTERMEDIA_HOME/tomcat/conf/server.xml.template >$ENDPOINT/tomcat/conf/server.xml
+	cd $ENTERMEDIA_HOME/webapp/WEB-INF && rm -rf data && ln -s $DATA data
+	chown -R entermedia. $ENDPOINT
+	cd $ENDPOINT/tomcat/bin && ./startup.sh
+}
+
+case $COMMAND in
+'install')
+	#gather info, confirm, and deploy
+	echo "Where do you want to install to? (default: /opt/entermedia)"
+	read WHERE
+	echo "Where will the data be located? (default: /media/data)"
+	read DATA
+	echo "What port do you want tomcat to listen on? (default: 8080)"
+	read PORT
+	deploy $WHERE $DATA $PORT
+	;;
+'delete')
+	WHERE=$1
+	if [[ -d "$WHERE" ]]; then
+		echo $WHERE is not a valid directory!
+		exit 0
+	fi
+	cd $WHERE/tomcat/bin
+	confirm "Are you sure you want to delete the $WHERE installation?"
+	./shutdown.sh
+	# stop running tomcat
+	rm -rf $WHERE
+	echo Deleted EntermediaDB from $WHERE.
+	;;
+*)
+	echo "Invalid command `$COMMAND`";
+	exit 0;
+	;;
+esac
+
