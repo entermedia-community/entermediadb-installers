@@ -1,4 +1,4 @@
-#!/bin/bash -x
+#!/bin/bash 
 # Assumes that EnterMedia has been installed in /usr/share/entermediadb
 # Should we have a config file?
 COMMAND=$1
@@ -20,14 +20,15 @@ function valid_port() {
 
 function confirm() {
 
-	MSG=$1
-	read -r -p "$MSG\nContinue? [y/N] " response
+	echo "$1"
+	read -r -p "Continue? [y/N] " response
 	case $response in
     	[yY]) 
         	return 1
         	;;
     	*)
-        	return 0
+        	echo Cancelling...
+		exit
         	;;
 	esac
 }
@@ -45,16 +46,17 @@ function deploy() {
 
 	valid_port $PORT
 
-	$(confirm "This will set up EntermediaDB at $ENDPOINT with data at $DATA and tomcat on port $PORT.")
+	PROMPT="This will set up EntermediaDB at $ENDPOINT with data at $DATA and tomcat on port $PORT."
+	confirm "$PROMPT"
 	CONFIRMED=$?
 	if [[ $CONFIRMED != 1 ]]; then
 		echo Cancelling...
 		exit
 	fi
 
-	if [[ -d "$ENTERMEDIA_HOME" ]]; then
+	if [[ ! -d "$ENTERMEDIADB_HOME" ]]; then
 		# Meaningless to deploy without Entermedia
-		echo Entermedia NOT FOUND at $ENTERMEDIA_HOME! Cannot proceed.
+		echo Entermedia NOT FOUND at $ENTERMEDIADB_HOME! Cannot proceed.
 		exit
 	fi
 
@@ -67,18 +69,21 @@ function deploy() {
 		adduser entermedia
 	fi
 	# make links and copy stuff
-	ln -s $ENTERMEDIA_HOME/webapp/WEB-INF/{bin,base,lib,web.xml} $ENDPOINT/WEB-INF/
-	mkdir -p $ENDPOINT/tomcat && cp -rp $ENTERMEDIA_HOME/tomcat/{conf,bin} $ENDPOINT/tomcat
-	sed "s/%PORT/$PORT/g" <$ENTERMEDIA_HOME/tomcat/conf/server.xml.template >$ENDPOINT/tomcat/conf/server.xml
-	cd $ENTERMEDIA_HOME/webapp/WEB-INF && rm -rf data && ln -s $DATA data
+	mkdir -p $ENDPOINT/webapp/WEB-INF
+	ln -s $ENTERMEDIADB_HOME/webapp/WEB-INF/{bin,base,lib,web.xml} $ENDPOINT/webapp/WEB-INF/
+	
+	mkdir -p $ENDPOINT/tomcat/logs && cp -rp $ENTERMEDIADB_HOME/tomcat/conf $ENDPOINT/tomcat && cp -rp $ENTERMEDIADB_HOME/tomcat/bin $ENDPOINT/tomcat
+	sed "s/%PORT/$PORT/g" <$ENTERMEDIADB_HOME/tomcat/conf/server.xml.template >$ENDPOINT/tomcat/conf/server.xml
+	mv $ENDPOINT/webapp/WEB-INF/data $DATA && ln -s $DATA $ENDPOINT/webapp/WEB-INF/data
 	chown -R entermedia. $ENDPOINT
-	cd $ENDPOINT/tomcat/bin && ./startup.sh
+	cd $ENDPOINT/tomcat/bin 
+	su entermedia -c "$ENDPOINT/tomcat/bin/startup.sh"
 }
 
 case $COMMAND in
 'install')
 	#gather info, confirm, and deploy
-	echo "Where do you want to install to? (default: /opt/entermedia)"
+	echo "Where do you want to install to? (default: /opt/entermediadb)"
 	read WHERE
 	echo "Where will the data be located? (default: /media/data)"
 	read DATA
@@ -87,8 +92,8 @@ case $COMMAND in
 	deploy $WHERE $DATA $PORT
 	;;
 'delete')
-	WHERE=$1
-	if [[ -d "$WHERE" ]]; then
+	WHERE=$2
+	if [[ ! -d "$WHERE" ]]; then
 		echo $WHERE is not a valid directory!
 		exit 0
 	fi
