@@ -10,7 +10,7 @@ source ${CWD}/functions.sh
 
 echo "$YUM -y install rpmdevtools yasm wget cmake gcc gcc-c++"
  
-if [[ ! -d "$TOPLEVEL" ]]; then
+if [[ ! -d "$TOPLEVEL/SPECS" ]]; then
 	mkdir -p ${TOPLEVEL}/SPECS
 fi
 

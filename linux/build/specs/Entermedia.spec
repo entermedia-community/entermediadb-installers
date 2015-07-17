@@ -4,14 +4,14 @@
 
 Summary:	EnterMediaDB Media Database
 Name: 		entermedia
-Version: 	8.19
-Release: 	{{ENTERMEDIA_RELEASE}}
+Version: 	8.19.3
+Release:	0
 License: 	GPL
 URL:		https://github.com/entermedia-community
 Vendor: 	EnterMedia Software, Inc.
 BuildRoot: 	%{_tmppath}/%{name}-root
 Requires: 	java-1.8.0-openjdk  lame ImageMagick libav perl-Image-ExifTool ghostscript gimp libreoffice
-Source0: 	entermedia-%{version}.tar.gz
+Source0: 	entermedia-8.19.3.tar.gz
 BuildArch: 	x86_64
 
 
