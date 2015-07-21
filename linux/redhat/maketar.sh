@@ -1,7 +1,5 @@
-#!/bin/bash
-VERSION=`cat ../../VERSION.md`
-RELEASE=`cat ../../RELEASE.md`
-TMPDEST="../../deploy/tmp/entermediadb-${VERSION}"
+RELEASE_VERSION=`cat ../../VERSION.md`
+TMPDEST="../../deploy/tmp/entermediadb-${RELEASE_VERSION}"
 
 rm -rf ${TMPDEST}
 mkdir -p ${TMPDEST}/home/entermedia
@@ -15,5 +13,5 @@ mkdir -p ${TMPDEST}/usr/share/entermediadb/webapp
 unzip  /tmp/ROOT.WAR -d ${TMPDEST}/usr/share/entermediadb/webapp > /dev/null
 mkdir ../../deploy/SOURCES
 cd ../../deploy/tmp
-tar -pczf /tmp/entermediadb-${VERSION}.tar.gz .
-mv  /tmp/entermediadb-${VERSION}.tar.gz ../../deploy/SOURCES/
+tar -pczf /tmp/entermediadb-${RELEASE_VERSION}.tar.gz .
+mv  /tmp/entermediadb-${RELEASE_VERSION}.tar.gz ../../deploy/SOURCES/
