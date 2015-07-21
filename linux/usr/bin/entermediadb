@@ -70,8 +70,8 @@ function deploy() {
 	fi
 	# make links and copy stuff
 	mkdir -p $ENDPOINT/webapp/WEB-INF
-	ln -s $ENTERMEDIADB_HOME/webapp/WEB-INF/{bin,base,web.xml} $ENDPOINT/webapp/WEB-INF/
-	
+	ln -s $ENTERMEDIADB_HOME/webapp/WEB-INF/{bin,base} $ENDPOINT/webapp/WEB-INF/
+	cp $ENDPOINT/webapp/WEB-INF/web.xml $ENTERMEDIADB_HOME/webapp/WEB-INF/
 	mkdir -p $ENDPOINT/tomcat/{logs,temp} && cp -rp $ENTERMEDIADB_HOME/tomcat/conf $ENDPOINT/tomcat && cp -rp $ENTERMEDIADB_HOME/tomcat/bin $ENDPOINT/tomcat
 	sed "s/%PORT%/$PORT/g" <$ENTERMEDIADB_HOME/tomcat/conf/server.xml.template >$ENDPOINT/tomcat/conf/server.xml
 	if [[ ! -d "$DATA" ]]; then
