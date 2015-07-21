@@ -70,7 +70,7 @@ function deploy() {
 	fi
 	# make links and copy stuff
 	mkdir -p $ENDPOINT/webapp/WEB-INF
-	ln -s $ENTERMEDIADB_HOME/webapp/WEB-INF/{bin,base,lib,web.xml} $ENDPOINT/webapp/WEB-INF/
+	ln -s $ENTERMEDIADB_HOME/webapp/WEB-INF/{bin,base,web.xml} $ENDPOINT/webapp/WEB-INF/
 	
 	mkdir -p $ENDPOINT/tomcat/{logs,temp} && cp -rp $ENTERMEDIADB_HOME/tomcat/conf $ENDPOINT/tomcat && cp -rp $ENTERMEDIADB_HOME/tomcat/bin $ENDPOINT/tomcat
 	sed "s/%PORT%/$PORT/g" <$ENTERMEDIADB_HOME/tomcat/conf/server.xml.template >$ENDPOINT/tomcat/conf/server.xml
@@ -110,7 +110,7 @@ case $COMMAND in
 	echo Deleted EntermediaDB from $WHERE.
 	;;
 *)
-	echo "Invalid command `$COMMAND`";
+	echo "Usage: entermedidb install | entermediadb delete /opt/entermediadb";
 	exit 0;
 	;;
 esac
