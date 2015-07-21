@@ -81,7 +81,9 @@ function deploy() {
 	ln -s $DATA $ENDPOINT/webapp/WEB-INF/data
 	chown -R entermedia. $ENDPOINT
 	chown -R entermedia. $DATA
-	cd $ENDPOINT/tomcat/bin 
+	cd $ENDPOINT/tomcat/bin
+	# add proper home to local tomcat
+	echo "export CATALINA_BASE=\"$ENDPOINT/webapp\"" >> $ENDPOINT/tomcat/bin/setenv.sh
 	su entermedia -c "$ENDPOINT/tomcat/bin/startup.sh"
 }
 
