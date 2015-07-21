@@ -8,5 +8,7 @@ rm specs/Entermedia.spec
 sed "s/{{RELEASE}}/${RELEASE}/g;s/{{VERSION}}/${VERSION}/g;" specs/Entermedia.spec.template >specs/Entermedia.spec
 ./build.sh Entermedia.spec
 cd ../../deploy
-rpmbuild --rebuild SRPMS/entermedia-*
+rpmbuild --rebuild SRPMS/entermediadb-*
 scp ./RPMS/x86_64/*.rpm emdev@woody.entermediadb.net:/home/emdev/webapp/repo/centos/6/x86_64/rpms
+ssh emdev@woody.entermediadb.net '/home/emdev/webapp/repo/makeall.sh'
+
