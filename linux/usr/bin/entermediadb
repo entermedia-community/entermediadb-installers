@@ -35,9 +35,9 @@ function confirm() {
 
 function deploy() {
 
-	ENDPOINT=$1
-	DATA=$2
-	PORT=$3
+	local ENDPOINT=$1
+	local DATA=$2
+	local PORT=$3
 	
 	# Make sure defaults are set if nothing given
 	[[ -z "$ENDPOINT" ]] && ENDPOINT=$DEFAULT_ROOT
@@ -46,9 +46,9 @@ function deploy() {
 
 	valid_port $PORT
 
-	PROMPT="This will set up EntermediaDB at $ENDPOINT with data at $DATA and tomcat on port $PORT."
+	local PROMPT="This will set up EntermediaDB at $ENDPOINT with data at $DATA and tomcat on port $PORT."
 	confirm "$PROMPT"
-	CONFIRMED=$?
+	local CONFIRMED=$?
 	if [[ $CONFIRMED != 1 ]]; then
 		echo Cancelling...
 		exit
@@ -69,11 +69,11 @@ function deploy() {
 		adduser entermedia
 	fi
 	# make links and copy stuff
+	mkdir -p $ENDPOINT/tomcat/{logs,temp} && cp -rp $ENTERMEDIADB_HOME/tomcat/conf $ENDPOINT/tomcat && cp -rp $ENTERMEDIADB_HOME/tomcat/bin $ENDPOINT/tomcat
+	sed "s/%PORT%/$PORT/g" <$ENTERMEDIADB_HOME/tomcat/conf/server.xml.template >$ENDPOINT/tomcat/conf/server.xml
 	mkdir -p $ENDPOINT/webapp/WEB-INF
 	ln -s $ENTERMEDIADB_HOME/webapp/WEB-INF/{bin,base} $ENDPOINT/webapp/WEB-INF/
 	cp $ENTERMEDIADB_HOME/webapp/WEB-INF/web.xml $ENDPOINT/webapp/WEB-INF/
-	mkdir -p $ENDPOINT/tomcat/{logs,temp} && cp -rp $ENTERMEDIADB_HOME/tomcat/conf $ENDPOINT/tomcat && cp -rp $ENTERMEDIADB_HOME/tomcat/bin $ENDPOINT/tomcat
-	sed "s/%PORT%/$PORT/g" <$ENTERMEDIADB_HOME/tomcat/conf/server.xml.template >$ENDPOINT/tomcat/conf/server.xml
 	if [[ ! -d "$DATA" ]]; then
 	      mkdir -p $DATA
               cp -rp $ENTERMEDIADB_HOME/webapp/WEB-INF/data/* $DATA 
