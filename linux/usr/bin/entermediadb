@@ -39,10 +39,6 @@ function deploy() {
 	local DATA=$2
 	local PORT=$3
 	
-	# Make sure defaults are set if nothing given
-	[[ -z "$ENDPOINT" ]] && ENDPOINT=$DEFAULT_ROOT
-	[[ -z "$PORT" ]] && PORT=$DEFAULT_PORT
-	[[ -z "$DATA" ]] && DATA=$DEFAULT_DATA
 
 	valid_port $PORT
 
@@ -97,6 +93,12 @@ case $COMMAND in
 	read DATA
 	echo "What port do you want tomcat to listen on? (default: 8080)"
 	read PORT
+
+  	# Make sure defaults are set if nothing given
+        [[ -z "$WHERE" ]] && WHERE=$DEFAULT_ROOT
+        [[ -z "$DATA" ]] && DATA=$DEFAULT_DATA
+        [[ -z "$PORT" ]] && PORT=$DEFAULT_PORT
+
 	deploy $WHERE $DATA $PORT
 	;;
 'delete')
