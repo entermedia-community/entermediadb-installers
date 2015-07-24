@@ -10,5 +10,6 @@ sed "s/{{RELEASE}}/${RELEASE}/g;s/{{VERSION}}/${VERSION}/g;" specs/Entermedia.sp
 cd ../../deploy
 rpmbuild --rebuild SRPMS/entermediadb-*
 scp ./RPMS/x86_64/*.rpm emdev@woody.entermediadb.net:/home/emdev/webapp/repo/centos/6/x86_64/rpms
+scp ./RPMS/x86_64/*.rpm emdev@woody.entermediadb.net:/home/emdev/webapp/repo/centos/7/x86_64/rpms
 ssh emdev@woody.entermediadb.net '/home/emdev/webapp/repo/makeall.sh'
 
