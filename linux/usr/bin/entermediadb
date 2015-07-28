@@ -34,6 +34,9 @@ function confirm() {
 }
 
 function deploy() {
+	
+	# Go somewhere that exists to prevent getcwd errors
+	[[ ! -d `pwd` ]] && cd /
 
 	local ENDPOINT=$1
 	local DATA=$2
