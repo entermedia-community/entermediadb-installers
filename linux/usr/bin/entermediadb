@@ -72,6 +72,7 @@ function deploy() {
 	sed "s/%PORT%/$PORT/g" <$ENTERMEDIADB_HOME/tomcat/conf/server.xml.template >$ENDPOINT/tomcat/conf/server.xml
 	mkdir -p $ENDPOINT/webapp/{WEB-INF,media}
 	cp $ENTERMEDIADB_HOME/webapp/media/_site.xconf $ENDPOINT/webapp/media
+	cp $ENTERMEDIADB_HOME/webapp/* $ENDPOINT/webapp
 	cp $ENTERMEDIADB_HOME/webapp/WEB-INF/web.xml $ENDPOINT/webapp/WEB-INF/
 	ln -s $ENTERMEDIADB_HOME/webapp/WEB-INF/{bin,base} $ENDPOINT/webapp/WEB-INF/
 	if [[ ! -d "$DATA" ]]; then
