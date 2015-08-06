@@ -1,11 +1,12 @@
 #!/bin/bash
+PORT=$1
 EMHOME=/opt/entermediadb/common
 cd $EMHOME
     echo "Shutting down ${tomcat}"
-        ${EMHOME}/8444/tomcat/bin/shutdown.sh
+        ${EMHOME}/${PORT}/tomcat/bin/shutdown.sh
     sleep 10
     echo "Restarting ${tomcat}"
-    rm -rf ${EMHOME}/8444/tomcat/logs/*
-        ${EMHOME}/8444/tomcat/bin/startup.sh
+    rm -rf ${EMHOME}/${PORT}/tomcat/logs/*
+        ${EMHOME}/${PORT}/tomcat/bin/startup.sh
 echo 'Reload complete!';
 

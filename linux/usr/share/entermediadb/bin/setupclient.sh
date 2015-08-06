@@ -17,4 +17,4 @@ fi
 
 ${BIN_DIR}/setupmobile.sh  "$SUB_DOMAIN" "$CLIENT_ID" "$CLIENT_NAME"
 ${BIN_DIR}/exportwelcome.sh  "$SUB_DOMAIN" "$CLIENT_ID"  "$CLIENT_NAME"
-${BIN_DIR}/setupclientdropbox.sh  "$SUB_DOMAIN" "$CLIENT_ID"  "$CLIENT_NAME"
+#${BIN_DIR}/setupclientdropbox.sh  "$SUB_DOMAIN" "$CLIENT_ID"  "$CLIENT_NAME"

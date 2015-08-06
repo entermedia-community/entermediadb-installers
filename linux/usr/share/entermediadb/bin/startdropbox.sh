@@ -1,4 +1,4 @@
-#!/bin/bash
+#!/bin/bash -x
 CLIENT_ROOT="/opt/entermediadb/clients/home";
 if [[ -z "$1" ]]; then
 	##cd $CLIENT_ROOT;
@@ -9,13 +9,17 @@ fi
 
 rm -f ~/.dropbox/dropbox.pid
 
+rm -f /tmp/dropboxall.log
+
 for CLIENT in $CLIENTS; do
-	if [[ -d "$CLIENT/.dropbox/instance_db" ]]; then
+	CLIENT=$CLIENT_ROOT/$CLIENT
+	if [[ -f "$CLIENT/.dropbox/unlink.db" ]]; then
 		echo "Starting dropbox client for $CLIENT"
 		HOME="$CLIENT"
 		rm -f "$CLIENT/.dropbox/dropbox.pid"
-		$CLIENT/.dropbox-dist/dropboxd >> /tmp/log.log 2>&1 & disown
-		sleep 5
+		LOG_LOC="$CLIENT/dropbox.log"		
+		echo "starting $CLIENT" >> $LOG_LOC >> /tmp/dropboxall.log
+		nohup $CLIENT/.dropbox-dist/dropboxd >> $LOG_LOC >> /tmp/dropboxall.log 2>&1 &
+		#sleep 5
 	fi
 done
-echo "Clients all started"

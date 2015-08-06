@@ -21,6 +21,6 @@ fi
 
 ./setupmobile.sh  "$SUB_DOMAIN" "$CLIENT_ID" "$CLIENT_NAME"
 ./exportwelcome.sh  "$SUB_DOMAIN" "$CLIENT_ID"  "$CLIENT_NAME"
-./setupclientdropbox.sh  "$SUB_DOMAIN" "$CLIENT_ID"  "$CLIENT_NAME"
+#./setupclientdropbox.sh  "$SUB_DOMAIN" "$CLIENT_ID"  "$CLIENT_NAME"
 
 
