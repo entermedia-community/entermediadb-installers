@@ -73,7 +73,9 @@ function deploy() {
 	mkdir -p $ENDPOINT/webapp/{WEB-INF,media}
 	cp $ENTERMEDIADB_HOME/webapp/media/_site.xconf $ENDPOINT/webapp/media
 	cp $ENTERMEDIADB_HOME/webapp/* $ENDPOINT/webapp
-	cp $ENTERMEDIADB_HOME/webapp/WEB-INF/web.xml $ENDPOINT/webapp/WEB-INF/
+
+	ln -s $ENTERMEDIADB_HOME/webapp/theme $ENDPOINT/webapp/
+	ln -s $ENTERMEDIADB_HOME/webapp/WEB-INF/web.xml $ENDPOINT/webapp/WEB-INF/web.xml
 	ln -s $ENTERMEDIADB_HOME/webapp/WEB-INF/{bin,base} $ENDPOINT/webapp/WEB-INF/
 	if [[ ! -d "$DATA" ]]; then
 	      mkdir -p $DATA

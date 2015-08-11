@@ -5,7 +5,7 @@
 Summary:	EnterMediaDB Media Database
 Name: 		entermediadb
 Version: 	8.19
-Release:	13
+Release:	15
 License: 	GPL
 URL:		https://github.com/entermedia-community
 Vendor: 	EnterMedia Software, Inc.
