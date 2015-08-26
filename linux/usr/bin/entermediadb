@@ -72,11 +72,11 @@ function deploy() {
 	sed "s/%PORT%/$PORT/g" <$ENTERMEDIADB_HOME/tomcat/conf/server.xml.template >$ENDPOINT/tomcat/conf/server.xml
 	mkdir -p $ENDPOINT/webapp/{WEB-INF,media}
 	cp $ENTERMEDIADB_HOME/webapp/media/_site.xconf $ENDPOINT/webapp/media
-	cp $ENTERMEDIADB_HOME/webapp/* $ENDPOINT/webapp
+	cp $ENTERMEDIADB_HOME/webapp/* $ENDPOINT/webapp 2> /dev/null
 
-	ln -s $ENTERMEDIADB_HOME/webapp/theme $ENDPOINT/webapp/
-	ln -s $ENTERMEDIADB_HOME/webapp/WEB-INF/web.xml $ENDPOINT/webapp/WEB-INF/web.xml
-	ln -s $ENTERMEDIADB_HOME/webapp/WEB-INF/{bin,base} $ENDPOINT/webapp/WEB-INF/
+	cp -r $ENTERMEDIADB_HOME/webapp/theme $ENDPOINT/webapp/
+	cp $ENTERMEDIADB_HOME/webapp/WEB-INF/web.xml $ENDPOINT/webapp/WEB-INF/
+	cp -r $ENTERMEDIADB_HOME/webapp/WEB-INF/{bin,base,lib} $ENDPOINT/webapp/WEB-INF/
 	if [[ ! -d "$DATA" ]]; then
 	      mkdir -p $DATA
               cp -rp $ENTERMEDIADB_HOME/webapp/WEB-INF/data/* $DATA 
@@ -108,7 +108,7 @@ case $COMMAND in
 	deploy $WHERE $DATA $PORT
 	;;
 'delete')
-	WHERE=$2
+	local WHERE=$2
 	if [[ ! -d "$WHERE" ]]; then
 		echo $WHERE is not a valid directory!
 		exit 0
@@ -120,6 +120,22 @@ case $COMMAND in
 	rm -rf $WHERE
 	echo Deleted EntermediaDB from $WHERE.
 	;;
+'update')
+	local WHERE=$2
+	if [[ ! -d "$WHERE" ]]; then
+		echo $WHERE is not a valid directory!
+		exit 0
+	fi
+	confirm "Are you sure you want to update the $WHERE installation?"
+	rm -rf $WHERE/webapp/WEB-INF/{base,lib,bin}
+	echo Copying new files to WEB-INF ...
+	cp -r $ENTERMEDIADB_HOME/webapp/WEB-INF/{bin,base,lib} $WHERE/webapp/WEB-INF/
+	rm -f $WHERE/webapp/WEB-INF/web.xml
+	echo Updating web.xml ...
+	cp $ENTERMEDIADB_HOME/webapp/WEB-INF/web.xml $WHERE/webapp/WEB-INF/
+	# I don't think we want to delete the theme folder
+	# rm -rf $WHERE/webapp/theme
+	# cp -r $ENTERMEDIADB_HOME/webapp/theme $WHERE/webapp/
 *)
 	echo "Usage: entermedidb install | entermediadb delete /opt/entermediadb";
 	exit 0;
