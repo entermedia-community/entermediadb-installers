@@ -133,9 +133,6 @@ case $COMMAND in
 	rm -f $WHERE/webapp/WEB-INF/web.xml
 	echo Updating web.xml ...
 	cp $ENTERMEDIADB_HOME/webapp/WEB-INF/web.xml $WHERE/webapp/WEB-INF/
-	# I don't think we want to delete the theme folder
-	# rm -rf $WHERE/webapp/theme
-	# cp -r $ENTERMEDIADB_HOME/webapp/theme $WHERE/webapp/
 *)
 	echo "Usage: entermedidb install | entermediadb delete /opt/entermediadb";
 	exit 0;
