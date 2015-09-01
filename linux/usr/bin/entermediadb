@@ -108,7 +108,7 @@ case $COMMAND in
 	deploy $WHERE $DATA $PORT
 	;;
 'delete')
-	local WHERE=$2
+	WHERE=$2
 	if [[ ! -d "$WHERE" ]]; then
 		echo $WHERE is not a valid directory!
 		exit 0
@@ -121,7 +121,7 @@ case $COMMAND in
 	echo Deleted EntermediaDB from $WHERE.
 	;;
 'update')
-	local WHERE=$2
+	WHERE=$2
 	if [[ ! -d "$WHERE" ]]; then
 		echo $WHERE is not a valid directory!
 		exit 0
@@ -133,6 +133,7 @@ case $COMMAND in
 	rm -f $WHERE/webapp/WEB-INF/web.xml
 	echo Updating web.xml ...
 	cp $ENTERMEDIADB_HOME/webapp/WEB-INF/web.xml $WHERE/webapp/WEB-INF/
+	;;
 *)
 	echo "Usage: entermedidb install | entermediadb delete /opt/entermediadb";
 	exit 0;
