@@ -84,9 +84,11 @@ function deploy() {
 	ln -s $DATA $ENDPOINT/webapp/WEB-INF/data
 	chown -R entermedia. $ENDPOINT
 	chown -R entermedia. $DATA
+	chown -R entermedia:entermedia /home/entermedia
 	cd $ENDPOINT/tomcat/bin
 	# add proper home to local tomcat
 	echo "export CATALINA_BASE=\"$ENDPOINT/tomcat\"" >> $ENDPOINT/tomcat/bin/setenv.sh
+	ln -s /opt/libreoffice5.0/program/soffice /usr/bin/soffice
 	su entermedia -c "$ENDPOINT/tomcat/bin/startup.sh"
 }
 
