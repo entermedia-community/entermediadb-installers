@@ -1,0 +1,6 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<root> 
+  <data id="user" catalogid="%client_id/catalog"/>  
+  <data id="group" catalogid="%client_id/catalog"/>
+</root>

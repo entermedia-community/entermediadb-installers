@@ -14,7 +14,9 @@ sed "s:%client_id:$CLIENT_ID:g;s:%client_name:$CLIENT_NAME:g;s:%sub_domain:$SUB_
 export JAVA_HOME=/usr/lib/jvm/jdk1.8.0_40
 export ANDROID_HOME=/opt/entermediadb/common/mobile/android-sdk-linux
 
-cordova build
+$MOBILE_DIR/platforms/android/cordova/clean
+$MOBILE_DIR/platforms/android/cordova/build
+#cordova build
 
 
 echo "Copying android project to client directory: $CLIENT_DIR"
