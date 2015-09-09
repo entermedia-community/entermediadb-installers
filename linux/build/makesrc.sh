@@ -22,7 +22,7 @@ if [ "$#" -eq 1 ]; then
 	ALL=false
 	SPEC=$1
 	if [[ ! -f "${TOPLEVEL}/SPECS/$1" && ! -f "$1" ]]; then
-		echoWhite "Provided spec file not found."
+		echoWhite "Provided spec file not found.${TOPLEVEL}/SPECS/$1"
 		exit
 	fi
 fi
