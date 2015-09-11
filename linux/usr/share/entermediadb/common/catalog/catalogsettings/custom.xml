@@ -2,5 +2,5 @@
 
 <root> 
   <data id="mediadbappid" name="MediaDB Application ID" value="%client_id/mediadb"/>  
-  <data id="cdn_prefix" name="CDN Prefix" namesorted="CDN Prefix" value="http://d3lio3m3m97g5n.cloudfront.net"/> 
+  <data id="cdn_prefix" name="CDN Prefix" namesorted="CDN Prefix" value="http://d3lx96450149dy.cloudfront.net"/> 
 </root>

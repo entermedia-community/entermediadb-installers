@@ -1,7 +1,7 @@
 #!/bin/bash
 
 WEBAPP=/opt/entermediadb/webapp
-BIN_DIR=/opt/entermediadb/common/bin
+BIN_DIR=/usr/share/entermediadb/bin
 SUB_DOMAIN=$1
 CLIENT_ID=$2
 CLIENT_NAME=$3
@@ -15,6 +15,7 @@ if [ ! -d $CATALOG ]; then
     exit 1
 fi
 
-${BIN_DIR}/setupmobile.sh  "$SUB_DOMAIN" "$CLIENT_ID" "$CLIENT_NAME"
+#${BIN_DIR}/setupmobile.sh  "$SUB_DOMAIN" "$CLIENT_ID" "$CLIENT_NAME"
 ${BIN_DIR}/exportwelcome.sh  "$SUB_DOMAIN" "$CLIENT_ID"  "$CLIENT_NAME"
 #${BIN_DIR}/setupclientdropbox.sh  "$SUB_DOMAIN" "$CLIENT_ID"  "$CLIENT_NAME"
+
