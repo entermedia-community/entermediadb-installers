@@ -10,6 +10,9 @@ CATALOG="$WEBAPP/WEB-INF/data/$CLIENT_ID/catalog"
 mkdir $WEBAPP/$CLIENT_ID/
 cp -rp /opt/entermediadb/webapp/learningmedia/*  $WEBAPP/$CLIENT_ID/
 
+mkdir -p $CATALOG
+cp -rp /opt/entermediadb/common/data/* $CATALOG
+
 echo 'Copying system users/groups'
 mkdir -p $CATALOG/users
 cp -rp $WEBAPP/WEB-INF/data/system/users/admin.xml $CATALOG/users
@@ -28,7 +31,7 @@ mkdir -p $CATALOG/lists/catalogsettings/
 sed "s:%client_id:$CLIENT_ID:g;s:%client_name:$CLIENT_NAME:g;s:%sub_domain:$SUB_DOMAIN:g" < /usr/share/entermediadb/common/catalog/catalogsettings/custom.xml >$CATALOG/lists/catalogsettings/custom.xml
 
 
-outfile="<page>\n   <inner-layout>/theme/layouts/landing.html</inner-layout>\n  <property name=\"clientid\">$CLIENT_ID</property>\n <property name=\"clientname\">$CLIENT_NAME</property>\n <property name=\"clientdomainprefix\">$CLIENT_DOMAIN</property>\n</page>"
+outfile="<page>\n   <inner-layout>/theme/layouts/landing.html</inner-layout>\n  <property name=\"clientid\">$CLIENT_ID</property>\n <property name=\"clientname\">$CLIENT_NAME</property>\n <property name=\"clientdomainprefix\">$CLIENT_DOMAIN</property>\n <property name=\"virtual\">true</property>\n</page>"
 echo -e $outfile > /opt/entermediadb/webapp/$CLIENT_ID/index.xconf
 
 
