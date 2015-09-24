@@ -1,11 +1,11 @@
-PLATFORM=$1
-BRANCH=$2
+RELEASE=$1
+PLATFORM=$2
+BRANCH=$3
 INPUT=../$PLATFORM
 DEPLOY=../../deploy
 DOWNLOAD=
 
 VERSION=`cat ../../VERSION.md`
-RELEASE=`cat ../../RELEASE.md`
 
 if [[ "$BRANCH" == "_dev" ]] ; then
 	DOWNLOAD="dev_"
