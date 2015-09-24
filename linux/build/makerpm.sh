@@ -1,4 +1,5 @@
 #!/bin/bash
+cd "$(dirname "$0")"
 set -x 
 VERSION=`cat ../../VERSION.md`
 RELEASE=$1
