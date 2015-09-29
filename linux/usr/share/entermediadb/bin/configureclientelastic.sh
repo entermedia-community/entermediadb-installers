@@ -8,10 +8,10 @@ WEBAPP="/opt/entermediadb/webapp"
 CATALOG="$WEBAPP/WEB-INF/data/$CLIENT_ID/catalog"
 
 mkdir $WEBAPP/$CLIENT_ID/
-cp -rp /opt/entermediadb/webapp/learningmedia/*  $WEBAPP/$CLIENT_ID/
+cp -rp /opt/entermediadb/webapp/template/*  $WEBAPP/$CLIENT_ID/
 
 mkdir -p $CATALOG
-cp -rp /opt/entermediadb/common/data/* $CATALOG
+#cp -rp /opt/entermediadb/common/data/* $CATALOG
 
 echo 'Copying system users/groups'
 mkdir -p $CATALOG/users
