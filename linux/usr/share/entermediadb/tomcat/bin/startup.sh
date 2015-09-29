@@ -19,6 +19,11 @@
 # Start Script for the CATALINA Server
 # -----------------------------------------------------------------------------
 
+if (( $EUID == 0 )); then
+    echo "Do not run as root"
+    exit
+fi
+
 # Better OS/400 detection: see Bugzilla 31132
 os400=false
 case "`uname`" in

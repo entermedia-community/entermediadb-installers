@@ -10,7 +10,7 @@ export JAVA_HOME
 PATH=$JAVA_HOME/bin:$PATH
 export PATH
 
-export CATALINA_BASE=/opt/entermedia/tomcat
+export CATALINA_BASE=$ENDPOINT/tomcat
 #export CATALINA_BASE
 startup=$CATALINA_BASE/bin/startup.sh
 shutdown=$CATALINA_BASE/bin/shutdown.sh
@@ -19,10 +19,6 @@ TOMCAT7_GROUP=entermedia
 export TOMCAT7_USER
 export TOMCAT7_GROUP
 
-##is this needed?
-export JRE_HOME=/usr/lib/jvm/jre/
-JAVA_OPTS="-Djava.awt.headless=true -Xmx128M"
-export JAVA_OPTS
 
 POLICY_CACHE="$CATALINA_BASE/work/catalina.policy"
 
@@ -30,10 +26,6 @@ if [ -z "$CATALINA_TMPDIR" ]; then
         CATALINA_TMPDIR="$JVM_TMP"
 fi
 
-# Set the JSP compiler if set in the tomcat7.default file
-if [ -n "$JSP_COMPILER" ]; then
-        JAVA_OPTS="$JAVA_OPTS -Dbuild.compiler=\"$JSP_COMPILER\""
-fi
 
 SECURITY=""
 if [ "$TOMCAT7_SECURITY" = "yes" ]; then
@@ -42,7 +34,7 @@ fi
 
 # Define other required variables
 CATALINA_PID="/var/run/$NAME.pid"
-CATALINA_SH="$CATALINA_HOME/bin/catalina.sh"
+CATALINA_SH="$CATALINA_BASE/bin/catalina.sh"
 
 if [ -z "${JSSE_HOME}" -a -r "${JAVA_HOME}/jre/lib/jsse.jar" ]; then
     JSSE_HOME="${JAVA_HOME}/jre/"
