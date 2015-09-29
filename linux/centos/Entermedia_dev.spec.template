@@ -47,7 +47,6 @@ cp -rp * ${RPM_BUILD_ROOT}
 rm -rf ${RPM_BUILD_ROOT}
 
 %files
-/home/entermedia/.ffmpeg
 %{_bindir}/entermediadb
 %{_bindir}/qt-faststart
 /usr/share/entermediadb

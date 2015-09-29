@@ -66,8 +66,13 @@ function deploy() {
 		# Just in case we are deploying where EMDB is on a network mount
 		echo Creating entermedia user...
 		adduser entermedia
+		cp -rp $ENTERMEDIADB_HOME/conf/ffmpeg /home/entermedia/.ffmpeg
 	fi
+
 	# make links and copy stuff
+	mv /etc/ImageMagick-6/delegates.xml /etc/ImageMagick-6/delegates.old
+	
+	cp $ENTERMEDIADB_HOME/conf/im/delegates.xml /etc/ImageMagick-6/
 	mkdir -p $ENDPOINT/tomcat/{logs,temp} && cp -rp $ENTERMEDIADB_HOME/tomcat/conf $ENDPOINT/tomcat && cp -rp $ENTERMEDIADB_HOME/tomcat/bin $ENDPOINT/tomcat
 	sed "s/%PORT%/$PORT/g" <$ENTERMEDIADB_HOME/tomcat/conf/server.xml.template >$ENDPOINT/tomcat/conf/server.xml
 	sed "s/%ENDPOINT%/$ENDPOINT/g" <$ENTERMEDIADB_HOME/tomcat/bin/tomcat.template >$ENDPOINT/tomcat/bin/tomcat
