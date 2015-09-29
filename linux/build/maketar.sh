@@ -16,6 +16,7 @@ RELEASE_VERSION="${VERSION}"
 TMPDEST="$DEPLOY/tmp/entermediadb${BRANCH}-${RELEASE_VERSION}"
 
 rm -rf ${TMPDEST}
+mkdir -p ${TMPDEST}
 cp -rp ../../linux/usr ${TMPDEST}
 cp -rp ../../linux/$PLATFORM/qt-faststart ${TMPDEST}/usr/bin
 
