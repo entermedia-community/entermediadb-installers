@@ -10,7 +10,7 @@ export JAVA_HOME
 PATH=$JAVA_HOME/bin:$PATH
 export PATH
 
-export CATALINA_BASE=$ENDPOINT/tomcat
+export CATALINA_BASE=%ENDPOINT%/tomcat
 #export CATALINA_BASE
 startup=$CATALINA_BASE/bin/startup.sh
 shutdown=$CATALINA_BASE/bin/shutdown.sh

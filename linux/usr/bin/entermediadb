@@ -1,4 +1,4 @@
-#!/bin/bash
+#!/bin/bash -x
 # Assumes that EnterMedia has been installed in /usr/share/entermediadb
 # Should we have a config file?
 COMMAND=$1
@@ -75,7 +75,7 @@ function deploy() {
 	cp $ENTERMEDIADB_HOME/conf/im/delegates.xml /etc/ImageMagick-6/
 	mkdir -p $ENDPOINT/tomcat/{logs,temp} && cp -rp $ENTERMEDIADB_HOME/tomcat/conf $ENDPOINT/tomcat && cp -rp $ENTERMEDIADB_HOME/tomcat/bin $ENDPOINT/tomcat
 	sed "s/%PORT%/$PORT/g" <$ENTERMEDIADB_HOME/tomcat/conf/server.xml.template >$ENDPOINT/tomcat/conf/server.xml
-	sed "s/%ENDPOINT%/$ENDPOINT/g" <$ENTERMEDIADB_HOME/tomcat/bin/tomcat.template >$ENDPOINT/tomcat/bin/tomcat
+	sed "s|%ENDPOINT%|${ENDPOINT}|g" <$ENTERMEDIADB_HOME/tomcat/bin/tomcat.template >$ENDPOINT/tomcat/bin/tomcat
 	chmod 755 $ENDPOINT/tomcat/bin/tomcat
 
         ln -s $ENDPOINT/tomcat/bin/tomcat /etc/init.d/tomcat$PORT
