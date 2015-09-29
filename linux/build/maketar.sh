@@ -16,9 +16,7 @@ RELEASE_VERSION="${VERSION}"
 TMPDEST="$DEPLOY/tmp/entermediadb${BRANCH}-${RELEASE_VERSION}"
 
 rm -rf ${TMPDEST}
-mkdir -p ${TMPDEST}/home/entermedia
 cp -rp ../../linux/usr ${TMPDEST}
-cp -rp ../../linux/usr/share/entermediadb/conf/ffmpeg ${TMPDEST}/home/entermedia/.ffmpeg
 cp -rp ../../linux/$PLATFORM/qt-faststart ${TMPDEST}/usr/bin
 
 wget  -N  http://dev.entermediasoftware.com/jenkins/job/${DOWNLOAD}demoall/lastSuccessfulBuild/artifact/deploy/ROOT.war -O /tmp/ROOT.WAR
