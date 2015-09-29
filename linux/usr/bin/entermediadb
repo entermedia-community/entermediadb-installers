@@ -70,6 +70,16 @@ function deploy() {
 	# make links and copy stuff
 	mkdir -p $ENDPOINT/tomcat/{logs,temp} && cp -rp $ENTERMEDIADB_HOME/tomcat/conf $ENDPOINT/tomcat && cp -rp $ENTERMEDIADB_HOME/tomcat/bin $ENDPOINT/tomcat
 	sed "s/%PORT%/$PORT/g" <$ENTERMEDIADB_HOME/tomcat/conf/server.xml.template >$ENDPOINT/tomcat/conf/server.xml
+	sed "s/%ENDPOINT%/$ENDPOINT/g" <$ENTERMEDIADB_HOME/tomcat/bin/tomcat.template >$ENDPOINT/tomcat/bin/tomcat
+	chmod 755 $ENDPOINT/tomcat/bin/tomcat
+
+        ln -s $ENDPOINT/tomcat/bin/tomcat /etc/init.d/tomcat$PORT
+
+	chkconfig --add tomcat$PORT
+	chkconfig --level 3 tomcat$PORT on
+	chkconfig --level 5 tomcat$PORT on
+
+
 	mkdir -p $ENDPOINT/webapp/{WEB-INF,media}
 	cp $ENTERMEDIADB_HOME/webapp/media/_site.xconf $ENDPOINT/webapp/media
 	cp $ENTERMEDIADB_HOME/webapp/* $ENDPOINT/webapp 2> /dev/null
