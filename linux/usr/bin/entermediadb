@@ -69,10 +69,12 @@ function deploy() {
 		cp -rp $ENTERMEDIADB_HOME/conf/ffmpeg /home/entermedia/.ffmpeg
 	fi
 
+        # patch gs-imagegick
+        mv /etc/ImageMagick-6/delegates.xml /etc/ImageMagick-6/delegates.old
+        cp $ENTERMEDIADB_HOME/conf/im/delegates.xml /etc/ImageMagick-6/
+
+
 	# make links and copy stuff
-	mv /etc/ImageMagick-6/delegates.xml /etc/ImageMagick-6/delegates.old
-	
-	cp $ENTERMEDIADB_HOME/conf/im/delegates.xml /etc/ImageMagick-6/
 	mkdir -p $ENDPOINT/tomcat/{logs,temp} && cp -rp $ENTERMEDIADB_HOME/tomcat/conf $ENDPOINT/tomcat && cp -rp $ENTERMEDIADB_HOME/tomcat/bin $ENDPOINT/tomcat
 	sed "s/%PORT%/$PORT/g" <$ENTERMEDIADB_HOME/tomcat/conf/server.xml.template >$ENDPOINT/tomcat/conf/server.xml
 	sed "s|%ENDPOINT%|${ENDPOINT}|g" <$ENTERMEDIADB_HOME/tomcat/bin/tomcat.template >$ENDPOINT/tomcat/bin/tomcat
@@ -104,6 +106,7 @@ function deploy() {
 	# add proper home to local tomcat
 	echo "export CATALINA_BASE=\"$ENDPOINT/tomcat\"" >> $ENDPOINT/tomcat/bin/setenv.sh
 	ln -s /opt/libreoffice5.0/program/soffice /usr/bin/soffice
+        # start tomcat
 	su entermedia -c "$ENDPOINT/tomcat/bin/startup.sh"
 }
 
@@ -150,9 +153,14 @@ case $COMMAND in
 	rm -f $WHERE/webapp/WEB-INF/web.xml
 	echo Updating web.xml ...
 	cp $ENTERMEDIADB_HOME/webapp/WEB-INF/web.xml $WHERE/webapp/WEB-INF/
+        chown -R entermedia. $WHERE/webapp/WEB-INF/bin $WHERE/webapp/WEB-INF/base $WHERE/webapp/WEB-INF/lib $WHERE/webapp/WEB-INF/web.xml
+        
+        # patch gs-imagegick 
+        mv /etc/ImageMagick-6/delegates.xml /etc/ImageMagick-6/delegates.old
+        cp $ENTERMEDIADB_HOME/conf/im/delegates.xml /etc/ImageMagick-6/
 	;;
 *)
-	echo "Usage: entermedidb install | entermediadb delete /opt/entermediadb";
+	echo "Usage: entermedidb install | entermediadb update /opt/entermediadb | entermediadb delete /opt/entermediadb";
 	exit 0;
 	;;
 esac
