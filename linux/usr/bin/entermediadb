@@ -1,4 +1,4 @@
-#!/bin/bash
+#!/bin/bash -x
 # Assumes that EnterMedia has been installed in /usr/share/entermediadb
 # Should we have a config file?
 COMMAND=$1
@@ -66,10 +66,27 @@ function deploy() {
 		# Just in case we are deploying where EMDB is on a network mount
 		echo Creating entermedia user...
 		adduser entermedia
+		cp -rp $ENTERMEDIADB_HOME/conf/ffmpeg /home/entermedia/.ffmpeg
 	fi
+
+        # patch gs-imagegick
+        mv /etc/ImageMagick-6/delegates.xml /etc/ImageMagick-6/delegates.old
+        cp $ENTERMEDIADB_HOME/conf/im/delegates.xml /etc/ImageMagick-6/
+
+
 	# make links and copy stuff
 	mkdir -p $ENDPOINT/tomcat/{logs,temp} && cp -rp $ENTERMEDIADB_HOME/tomcat/conf $ENDPOINT/tomcat && cp -rp $ENTERMEDIADB_HOME/tomcat/bin $ENDPOINT/tomcat
 	sed "s/%PORT%/$PORT/g" <$ENTERMEDIADB_HOME/tomcat/conf/server.xml.template >$ENDPOINT/tomcat/conf/server.xml
+	sed "s|%ENDPOINT%|${ENDPOINT}|g" <$ENTERMEDIADB_HOME/tomcat/bin/tomcat.template >$ENDPOINT/tomcat/bin/tomcat
+	chmod 755 $ENDPOINT/tomcat/bin/tomcat
+
+        ln -s $ENDPOINT/tomcat/bin/tomcat /etc/init.d/tomcat$PORT
+
+	chkconfig --add tomcat$PORT
+	chkconfig --level 3 tomcat$PORT on
+	chkconfig --level 5 tomcat$PORT on
+
+
 	mkdir -p $ENDPOINT/webapp/{WEB-INF,media}
 	cp $ENTERMEDIADB_HOME/webapp/media/_site.xconf $ENDPOINT/webapp/media
 	cp $ENTERMEDIADB_HOME/webapp/* $ENDPOINT/webapp 2> /dev/null
@@ -89,6 +106,7 @@ function deploy() {
 	# add proper home to local tomcat
 	echo "export CATALINA_BASE=\"$ENDPOINT/tomcat\"" >> $ENDPOINT/tomcat/bin/setenv.sh
 	ln -s /opt/libreoffice5.0/program/soffice /usr/bin/soffice
+        # start tomcat
 	su entermedia -c "$ENDPOINT/tomcat/bin/startup.sh"
 }
 
@@ -135,9 +153,14 @@ case $COMMAND in
 	rm -f $WHERE/webapp/WEB-INF/web.xml
 	echo Updating web.xml ...
 	cp $ENTERMEDIADB_HOME/webapp/WEB-INF/web.xml $WHERE/webapp/WEB-INF/
+        chown -R entermedia. $WHERE/webapp/WEB-INF/bin $WHERE/webapp/WEB-INF/base $WHERE/webapp/WEB-INF/lib $WHERE/webapp/WEB-INF/web.xml
+        
+        # patch gs-imagegick 
+        mv /etc/ImageMagick-6/delegates.xml /etc/ImageMagick-6/delegates.old
+        cp $ENTERMEDIADB_HOME/conf/im/delegates.xml /etc/ImageMagick-6/
 	;;
 *)
-	echo "Usage: entermedidb install | entermediadb delete /opt/entermediadb";
+	echo "Usage: entermedidb install | entermediadb update /opt/entermediadb | entermediadb delete /opt/entermediadb";
 	exit 0;
 	;;
 esac

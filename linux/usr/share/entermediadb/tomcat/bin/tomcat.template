@@ -1,0 +1,56 @@
+#!/bin/bash
+# description: Tomcat Start Stop Restart
+# processname: tomcat
+# chkconfig: 234 20 80
+# move to bashrc
+umask u=rwx,g=rwx,o=rx
+
+JAVA_HOME=/usr/lib/jvm/jre/
+export JAVA_HOME
+PATH=$JAVA_HOME/bin:$PATH
+export PATH
+
+export CATALINA_BASE=%ENDPOINT%/tomcat
+#export CATALINA_BASE
+startup=$CATALINA_BASE/bin/startup.sh
+shutdown=$CATALINA_BASE/bin/shutdown.sh
+TOMCAT7_USER=entermedia
+TOMCAT7_GROUP=entermedia
+export TOMCAT7_USER
+export TOMCAT7_GROUP
+
+
+POLICY_CACHE="$CATALINA_BASE/work/catalina.policy"
+
+if [ -z "$CATALINA_TMPDIR" ]; then
+        CATALINA_TMPDIR="$JVM_TMP"
+fi
+
+
+SECURITY=""
+if [ "$TOMCAT7_SECURITY" = "yes" ]; then
+        SECURITY="-security"
+fi
+
+# Define other required variables
+CATALINA_PID="/var/run/$NAME.pid"
+CATALINA_SH="$CATALINA_BASE/bin/catalina.sh"
+
+if [ -z "${JSSE_HOME}" -a -r "${JAVA_HOME}/jre/lib/jsse.jar" ]; then
+    JSSE_HOME="${JAVA_HOME}/jre/"
+fi
+
+
+case $1 in
+start)
+su $TOMCAT7_USER -l -c $startup
+;; 
+stop)   
+su $TOMCAT7_USER -c  $shutdown
+;; 
+restart)
+su $TOMCAT7_USER -c  $shutdown
+su $TOMCAT7_USER -l -c $startup
+;; 
+esac    
+exit 0

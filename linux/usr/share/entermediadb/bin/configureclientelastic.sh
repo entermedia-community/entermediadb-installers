@@ -10,9 +10,6 @@ CATALOG="$WEBAPP/WEB-INF/data/$CLIENT_ID/catalog"
 mkdir $WEBAPP/$CLIENT_ID/
 cp -rp $WEBAPP/template/*  $WEBAPP/$CLIENT_ID/
 
-#mkdir -p $CATALOG
-#cp -rp /opt/entermediadb/common/data/* $CATALOG
-
 echo 'Copying system users/groups'
 mkdir -p $CATALOG/users
 cp -rp $WEBAPP/WEB-INF/data/system/users/admin.xml $CATALOG/users

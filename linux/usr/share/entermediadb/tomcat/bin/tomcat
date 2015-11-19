@@ -10,12 +10,10 @@ export JAVA_HOME
 PATH=$JAVA_HOME/bin:$PATH
 export PATH
 
-export CATALINA_HOME=/opt/entermedia/tomcat
 export CATALINA_BASE=/opt/entermedia/tomcat
 #export CATALINA_BASE
-#export CATALINA_HOME
-startup=$CATALINA_HOME/bin/startup.sh
-shutdown=$CATALINA_HOME/bin/shutdown.sh
+startup=$CATALINA_BASE/bin/startup.sh
+shutdown=$CATALINA_BASE/bin/shutdown.sh
 TOMCAT7_USER=entermedia
 TOMCAT7_GROUP=entermedia
 export TOMCAT7_USER

@@ -1,17 +1,17 @@
 #!/bin/bash
+cd "$(dirname "$0")"
 set -x 
 VERSION=`cat ../../VERSION.md`
-RELEASE=`cat ../../RELEASE.md`
-PLATFORM=$1
-BRANCH=$2
+RELEASE=$1
+PLATFORM=$2
+BRANCH=$3
 INPUT=../$PLATFORM
 DEPLOY=../../deploy
 rm -rf $DEPLOY
 mkdir -p $DEPLOY/SPECS
 
 sed "s/{{RELEASE}}/${RELEASE}/g;s/{{VERSION}}/${VERSION}/g;" $INPUT/Entermedia${BRANCH}.spec.template >$DEPLOY/SPECS/Entermedia.spec
-./maketar.sh $PLATFORM $BRANCH
-
+./maketar.sh $RELEASE $PLATFORM $BRANCH
 
 ./makesrc.sh Entermedia.spec
 cd ../../deploy
