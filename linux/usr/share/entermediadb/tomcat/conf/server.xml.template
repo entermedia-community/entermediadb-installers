@@ -15,8 +15,12 @@
   <Service name="Catalina">
 
     <Connector port="%PORT%" protocol="HTTP/1.1"
-               connectionTimeout="20000"
-               redirectPort="%PORT%" />
+   	   maxHttpHeaderSize="8192"
+           maxThreads="150" minSpareThreads="25" maxSpareThreads="75"
+           enableLookups="false"  acceptCount="100"
+           connectionTimeout="20000" disableUploadTimeout="true"
+           proxyPort="80"
+           redirectPort="%PORT%" />
 		<Engine name="Catalina" defaultHost="localhost">
 
 			<Realm className="org.apache.catalina.realm.LockOutRealm">

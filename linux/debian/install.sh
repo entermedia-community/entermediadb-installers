@@ -41,10 +41,9 @@ apt-get install --no-install-recommends -y automake libogg0 libogg-dev libvorbis
 
 cp -rp ./qt-faststart /usr/bin
 
-./install_entermedia.sh
+##./install_entermedia.sh
 
-ln -s /usr/sbin/service /usr/bin/service
+#ln -s /usr/sbin/service /usr/bin/service
 
-service tomcat start
+#service tomcat start
 
-echo "Install complete. see: http://localhost:8080/emshare"
