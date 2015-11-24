@@ -1,4 +1,4 @@
-#!/bin/bash -x
+#!/bin/bash
 # Assumes that EnterMedia has been installed in /usr/share/entermediadb
 # Should we have a config file?
 COMMAND=$1

@@ -26,5 +26,6 @@ mkdir -p ${TMPDEST}/usr/share/entermediadb/webapp
 unzip  /tmp/ROOT.WAR -d ${TMPDEST}/usr/share/entermediadb/webapp > /dev/null
 mkdir $DEPLOY/SOURCES
 cd $DEPLOY/tmp
+chmod 755 $DEPLOY/tmp/entermediadb${BRANCH}-${RELEASE_VERSION}/usr/share/entermediadb/webapp/WEB-INF/bin/linux/exiftoolthumb.sh
 tar -pczf /tmp/entermediadb${BRANCH}-${RELEASE_VERSION}.tar.gz .
 mv  /tmp/entermediadb${BRANCH}-${RELEASE_VERSION}.tar.gz $DEPLOY/SOURCES/
