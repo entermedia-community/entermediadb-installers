@@ -25,3 +25,5 @@ cp ./RPMS/x86_64/*.rpm $REPO/$PLATFORM/7/x86_64/rpms
 createrepo --update  $REPO/$PLATFORM/6/x86_64/rpms
 createrepo --update  $REPO/$PLATFORM/7/x86_64/rpms
 
+~/workspace/insync-portable/insync-portable force_sync $REPO/$PLATFORM
+
