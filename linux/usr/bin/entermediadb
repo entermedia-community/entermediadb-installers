@@ -75,17 +75,26 @@ function deploy() {
 
 
 	# make links and copy stuff
-	mkdir -p $ENDPOINT/tomcat/{logs,temp} && cp -rp $ENTERMEDIADB_HOME/tomcat/conf $ENDPOINT/tomcat && cp -rp $ENTERMEDIADB_HOME/tomcat/bin $ENDPOINT/tomcat
+	mkdir -p $ENDPOINT/tomcat/{logs,temp}
+	cp -rp $ENTERMEDIADB_HOME/tomcat/conf $ENDPOINT/tomcat
+	cp -rp $ENTERMEDIADB_HOME/tomcat/bin $ENDPOINT/tomcat
 	sed "s/%PORT%/$PORT/g" <$ENTERMEDIADB_HOME/tomcat/conf/server.xml.template >$ENDPOINT/tomcat/conf/server.xml
 	sed "s|%ENDPOINT%|${ENDPOINT}|g" <$ENTERMEDIADB_HOME/tomcat/bin/tomcat.template >$ENDPOINT/tomcat/bin/tomcat
 	chmod 755 $ENDPOINT/tomcat/bin/tomcat
 
         ln -s $ENDPOINT/tomcat/bin/tomcat /etc/init.d/tomcat$PORT
-
-	chkconfig --add tomcat$PORT
-	chkconfig --level 3 tomcat$PORT on
-	chkconfig --level 5 tomcat$PORT on
-
+	
+	if command -v chkconfig >/dev/null 2>&1
+	then
+		# chkconfig exists
+		chkconfig --add tomcat$PORT
+		chkconfig --level 3 tomcat$PORT on
+		chkconfig --level 5 tomcat$PORT on
+	else
+		# assume debian environment and use update-rc.d
+		update-rc.d tomcat$PORT defaults
+		update-rc.d tomcat$PORT start 20 3 5
+	fi
 
 	mkdir -p $ENDPOINT/webapp/{WEB-INF,media}
 	cp $ENTERMEDIADB_HOME/webapp/media/_site.xconf $ENDPOINT/webapp/media
@@ -105,7 +114,13 @@ function deploy() {
 	cd $ENDPOINT/tomcat/bin
 	# add proper home to local tomcat
 	echo "export CATALINA_BASE=\"$ENDPOINT/tomcat\"" >> $ENDPOINT/tomcat/bin/setenv.sh
-	ln -s /opt/libreoffice5.0/program/soffice /usr/bin/soffice
+	if command -v /usr/bin/soffice >/dev/null 2>&1
+	then
+		# debian: soffice is already installed in right place
+		:
+	else
+		ln -s /opt/libreoffice5.0/program/soffice /usr/bin/soffice
+	fi
         # start tomcat
 	su entermedia -c "$ENDPOINT/tomcat/bin/startup.sh"
 }
