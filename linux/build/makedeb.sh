@@ -11,6 +11,7 @@ DEPLOY=../../deploy
 NAME="entermediadb-${VERSION}-${RELEASE}"
 DOWNLOAD=
 TMPDEST=$DEPLOY/$NAME
+REPO=/home/ec2-user/workspace/drive/emdev/repo
 rm -rf $DEPLOY
 
 mkdir -p $DEPLOY/$NAME
@@ -22,7 +23,8 @@ if [[ "$BRANCH" == "_dev" ]] ; then
 	DOWNLOAD="dev_"
 fi
 
-cp -rp ../linux/$PLATFORM/qt-faststart ${TMPDEST}/usr/bin
+# qt-faststart comes with libav-tools
+# cp -rp ../$PLATFORM/qt-faststart ${TMPDEST}/usr/bin
 
 wget  -N  http://dev.entermediasoftware.com/jenkins/job/${DOWNLOAD}demoall/lastSuccessfulBuild/artifact/deploy/ROOT.war -O /tmp/ROOT.WAR >/dev/null 2>&1
 
@@ -36,5 +38,11 @@ sed "s/{{RELEASE}}/${RELEASE}/g;s/{{VERSION}}/${VERSION}/g;" $INPUT/DEBIAN/contr
 
 dpkg --build ${TMPDEST}
 
-#Upload it to repo
+cd ../../deploy
 
+cp ${NAME}.deb $REPO/apt/pool/main/${NAME}_i386.deb
+cp ${NAME}.deb $REPO/apt/pool/main/${NAME}_amd64.deb
+cp ${NAME}.deb $REPO/apt/pool/main/${NAME}_all.deb
+
+#Upload it to repo
+/home/ec2-user/workspace/insync-portable/insync-portable force_sync $REPO/apt
