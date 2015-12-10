@@ -42,7 +42,6 @@ cd ../../deploy
 
 cp ${NAME}.deb $REPO/apt/pool/main/${NAME}_i386.deb
 cp ${NAME}.deb $REPO/apt/pool/main/${NAME}_amd64.deb
-cp ${NAME}.deb $REPO/apt/pool/main/${NAME}_all.deb
 
 #Upload it to repo
 bash /home/ec2-user/workspace/drive/emdev/repo/makeapt.sh
