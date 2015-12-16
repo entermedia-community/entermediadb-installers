@@ -19,7 +19,7 @@
 # Start Script for the CATALINA Server
 # -----------------------------------------------------------------------------
 
-if [ $EUID == 0 ]
+if [ $EUID = 0 ]
 then
     echo "Do not run as root"
     exit
