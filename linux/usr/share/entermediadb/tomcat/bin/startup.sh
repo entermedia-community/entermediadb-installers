@@ -19,9 +19,9 @@
 # Start Script for the CATALINA Server
 # -----------------------------------------------------------------------------
 
-if [ $EUID = 0 ]
-then
-    echo "Do not run as root"
+if [ ! $USER = "entermedia" ];
+    echo "For system reliability, you must run as entermedia user."
+    echo "Aborting..."
     exit
 fi
 
