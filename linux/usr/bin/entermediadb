@@ -154,6 +154,8 @@ case $COMMAND in
 	# stop running tomcat
 	rm -rf $WHERE
 	echo Deleted EntermediaDB from $WHERE.
+	# Remove existing init.d script
+	rm -f /etc/init.d/tomcat${PORT}
 	;;
 'update')
 	WHERE=$2

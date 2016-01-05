@@ -12,7 +12,7 @@ BuildRequires:	libogg-devel
 BuildRequires:	libvorbis-devel
 BuildRequires:	x264-devel
 BuildRequires:	libvpx-devel
-BuildRequires:	faac-devel
+#BuildRequires:	faac-devel
 BuildRequires:	lame-devel
 BuildRequires:	yasm
 
@@ -39,7 +39,6 @@ Libav provides cross-platform tools and libraries to convert, manipulate and str
 	--prefix="/usr" \
 	--libdir=%{_libdir} \
 	--enable-libx264 \
-	--enable-libfaac \
 	--enable-libmp3lame \
 	--enable-gpl \
 	--enable-nonfree \

@@ -19,7 +19,7 @@
 # Start Script for the CATALINA Server
 # -----------------------------------------------------------------------------
 
-if [ ! $USER = "entermedia" ];
+if [ ! $USER = "entermedia" ]; then
     echo "For system reliability, you must run as entermedia user."
     echo "Aborting..."
     exit
