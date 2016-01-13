@@ -1,6 +1,6 @@
 Summary:        Libav provides cross-platform tools and libraries to convert, manipulate and stream a wide range of multimedia formats and protocols.
 Name:           libav
-Version:        11.3
+Version:        11.4
 Release:        0
 Epoch:			0
 Group:          System Environment/Libraries
@@ -12,9 +12,8 @@ BuildRequires:	libogg-devel
 BuildRequires:	libvorbis-devel
 BuildRequires:	x264-devel
 BuildRequires:	libvpx-devel
-#BuildRequires:	faac-devel
-BuildRequires:	lame-devel
 BuildRequires:	yasm
+BuildRequires:  lame-devel
 
 %description
 Libav provides cross-platform tools and libraries to convert, manipulate and stream a wide range of multimedia formats and protocols.
@@ -39,7 +38,7 @@ Libav provides cross-platform tools and libraries to convert, manipulate and str
 	--prefix="/usr" \
 	--libdir=%{_libdir} \
 	--enable-libx264 \
-	--enable-libmp3lame \
+        --enable-libmp3lame \
 	--enable-gpl \
 	--enable-nonfree \
 	--enable-libvpx \
