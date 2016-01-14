@@ -9,7 +9,7 @@ if [ ! -f "~/.rpmmacros" ]; then
 fi
 
 
-#sudo yum install -y  rpmdevtools yasm wget cmake gcc gcc-c++
+#sudo yum install -y  rpmdevtools yasm wget cmake gcc gcc-c++ yum-utils
 
 #wget http://dl.fedoraproject.org/pub/epel/6/x86_64/epel-release-6-8.noarch.rpm
 #sudo rpm -Uvh epel-release-6*.rpm
@@ -22,13 +22,14 @@ fi
 mkdir -p "${TOPLEVEL}/SOURCES"
 #wget http://www.imagemagick.org/download/releases/ImageMagick-6.9.1-9.tar.bz2
 #wget http://ftp.sunet.se/pub/multimedia/graphics/ImageMagick/releases/ImageMagick-6.9.1-9.tar.bz2
-wget http://www.imagemagick.org/download/releases/ImageMagick-6.9.2-4.tar.bz2
+#wget http://www.imagemagick.org/download/releases/ImageMagick-6.9.2-4.tar.bz2
+wget http://www.imagemagick.org/download/releases/ImageMagick-6.9.3-0.tar.gz
 
-cp ImageMagick-6.9.2-4.tar.bz2 ${TOPLEVEL}/SOURCES
+cp ImageMagick-6.9.3-0.tar.gz ${TOPLEVEL}/SOURCES
 cp ../specs/ImageMagick.spec ${TOPLEVEL}/SPECS
 cp ../specs/*.patch ${TOPLEVEL}/SOURCES
 
 rpmbuild -bs -vv ${TOPLEVEL}/SPECS/ImageMagick.spec
-sudo yum-builddep -v ${TOPLEVEL}/SRPMS/ImageMagick-6.9.2-4.src.rpm 
-rpmbuild --rebuild -vv ${TOPLEVEL}/SRPMS/ImageMagick-6.9.2-4.src.rpm 
+sudo yum-builddep -v ${TOPLEVEL}/SRPMS/ImageMagick-6.9.3-0.src.rpm 
+rpmbuild --rebuild -vv ${TOPLEVEL}/SRPMS/ImageMagick-6.9.3-0.src.rpm 
 

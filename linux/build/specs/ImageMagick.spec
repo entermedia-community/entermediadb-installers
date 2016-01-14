@@ -1,5 +1,5 @@
-%global VERSION  6.9.2
-%global Patchlevel  4
+%global VERSION  6.9.3
+%global Patchlevel  0
 
 Name:           ImageMagick
 Version:        %{VERSION}
@@ -8,7 +8,7 @@ Summary:        Use ImageMagick to convert, edit, or compose bitmap images in a 
 Group:          Applications/Multimedia
 License:        http://www.imagemagick.org/script/license.php
 Url:            http://www.imagemagick.org/
-Source0:        http://www.imagemagick.org/download/%{name}/%{name}-%{VERSION}-%{Patchlevel}.tar.bz2
+Source0:        http://www.imagemagick.org/download/%{name}/%{name}-%{VERSION}-%{Patchlevel}.tar.gz
 
 Patch1:		useciecolor-delegates.patch
 
