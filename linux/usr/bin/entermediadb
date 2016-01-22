@@ -9,178 +9,190 @@ DEFAULT_ROOT=/opt/entermediadb
 
 function valid_port() {
 
-	if [[ -z "$1" ]]; then
-		# just make sure nobody uses a port that requires root or is generally used by system
-		# maybe do something else here to prevent duplicates
-		echo "$1 is a reserved port. Please choose a value larger than 1025"
-		exit 0
-	fi
+        if [[ -z "$1" ]]; then
+                # just make sure nobody uses a port that requires root or is generally used by system
+                # maybe do something else here to prevent duplicates
+                echo "$1 is a reserved port. Please choose a value larger than 1025"
+                exit 0
+        fi
 
 }
 
 function confirm() {
 
-	read -r "$1 [y/N] " response
-	case $response in
-    	[yY]) 
-        	return 1
-        	;;
-    	*)
-        	return 0
-        	;;
-	esac
+        read -r "$1 [y/N] " response
+        case $response in
+        [yY])
+                return 1
+                ;;
+        *)
+                return 0
+                ;;
+        esac
 }
 
 function deploy() {
-	
-	# Go somewhere that exists to prevent getcwd errors
-	[[ ! -d `pwd` ]] && cd /
 
-	local ENDPOINT="$1"
-	local DATA="$2"
-	local PORT="$3"
-	
+        # Go somewhere that exists to prevent getcwd errors
+        [[ ! -d $(pwd) ]] && cd /
 
-	valid_port $PORT
+        local ENDPOINT="$1"
+        local DATA="$2"
+        local PORT="$3"
 
-	local PROMPT="This will set up EntermediaDB at $ENDPOINT with data at $DATA and tomcat on port $PORT."
-	confirm "$PROMPT\nContinue?"
-	local CONFIRMED=$?
-	if [[ $CONFIRMED != 1 ]]; then
-		echo Cancelling...
-		exit
-	fi
 
-	if [[ ! -d "$ENTERMEDIADB_HOME" ]]; then
-		# Meaningless to deploy without Entermedia
-		echo "Entermedia NOT FOUND at $ENTERMEDIADB_HOME! Cannot proceed."
-		exit
-	fi
+        valid_port "$PORT"
 
-	if [[ ! -d "$ENDPOINT" ]]; then
-		mkdir -p "$ENDPOINT"
-	fi
-	if [[ -z `getent passwd entermedia` ]]; then
-		# Just in case we are deploying where EMDB is on a network mount
-		echo Creating entermedia user...
-		adduser entermedia
-		cp -rp "$ENTERMEDIADB_HOME/conf/ffmpeg /home/entermedia/.ffmpeg"
-	fi
+        local PROMPT="This will set up EntermediaDB at $ENDPOINT with data at $DATA and tomcat on port $PORT."
+        confirm "$PROMPT\nContinue?"
+        local CONFIRMED=$?
+        if [[ $CONFIRMED != 1 ]]; then
+                echo Cancelling...
+                exit
+        fi
+
+        if [[ ! -d "$ENTERMEDIADB_HOME" ]]; then
+                # Meaningless to deploy without Entermedia
+                echo "Entermedia NOT FOUND at $ENTERMEDIADB_HOME! Cannot proceed."
+                exit
+        fi
+
+      if [[ ! -d "$ENDPOINT" ]]; then
+                mkdir -p "$ENDPOINT"
+        fi
+        if [[ -z $(getent passwd entermedia) ]]; then
+                # Just in case we are deploying where EMDB is on a network mount
+                echo Creating entermedia user...
+                adduser entermedia
+                cp -rp "$ENTERMEDIADB_HOME/conf/ffmpeg /home/entermedia/.ffmpeg"
+        fi
 
         # patch gs-imagegick
         mv /etc/ImageMagick-6/delegates.xml /etc/ImageMagick-6/delegates.old
         cp "$ENTERMEDIADB_HOME/conf/im/delegates.xml" /etc/ImageMagick-6/
 
 
-	# make links and copy stuff
-	mkdir -p "$ENDPOINT/tomcat/{logs,temp}"
-	cp -rp "$ENTERMEDIADB_HOME/tomcat/conf" "$ENDPOINT/tomcat"
-	cp -rp "$ENTERMEDIADB_HOME/tomcat/bin" "$ENDPOINT/tomcat"
-	sed "s/%PORT%/$PORT/g" <"$ENTERMEDIADB_HOME/tomcat/conf/server.xml.template" >"$ENDPOINT/tomcat/conf/server.xml"
-	sed "s|%ENDPOINT%|${ENDPOINT}|g" <"$ENTERMEDIADB_HOME/tomcat/bin/tomcat.template" >"$ENDPOINT/tomcat/bin/tomcat"
-	chmod 755 "$ENDPOINT/tomcat/bin/tomcat"
+        # make links and copy stuff
+        mkdir -p "$ENDPOINT/tomcat/{logs,temp}"
+        cp -rp "$ENTERMEDIADB_HOME/tomcat/conf" "$ENDPOINT/tomcat"
+        cp -rp "$ENTERMEDIADB_HOME/tomcat/bin" "$ENDPOINT/tomcat"
+        sed "s/%PORT%/$PORT/g" <"$ENTERMEDIADB_HOME/tomcat/conf/server.xml.template" >"$ENDPOINT/tomcat/conf/server.xml"
+        sed "s|%ENDPOINT%|${ENDPOINT}|g" <"$ENTERMEDIADB_HOME/tomcat/bin/tomcat.template" >"$ENDPOINT/tomcat/bin/tomcat"
+        chmod 755 "$ENDPOINT/tomcat/bin/tomcat"
 
-	init_proc=/etc/init.d/tomcat$PORT
-	if [[ -f "$init_proc" ]]; then
-		echo "Found existing init.d script for $init_proc. Overwrite?";
-        ln -s $ENDPOINT/tomcat/bin/tomcat /etc/init.d/tomcat$PORT
-	
-	if command -v chkconfig >/dev/null 2>&1
-	then
-		# chkconfig exists
-		chkconfig --add tomcat$PORT
-		chkconfig --level 3 tomcat$PORT on
-		chkconfig --level 5 tomcat$PORT on
-	else
-		# assume debian environment and use update-rc.d
-		update-rc.d tomcat$PORT defaults
-		update-rc.d tomcat$PORT start 20 3 5
-	fi
+        init_proc="/etc/init.d/tomcat$PORT"
+        if [[ -f "$init_proc" ]]; then
+                if confirm "Found existing init.d script for $init_proc.\nOverwrite?"; then
+                        :
+                else
+                        echo "Exiting..." && exit
+                fi
+        fi
 
-	mkdir -p "$ENDPOINT/webapp/{WEB-INF,media}"
-	cp "$ENTERMEDIADB_HOME/webapp/media/_site.xconf" "$ENDPOINT/webapp/media"
-	cp "$ENTERMEDIADB_HOME/webapp/*" "$ENDPOINT/webapp" 2> /dev/null
+        ln -s "$ENDPOINT/tomcat/bin/tomcat" "/etc/init.d/tomcat$PORT"
 
-	cp -r "$ENTERMEDIADB_HOME/webapp/theme" "$ENDPOINT/webapp/"
-	cp "$ENTERMEDIADB_HOME/webapp/WEB-INF/web.xml" "$ENDPOINT/webapp/WEB-INF/"
-	cp -r "$ENTERMEDIADB_HOME/webapp/WEB-INF/{bin,base,lib}" "$ENDPOINT/webapp/WEB-INF/"
-	if [[ ! -d "$DATA" ]]; then
-	      mkdir -p "$DATA"
-              cp -rp "$ENTERMEDIADB_HOME/webapp/WEB-INF/data/*" "$DATA" 
-	fi
-	ln -s "$DATA" "$ENDPOINT/webapp/WEB-INF/data"
-	chown -R entermedia. "$ENDPOINT"
-	chown -R entermedia. "$DATA"
-	chown -R entermedia:entermedia /home/entermedia
-	cd "$ENDPOINT/tomcat/bin"
-	# add proper home to local tomcat
-	echo "export CATALINA_BASE=\"$ENDPOINT/tomcat\"" >> "$ENDPOINT/tomcat/bin/setenv.sh"
-	if command -v /usr/bin/soffice >/dev/null 2>&1;
-	then
-		# debian: soffice is already installed in right place
-		:
-	else
-		ln -s /opt/libreoffice5.0/program/soffice /usr/bin/soffice
-	fi
+        if command -v chkconfig >/dev/null 2>&1
+        then
+                # chkconfig exists
+                chkconfig --add "tomcat$PORT"
+                chkconfig --level 3 "tomcat$PORT" on
+                chkconfig --level 5 "tomcat$PORT" on
+        else
+                # assume debian environment and use update-rc.d
+                update-rc.d "tomcat$PORT" defaults
+                update-rc.d "tomcat$PORT" start 20 3 5
+        fi
+
+        mkdir -p "$ENDPOINT/webapp/{WEB-INF,media}"
+        cp "$ENTERMEDIADB_HOME/webapp/media/_site.xconf" "$ENDPOINT/webapp/media"
+        cp "$ENTERMEDIADB_HOME/webapp/*" "$ENDPOINT/webapp" 2> /dev/null
+
+        cp -r "$ENTERMEDIADB_HOME/webapp/theme" "$ENDPOINT/webapp/"
+        cp "$ENTERMEDIADB_HOME/webapp/WEB-INF/web.xml" "$ENDPOINT/webapp/WEB-INF/"
+        cp -r "$ENTERMEDIADB_HOME/webapp/WEB-INF/{bin,base,lib}" "$ENDPOINT/webapp/WEB-INF/"
+        if [[ ! -d "$DATA" ]]; then
+              mkdir -p "$DATA"
+              cp -rp "$ENTERMEDIADB_HOME/webapp/WEB-INF/data/*" "$DATA"
+        fi
+        ln -s "$DATA" "$ENDPOINT/webapp/WEB-INF/data"
+        chown -R entermedia. "$ENDPOINT"
+        chown -R entermedia. "$DATA"
+        chown -R entermedia:entermedia /home/entermedia
+        cd "$ENDPOINT/tomcat/bin"
+        # add proper home to local tomcat
+
+        cd "$ENDPOINT/tomcat/bin"
+        # add proper home to local tomcat
+        echo "export CATALINA_BASE=\"$ENDPOINT/tomcat\"" >> "$ENDPOINT/tomcat/bin/setenv.sh"
+        if command -v /usr/bin/soffice >/dev/null 2>&1;
+        then
+                # debian: soffice is already installed in right place
+                :
+        else
+                ln -s /opt/libreoffice5.0/program/soffice /usr/bin/soffice
+        fi
         # start tomcat
-	su entermedia -c "$ENDPOINT/tomcat/bin/startup.sh"
-	;;
+        su entermedia -c "$ENDPOINT/tomcat/bin/startup.sh"
 }
 
 case $COMMAND in
 'install')
-	#gather info, confirm, and deploy
-	echo "Where do you want to install to? (default: /opt/entermediadb)"
-	read WHERE
-	echo "Where will the data be located? (default: /media/data)"
-	read DATA
-	echo "What port do you want tomcat to listen on? (default: 8080)"
-	read PORT
+        #gather info, confirm, and deploy
+        echo "Where do you want to install to? (default: /opt/entermediadb)"
+        read -r WHERE
+        echo "Where will the data be located? (default: /media/data)"
+        read -r DATA
+        echo "What port do you want tomcat to listen on? (default: 8080)"
+        read -r PORT
 
-  	# Make sure defaults are set if nothing given
+        # Make sure defaults are set if nothing given
         [[ -z "$WHERE" ]] && WHERE=$DEFAULT_ROOT
         [[ -z "$DATA" ]] && DATA=$DEFAULT_DATA
         [[ -z "$PORT" ]] && PORT=$DEFAULT_PORT
 
-	deploy "$WHERE" "$DATA" "$PORT"
-	;;
+        deploy "$WHERE" "$DATA" "$PORT"
+        ;;
 'delete')
-	WHERE=$2
-	if [[ ! -d "$WHERE" ]]; then
-		echo "$WHERE is not a valid directory!"
-		exit 0
-	fi
-	cd "$WHERE/tomcat/bin"
-	confirm "Are you sure you want to delete the $WHERE installation?\nConfirm:"
-	./shutdown.sh
-	# stop running tomcat
-	rm -rf "$WHERE"
-	echo "Deleted EntermediaDB from $WHERE."
-	# Remove existing init.d script
-	rm -f "/etc/init.d/tomcat${PORT}"
-	;;
+        WHERE=$2
+        if [[ ! -d "$WHERE" ]]; then
+                echo "$WHERE is not a valid directory!"
+                exit 0
+        fi
+        cd "$WHERE/tomcat/bin"
+        confirm "Are you sure you want to delete the $WHERE installation?\nConfirm:"
+        ./shutdown.sh
+        # stop running tomcat
+        rm -rf "$WHERE"
+        echo "Deleted EntermediaDB from $WHERE."
+        # Remove existing init.d script
+        rm -f "/etc/init.d/tomcat${PORT}"
+        ;;
 'update')
-	WHERE="$2"
-	if [[ ! -d "$WHERE" ]]; then
-		echo $WHERE is not a valid directory!
-		exit 0
-	fi
-	confirm "Are you sure you want to update the $WHERE installation?\nConfirm:"
-	rm -rf "$WHERE/webapp/WEB-INF/{base,lib,bin}"
-	echo Copying new files to WEB-INF ...
-	cp -r "$ENTERMEDIADB_HOME/webapp/WEB-INF/{bin,base,lib}" "$WHERE/webapp/WEB-INF/"
-	rm -f "$WHERE/webapp/WEB-INF/web.xml"
-	echo Updating web.xml ...
-	cp "$ENTERMEDIADB_HOME/webapp/WEB-INF/web.xml" "$WHERE/webapp/WEB-INF/"
+        WHERE="$2"
+        if [[ ! -d "$WHERE" ]]; then
+                echo "$WHERE is not a valid directory!"
+                exit 0
+        fi
+        confirm "Are you sure you want to update the $WHERE installation?\nConfirm:"
+        rm -rf "$WHERE/webapp/WEB-INF/{base,lib,bin}"
+        echo Copying new files to WEB-INF ...
+        cp -r "$ENTERMEDIADB_HOME/webapp/WEB-INF/{bin,base,lib}" "$WHERE/webapp/WEB-INF/"
+        rm -f "$WHERE/webapp/WEB-INF/web.xml"
+        echo Updating web.xml ...
+
+
+        rm -f "$WHERE/webapp/WEB-INF/web.xml"
+        echo Updating web.xml ...
+        cp "$ENTERMEDIADB_HOME/webapp/WEB-INF/web.xml" "$WHERE/webapp/WEB-INF/"
         chown -R entermedia. "$WHERE/webapp/WEB-INF/bin" "$WHERE/webapp/WEB-INF/base" "$WHERE/webapp/WEB-INF/lib" "$WHERE/webapp/WEB-INF/web.xml"
-        
-        # patch gs-imagegick 
+
+        # patch gs-imagegick
         mv /etc/ImageMagick-6/delegates.xml /etc/ImageMagick-6/delegates.old
         cp "$ENTERMEDIADB_HOME/conf/im/delegates.xml" /etc/ImageMagick-6/
-	;;
+        ;;
 *)
-	echo "Usage: entermedidb install | entermediadb update /opt/entermediadb | entermediadb delete /opt/entermediadb";
-	exit 0;
-	;;
+        echo "Usage: entermedidb install | entermediadb update /opt/entermediadb | entermediadb delete /opt/entermediadb";
+        exit 0;
+        ;;
 esac
 

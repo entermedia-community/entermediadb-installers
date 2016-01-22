@@ -21,6 +21,8 @@ cp -rp ../debian/DEBIAN $DEPLOY/$NAME
 #Download war
 if [[ "$BRANCH" == "_dev" ]] ; then
 	DOWNLOAD="dev_"
+elif [[ "$BRANCH" == "_em9" ]] ; then
+	DOWNLOAD="em9_"
 fi
 
 # qt-faststart comes with libav-tools
@@ -42,6 +44,8 @@ cd ../../deploy
 
 #cp ${NAME}.deb $REPO/apt/pool/main/${NAME}_i386.deb
 #cp ${NAME}.deb $REPO/apt/pool/main/${NAME}_amd64.deb
+
+# all is all you need
 cp ${NAME}.deb $REPO/apt/pool/main/${NAME}_all.deb
 
 #Upload it to repo

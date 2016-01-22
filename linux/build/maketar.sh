@@ -9,6 +9,8 @@ VERSION=`cat ../../VERSION.md`
 
 if [[ "$BRANCH" == "_dev" ]] ; then
 	DOWNLOAD="dev_"
+elif [[ "$BRANCH" == "_em9" ]] ; then
+	DOWNLOAD="em9_"
 fi
 
 set -x 
