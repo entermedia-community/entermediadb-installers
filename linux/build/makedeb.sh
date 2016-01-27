@@ -2,11 +2,11 @@
 #yum install dpkg
 cd "$(dirname "$0")"
 set -x 
-VERSION=`cat ../../VERSION.md`
 RELEASE=$1
 PLATFORM=$2
 BRANCH=$3
 INPUT=../$PLATFORM
+VERSION=$(cat ../../VERSION${BRANCH}.md)
 DEPLOY=../../deploy
 NAME="entermediadb${BRANCH}-${VERSION}-${RELEASE}"
 DOWNLOAD=

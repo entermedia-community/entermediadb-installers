@@ -1,11 +1,11 @@
 #!/bin/bash
 cd "$(dirname "$0")"
 set -x 
-VERSION=`cat ../../VERSION.md`
 RELEASE=$1
 PLATFORM=$2
 BRANCH=$3
 INPUT=../$PLATFORM
+VERSION=$(cat ../../VERSION${BRANCH}.md)
 DEPLOY=../../deploy
 REPO=~/workspace/drive/emdev/repo
 rm -rf $DEPLOY

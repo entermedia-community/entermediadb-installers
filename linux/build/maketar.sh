@@ -5,7 +5,7 @@ INPUT=../$PLATFORM
 DEPLOY=../../deploy
 DOWNLOAD=
 
-VERSION=`cat ../../VERSION.md`
+VERSION=$(cat ../../VERSION${BRANCH}.md)
 
 if [[ "$BRANCH" == "_dev" ]] ; then
 	DOWNLOAD="dev_"
