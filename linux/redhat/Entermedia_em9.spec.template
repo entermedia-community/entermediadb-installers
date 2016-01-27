@@ -3,7 +3,7 @@
 #
 
 Summary:	EnterMediaDB Media Database
-Name: 		entermediadb_dev
+Name: 		entermediadb_em9
 Version: 	{{VERSION}}
 Release:	{{RELEASE}}
 License: 	GPL
