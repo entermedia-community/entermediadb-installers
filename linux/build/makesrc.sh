@@ -1,4 +1,4 @@
-#!/bin/bash
+#!/bin/bash -x
 CWD=$(pwd)
 source ${CWD}/functions.sh
 

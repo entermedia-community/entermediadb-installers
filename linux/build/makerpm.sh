@@ -1,6 +1,5 @@
-#!/bin/bash
+#!/bin/bash -x
 cd "$(dirname "$0")"
-set -x 
 RELEASE=$1
 PLATFORM=$2
 BRANCH=$3

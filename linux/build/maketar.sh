@@ -1,3 +1,4 @@
+#!/bin/bash -x
 RELEASE=$1
 PLATFORM=$2
 BRANCH=$3
