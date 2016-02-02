@@ -20,13 +20,14 @@ function valid_port() {
 
 function confirm() {
 
-        read -r "$1 [y/N] " response
+	echo -e "$1"
+        read -r -p "[y/N] " response
         case $response in
         [yY])
-                return 1
+                return 0
                 ;;
         *)
-                return 0
+                return 1
                 ;;
         esac
 }
@@ -43,11 +44,8 @@ function deploy() {
 
         valid_port "$PORT"
 
-        local PROMPT="This will set up EntermediaDB at $ENDPOINT with data at $DATA and tomcat on port $PORT."
-        confirm "$PROMPT\nContinue?"
-        local CONFIRMED=$?
-        if [[ $CONFIRMED != 1 ]]; then
-                echo Cancelling...
+        if ! confirm "This will set up EntermediaDB at $ENDPOINT with data at $DATA and tomcat on port $PORT. Continue?"; then
+                echo Cancelling installation at $ENDPOINT ...
                 exit
         fi
 
@@ -82,16 +80,17 @@ function deploy() {
 
         init_proc="/etc/init.d/tomcat$PORT"
         if [[ -f "$init_proc" ]]; then
-                if confirm "Found existing init.d script for $init_proc.\nOverwrite?"; then
-                        :
-                else
-                        echo "Exiting..." && exit
-                fi
+          if ! confirm "Found existing init.d script for $init_proc.\nOverwrite?"; then
+            echo "Exiting! Please try again with a different port." && exit
+	  else
+	    echo "Okay. Overwriting /etc/init.d/tomcat$PORT ..."
+	    rm -f /etc/init.d/tomcat$PORT
+          fi
         fi
+	ln -s "$ENDPOINT/tomcat/bin/tomcat" "/etc/init.d/tomcat$PORT"
 
-        ln -s "$ENDPOINT/tomcat/bin/tomcat" "/etc/init.d/tomcat$PORT"
 
-        if command -v chkconfig >/dev/null 2>&1
+        if command -v chkconfig >/dev/null 2>&1;
         then
                 # chkconfig exists
                 chkconfig --add "tomcat$PORT"
@@ -157,23 +156,28 @@ case $COMMAND in
         if [[ ! -d "$WHERE" ]]; then
                 echo "$WHERE is not a valid directory!"
                 exit 0
+        elif ! confirm "Are you sure you want to delete the $WHERE installation?\nConfirm:"; then
+ 	  echo "Aborting deletion of $WHERE ..."
+	  exit
         fi
         cd "$WHERE/tomcat/bin"
-        confirm "Are you sure you want to delete the $WHERE installation?\nConfirm:"
         ./shutdown.sh
         # stop running tomcat
         rm -rf "$WHERE"
         echo "Deleted EntermediaDB from $WHERE."
         # Remove existing init.d script
         rm -f "/etc/init.d/tomcat${PORT}"
-        ;;
+	;;
 'update')
         WHERE="$2"
         if [[ ! -d "$WHERE" ]]; then
                 echo "$WHERE is not a valid directory!"
                 exit 0
         fi
-        confirm "Are you sure you want to update the $WHERE installation?\nConfirm:"
+        if ! confirm "Are you sure you want to update the $WHERE installation?\nConfirm:"; then
+	  echo "Aborting update of $WHERE ..."
+	  exit
+	fi
         rm -rf "$WHERE/webapp/WEB-INF/{base,lib,bin}"
         echo Copying new files to WEB-INF ...
         cp -r "$ENTERMEDIADB_HOME/webapp/WEB-INF/{bin,base,lib}" "$WHERE/webapp/WEB-INF/"
@@ -191,7 +195,7 @@ case $COMMAND in
         cp "$ENTERMEDIADB_HOME/conf/im/delegates.xml" /etc/ImageMagick-6/
         ;;
 *)
-        echo "Usage: entermedidb install | entermediadb update /opt/entermediadb | entermediadb delete /opt/entermediadb";
+        echo -e "Usage\tentermedidb install\n\tentermediadb update [path]\n\tentermediadb delete [path]";
         exit 0;
         ;;
 esac
