@@ -158,6 +158,11 @@ case ${COMMAND} in
         [[ -z "${WHERE}" ]] && WHERE=${DEFAULT_ROOT}
         [[ -z "${DATA}" ]] && DATA=${DEFAULT_DATA}
         [[ -z "${PORT}" ]] && PORT=${DEFAULT_PORT}
+	
+	if [[ -d "$WHERE" ]]; then
+	  echo -e "There is already a folder at $WHERE ... \nProblems could occur when installing to an existing location.\nPlease remove the files at $WHERE before proceeding ..."
+	  exit
+	fi
 
         deploy "${WHERE}" "${DATA}" "${PORT}"
         ;;
@@ -173,6 +178,8 @@ case ${COMMAND} in
         cd "${WHERE}/tomcat/bin"
         ./shutdown.sh
         # stop running tomcat
+	echo Waiting for GC ...
+	sleep 2
         rm -rf "${WHERE}"
         echo "Deleted EntermediaDB from ${WHERE}."
         # We can't really clean up the init.d script right now ...
