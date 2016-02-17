@@ -114,14 +114,14 @@ function deploy() {
 
         mkdir -p ${ENDPOINT}/webapp/{WEB-INF,media}
         cp "${ENTERMEDIADB_HOME}/webapp/media/_site.xconf" "${ENDPOINT}/webapp/media"
-        cp "${ENTERMEDIADB_HOME}/webapp/*" "${ENDPOINT}/webapp" 2> /dev/null
+        cp "${ENTERMEDIADB_HOME}"/webapp/* "${ENDPOINT}/webapp" 2> /dev/null
 
         cp -r "${ENTERMEDIADB_HOME}/webapp/theme" "${ENDPOINT}/webapp/"
         cp "${ENTERMEDIADB_HOME}/webapp/WEB-INF/web.xml" "${ENDPOINT}/webapp/WEB-INF/"
         cp -r ${ENTERMEDIADB_HOME}/webapp/WEB-INF/{bin,base,lib} "${ENDPOINT}/webapp/WEB-INF/"
         if [[ ! -d "${DATA}" ]]; then
               mkdir -p "${DATA}"
-              cp -rp "${ENTERMEDIADB_HOME}/webapp/WEB-INF/data/*" "${DATA}"
+              cp -rp "${ENTERMEDIADB_HOME}"/webapp/WEB-INF/data/* "${DATA}"
         fi
         ln -s "${DATA}" "${ENDPOINT}/webapp/WEB-INF/data"
         chown -R entermedia. "${ENDPOINT}"
