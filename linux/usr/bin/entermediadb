@@ -8,7 +8,7 @@ DEFAULT_DATA=/media/data
 DEFAULT_ROOT=/opt/entermediadb
 
 # Before anything else: root check
-if [ "$USER" != "root" ]; then
+if [ $(whoami) != 'root' ]; then
   echo "You must be root to execute this command." && exit
 fi
 
@@ -67,7 +67,7 @@ function deploy() {
                 # Just in case we are deploying where EMDB is on a network mount
                 echo Creating entermedia user...
                 adduser entermedia
-                cp -rp "${ENTERMEDIADB_HOME}/conf/ffmpeg /home/entermedia/.ffmpeg"
+                cp -rp "${ENTERMEDIADB_HOME}/conf/ffmpeg" "/home/entermedia/.ffmpeg"
         fi
 
         # patch gs-imagegick
@@ -121,7 +121,7 @@ function deploy() {
         cp -r ${ENTERMEDIADB_HOME}/webapp/WEB-INF/{bin,base,lib} "${ENDPOINT}/webapp/WEB-INF/"
         if [[ ! -d "${DATA}" ]]; then
               mkdir -p "${DATA}"
-              cp -rp "${ENTERMEDIADB_HOME}"/webapp/WEB-INF/data/* "${DATA}"
+              cp -rp "${ENTERMEDIADB_HOME}"/webapp/WEB-INF/data/* ${DATA}
         fi
         ln -s "${DATA}" "${ENDPOINT}/webapp/WEB-INF/data"
         chown -R entermedia. "${ENDPOINT}"

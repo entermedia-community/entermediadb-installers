@@ -50,4 +50,4 @@ cp ${NAME}.deb $REPO/apt/pool/main/${NAME}_all.deb
 
 #Upload it to repo
 bash /home/ec2-user/workspace/drive/emdev/repo/makeapt.sh
-/home/ec2-user/workspace/insync-portable/insync-portable force_sync $REPO/apt
+#/home/ec2-user/workspace/insync-portable/insync-portable force_sync $REPO/apt
