@@ -122,8 +122,9 @@ function deploy() {
         cp -r ${ENTERMEDIADB_HOME}/webapp/WEB-INF/{bin,base,lib} ${ENDPOINT}/webapp/WEB-INF/
         if [[ ! -d "${DATA}" ]]; then
               mkdir -p ${DATA}
-              cp -rp ${ENTERMEDIADB_HOME}/webapp/WEB-INF/data/* ${DATA}
         fi
+
+        cp -rp ${ENTERMEDIADB_HOME}/webapp/WEB-INF/data/* ${DATA}
         ln -s ${DATA} ${ENDPOINT}/webapp/WEB-INF/data
         chown -R entermedia. "${ENDPOINT}"
         chown -R entermedia. "${DATA}"
