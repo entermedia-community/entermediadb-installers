@@ -97,40 +97,41 @@ function deploy() {
         #  fi
         #fi
 
-	ln -s "${ENDPOINT}/tomcat/bin/tomcat" "/etc/init.d/tomcat${PORT}"
+	ln -s ${ENDPOINT}/tomcat/bin/tomcat /etc/init.d/tomcat${PORT}
 
 
         if command -v chkconfig >/dev/null 2>&1;
         then
                 # chkconfig exists
-                chkconfig --add "tomcat${PORT}"
-                chkconfig --level 3 "tomcat${PORT}" on
-                chkconfig --level 5 "tomcat${PORT}" on
+                chkconfig --add tomcat${PORT}
+                chkconfig --level 3 tomcat${PORT} on
+                chkconfig --level 5 tomcat${PORT} on
         else
                 # assume debian environment and use update-rc.d
-                update-rc.d "tomcat${PORT}" defaults
-                update-rc.d "tomcat${PORT}" start 20 3 5
+                update-rc.d tomcat${PORT} defaults
+                update-rc.d tomcat${PORT} start 20 3 5
         fi
 
         mkdir -p ${ENDPOINT}/webapp/{WEB-INF,media}
-        cp "${ENTERMEDIADB_HOME}/webapp/media/_site.xconf" "${ENDPOINT}/webapp/media"
-        cp "${ENTERMEDIADB_HOME}"/webapp/* "${ENDPOINT}/webapp" 2> /dev/null
+        cp ${ENTERMEDIADB_HOME}/webapp/media/_site.xconf ${ENDPOINT}/webapp/media
+        cp ${ENTERMEDIADB_HOME}/webapp/* ${ENDPOINT}/webapp/ 2> /dev/null
 
-        cp -r "${ENTERMEDIADB_HOME}/webapp/theme" "${ENDPOINT}/webapp/"
-        cp "${ENTERMEDIADB_HOME}/webapp/WEB-INF/{web,node}.xml" "${ENDPOINT}/webapp/WEB-INF/"
-        cp -r ${ENTERMEDIADB_HOME}/webapp/WEB-INF/{bin,base,lib} "${ENDPOINT}/webapp/WEB-INF/"
+        cp -r ${ENTERMEDIADB_HOME}/webapp/theme ${ENDPOINT}/webapp/
+        cp ${ENTERMEDIADB_HOME}/webapp/WEB-INF/node.xml ${ENDPOINT}/webapp/WEB-INF/
+        cp ${ENTERMEDIADB_HOME}/webapp/WEB-INF/web.xml ${ENDPOINT}/webapp/WEB-INF/
+        cp -r ${ENTERMEDIADB_HOME}/webapp/WEB-INF/{bin,base,lib} ${ENDPOINT}/webapp/WEB-INF/
         if [[ ! -d "${DATA}" ]]; then
-              mkdir -p "${DATA}"
-              cp -rp "${ENTERMEDIADB_HOME}"/webapp/WEB-INF/data/* ${DATA}
+              mkdir -p ${DATA}
+              cp -rp ${ENTERMEDIADB_HOME}/webapp/WEB-INF/data/* ${DATA}
         fi
-        ln -s "${DATA}" "${ENDPOINT}/webapp/WEB-INF/data"
+        ln -s ${DATA} ${ENDPOINT}/webapp/WEB-INF/data
         chown -R entermedia. "${ENDPOINT}"
         chown -R entermedia. "${DATA}"
         chown -R entermedia:entermedia /home/entermedia
-        cd "${ENDPOINT}/tomcat/bin"
+        cd ${ENDPOINT}/tomcat/bin
         # add proper home to local tomcat
 
-        cd "${ENDPOINT}/tomcat/bin"
+        cd ${ENDPOINT}/tomcat/bin
         # add proper home to local tomcat
         echo "export CATALINA_BASE=\"${ENDPOINT}/tomcat\"" >> "${ENDPOINT}/tomcat/bin/setenv.sh"
         if command -v /usr/bin/soffice >/dev/null 2>&1;
@@ -141,7 +142,7 @@ function deploy() {
                 ln -s /opt/libreoffice5.0/program/soffice /usr/bin/soffice
         fi
         # start tomcat
-        su entermedia -c "${ENDPOINT}/tomcat/bin/startup.sh"
+        su entermedia -c ${ENDPOINT}/tomcat/bin/startup.sh
 }
 
 case ${COMMAND} in
@@ -183,7 +184,7 @@ case ${COMMAND} in
         rm -rf "${WHERE}"
         echo "Deleted EntermediaDB from ${WHERE}."
         # We can't really clean up the init.d script right now ...
-        # rm -f "/etc/init.d/tomcat${PORT}"
+        # rm -f /etc/init.d/tomcat${PORT}
 	;;
 'update')
         WHERE="${2}"
@@ -201,8 +202,8 @@ case ${COMMAND} in
 
         rm -f "${WHERE}/webapp/WEB-INF/web.xml"
         echo Updating web.xml ...
-        cp "${ENTERMEDIADB_HOME}/webapp/WEB-INF/web.xml" "${WHERE}/webapp/WEB-INF/"
-        chown -R entermedia. "${WHERE}/webapp/WEB-INF/bin" "${WHERE}/webapp/WEB-INF/base" "${WHERE}/webapp/WEB-INF/lib" "${WHERE}/webapp/WEB-INF/web.xml"
+        cp ${ENTERMEDIADB_HOME}/webapp/WEB-INF/web.xml ${WHERE}/webapp/WEB-INF/
+        chown -R entermedia. ${WHERE}/webapp/WEB-INF/bin ${WHERE}/webapp/WEB-INF/base ${WHERE}/webapp/WEB-INF/lib ${WHERE}/webapp/WEB-INF/web.xml
 
         # patch gs-imagegick
         mv /etc/ImageMagick-6/delegates.xml /etc/ImageMagick-6/delegates.old
