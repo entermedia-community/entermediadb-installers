@@ -115,8 +115,9 @@ function deploy() {
         mkdir -p ${ENDPOINT}/webapp/{WEB-INF,media}
         cp ${ENTERMEDIADB_HOME}/webapp/media/_site.xconf ${ENDPOINT}/webapp/media
         cp ${ENTERMEDIADB_HOME}/webapp/* ${ENDPOINT}/webapp/ 2> /dev/null
+        cp -rp ${ENTERMEDIADB_HOME}/webapp/assets ${ENDPOINT}/webapp/ 2> /dev/null
 
-        cp -r ${ENTERMEDIADB_HOME}/webapp/theme ${ENDPOINT}/webapp/
+        cp -rp ${ENTERMEDIADB_HOME}/webapp/theme ${ENDPOINT}/webapp/
         cp ${ENTERMEDIADB_HOME}/webapp/WEB-INF/node.xml ${ENDPOINT}/webapp/WEB-INF/
         cp ${ENTERMEDIADB_HOME}/webapp/WEB-INF/web.xml ${ENDPOINT}/webapp/WEB-INF/
         cp -r ${ENTERMEDIADB_HOME}/webapp/WEB-INF/{bin,base,lib} ${ENDPOINT}/webapp/WEB-INF/
