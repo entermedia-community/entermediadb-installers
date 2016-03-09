@@ -198,18 +198,50 @@ case ${COMMAND} in
 	  echo "Aborting update of ${WHERE} ..."
 	  exit
 	fi
-        rm -rf ${WHERE}/webapp/WEB-INF/{base,lib,bin}
-        echo Copying new files to WEB-INF ...
-        cp -r ${ENTERMEDIADB_HOME}/webapp/WEB-INF/{bin,base,lib} "${WHERE}/webapp/WEB-INF/"
 
-        rm -f "${WHERE}/webapp/WEB-INF/web.xml"
-        echo Updating web.xml ...
+		## Try to be more discerning in which folders to copy and replace, so we don't delete plugins, etc
+		## Handle "base" directories
+		echo Updating base ...
+		cd ${ENTERMEDIADB_HOME}/webapp/WEB-INF
+		DEFAULT_APPS=(ls -d base/*/)
+		for DIR in ${DEFAULT_APPS[@]}; do
+			rm -rf ${WHERE}/webapp/WEB-INF/${DIR}
+			cp -r ${ENTERMEDIADB_HOME}/webapp/WEB-INF/$DIR ${WHERE}/webapp/WEB-INF/
+		done
+		##
+		## Handle lib...
+		echo Updating lib ...
+		rm ${WHERE}/webapp/WEB-INF/lib/*entermedia-server*.jar
+		rm ${WHERE}/webapp/WEB-INF/lib/*entermedia-9*.jar
+		rm ${WHERE}/webapp/WEB-INF/lib/*entermedia-8*.jar
+		rm ${WHERE}/webapp/WEB-INF/lib/groovy-*.jar
+		rm ${WHERE}/webapp/WEB-INF/lib/aws-*.jar
+		rm ${WHERE}/webapp/WEB-INF/lib/gson-*.jar
+		rm ${WHERE}/webapp/WEB-INF/lib/mp4parser*.jar
+		rm ${WHERE}/webapp/WEB-INF/lib/PDFBox*.jar
+		rm ${WHERE}/webapp/WEB-INF/lib/lucene*.jar
+		rm ${WHERE}/webapp/WEB-INF/lib/spring-*.jar
+		rm ${WHERE}/webapp/WEB-INF/lib/aopalliance-*.jar
+		rm ${WHERE}/webapp/WEB-INF/lib/jaxen-*.jar
+		rm ${WHERE}/webapp/WEB-INF/lib/commons-codec*.jar
+		rm ${WHERE}/webapp/WEB-INF/lib/guava-*.jar
+		rm ${WHERE}/webapp/WEB-INF/lib/velocity-tools*.jar
+		rm ${WHERE}/webapp/WEB-INF/lib/http*.jar
+		rm ${WHERE}/webapp/WEB-INF/lib/servlet-gzip.jar
+		rm ${WHERE}/webapp/WEB-INF/lib/json-simple*.jar
+		rm ${WHERE}/webapp/WEB-INF/lib/org.apache.oltu.*.jar
+
+		cp -rp ${ENTERMEDIADB_HOME}/webapp/WEB-INF/lib/* ${WHERE}/webapp/WEB-INF/lib/
+
+		echo Updating web.xml ...
+        rm -f ${WHERE}/webapp/WEB-INF/web.xml
         cp ${ENTERMEDIADB_HOME}/webapp/WEB-INF/web.xml ${WHERE}/webapp/WEB-INF/
         chown -R entermedia. ${WHERE}/webapp/WEB-INF/bin ${WHERE}/webapp/WEB-INF/base ${WHERE}/webapp/WEB-INF/lib ${WHERE}/webapp/WEB-INF/web.xml
 
+		echo Updating ImageMagick ...
         # patch gs-imagegick
         mv /etc/ImageMagick-6/delegates.xml /etc/ImageMagick-6/delegates.old
-        cp "${ENTERMEDIADB_HOME}/conf/im/delegates.xml" /etc/ImageMagick-6/
+        cp ${ENTERMEDIADB_HOME}/conf/im/delegates.xml /etc/ImageMagick-6/
         ;;
 *)
         echo -e "Usage\tentermedidb install\n\tentermediadb update [path]\n\tentermediadb delete [path]";
