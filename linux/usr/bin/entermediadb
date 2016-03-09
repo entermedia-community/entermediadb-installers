@@ -230,6 +230,7 @@ case ${COMMAND} in
 		rm ${WHERE}/webapp/WEB-INF/lib/servlet-gzip.jar
 		rm ${WHERE}/webapp/WEB-INF/lib/json-simple*.jar
 		rm ${WHERE}/webapp/WEB-INF/lib/org.apache.oltu.*.jar
+		rm ${WHERE}/webapp/WEB-INF/lib/slf*.jar
 
 		cp -rp ${ENTERMEDIADB_HOME}/webapp/WEB-INF/lib/* ${WHERE}/webapp/WEB-INF/lib/
 
