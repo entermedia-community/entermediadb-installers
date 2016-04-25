@@ -2,11 +2,10 @@ import org.openedit.*
 import org.openedit.data.Searcher
 import org.openedit.users.*
 
-import com.openedit.hittracker.*
-import com.openedit.users.*;
-import com.openedit.users.authenticate.PasswordGenerator;
-import com.openedit.util.Exec
-import com.openedit.util.ExecResult
+import org.openedit.hittracker.*
+import org.openedit.users.authenticate.PasswordGenerator;
+import org.openedit.util.Exec
+import org.openedit.util.ExecResult
 
 public void init() 
 {

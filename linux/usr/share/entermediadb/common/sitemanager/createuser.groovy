@@ -1,15 +1,14 @@
 import org.openedit.*
 import org.openedit.users.*
-import com.openedit.users.*
 import org.openedit.data.Searcher
-import org.openedit.entermedia.Asset
-import org.openedit.entermedia.MediaArchive
-import org.openedit.entermedia.scanner.MetaDataReader
+import org.entermediadb.asset.Asset
+import org.entermediadb.asset.MediaArchive
+import org.entermediadb.asset.scanner.MetaDataReader
 
-import com.openedit.hittracker.*
-import com.openedit.modules.update.Downloader
-import com.openedit.page.Page
-import com.openedit.util.PathUtilities
+import org.openedit.hittracker.*
+import org.entermediadb.modules.update.Downloader
+import org.openedit.page.Page
+import org.openedit.util.PathUtilities
 
 public void init() 
 {

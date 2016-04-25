@@ -50,7 +50,7 @@ function deploy() {
         valid_port "${PORT}"
 
         if ! confirm "This will set up EntermediaDB at ${ENDPOINT} with data at ${DATA} and tomcat on port ${PORT}. Continue?"; then
-                echo Cancelling installation at ${ENDPOINT} ...
+                echo "Cancelling installation at ${ENDPOINT} ..."
                 exit
         fi
 
@@ -76,7 +76,7 @@ function deploy() {
 
 
         # make links and copy stuff
-        mkdir -p ${ENDPOINT}/tomcat/{logs,temp}
+        mkdir -p "${ENDPOINT}/tomcat"/{logs,temp}
         cp -rp "${ENTERMEDIADB_HOME}/tomcat/conf" "${ENDPOINT}/tomcat"
         cp -rp "${ENTERMEDIADB_HOME}/tomcat/bin" "${ENDPOINT}/tomcat"
         sed "s/%PORT%/${PORT}/g" <"${ENTERMEDIADB_HOME}/tomcat/conf/server.xml.template" >"${ENDPOINT}/tomcat/conf/server.xml"
@@ -97,7 +97,7 @@ function deploy() {
         #  fi
         #fi
 
-	ln -s ${ENDPOINT}/tomcat/bin/tomcat /etc/init.d/tomcat${PORT}
+	ln -s "${ENDPOINT}/tomcat/bin/tomcat" /etc/init.d/tomcat${PORT}
 
 
         if command -v chkconfig >/dev/null 2>&1;
@@ -112,21 +112,21 @@ function deploy() {
                 update-rc.d tomcat${PORT} start 20 3 5
         fi
 
-        mkdir -p ${ENDPOINT}/webapp/{WEB-INF,media}
-        cp ${ENTERMEDIADB_HOME}/webapp/media/_site.xconf ${ENDPOINT}/webapp/media
-        cp ${ENTERMEDIADB_HOME}/webapp/* ${ENDPOINT}/webapp/ 2> /dev/null
-        cp -rp ${ENTERMEDIADB_HOME}/webapp/assets ${ENDPOINT}/webapp/ 2> /dev/null
+        mkdir -p "${ENDPOINT}/webapp"/{WEB-INF,media}
+        cp "${ENTERMEDIADB_HOME}/webapp/media/_site.xconf" "${ENDPOINT}/webapp/media"
+        cp "${ENTERMEDIADB_HOME}/webapp/"* "${ENDPOINT}/webapp/" 2> /dev/null
+        cp -rp "${ENTERMEDIADB_HOME}/webapp/assets" "${ENDPOINT}/webapp/" 2> /dev/null
 
-        cp -rp ${ENTERMEDIADB_HOME}/webapp/theme ${ENDPOINT}/webapp/
-        cp ${ENTERMEDIADB_HOME}/webapp/WEB-INF/node.xml ${ENDPOINT}/webapp/WEB-INF/
-        cp ${ENTERMEDIADB_HOME}/webapp/WEB-INF/web.xml ${ENDPOINT}/webapp/WEB-INF/
-        cp -r ${ENTERMEDIADB_HOME}/webapp/WEB-INF/{bin,base,lib} ${ENDPOINT}/webapp/WEB-INF/
+        cp -rp "${ENTERMEDIADB_HOME}/webapp/theme" "${ENDPOINT}/webapp/"
+        cp "${ENTERMEDIADB_HOME}/webapp/WEB-INF/node.xml" "${ENDPOINT}/webapp/WEB-INF/"
+        cp "${ENTERMEDIADB_HOME}/webapp/WEB-INF/web.xml" "${ENDPOINT}/webapp/WEB-INF/"
+        cp -r "${ENTERMEDIADB_HOME}/webapp/WEB-INF/"{bin,base,lib} "${ENDPOINT}/webapp/WEB-INF/"
         if [[ ! -d "${DATA}" ]]; then
               mkdir -p ${DATA}
         fi
 
-        cp -rp ${ENTERMEDIADB_HOME}/webapp/WEB-INF/data/* ${DATA}
-        ln -s ${DATA} ${ENDPOINT}/webapp/WEB-INF/data
+        cp -rp "${ENTERMEDIADB_HOME}/webapp/WEB-INF/data/"* "${DATA}"
+        ln -s "${DATA}" "${ENDPOINT}/webapp/WEB-INF/data"
         chown -R entermedia. "${ENDPOINT}"
         chown -R entermedia. "${DATA}"
         chown -R entermedia:entermedia /home/entermedia
@@ -144,7 +144,7 @@ function deploy() {
                 ln -s /opt/libreoffice5.0/program/soffice /usr/bin/soffice
         fi
         # start tomcat
-        su entermedia -c ${ENDPOINT}/tomcat/bin/startup.sh
+        su entermedia -c "${ENDPOINT}/tomcat/bin/startup.sh"
 }
 
 case ${COMMAND} in
@@ -198,18 +198,26 @@ case ${COMMAND} in
 	  echo "Aborting update of ${WHERE} ..."
 	  exit
 	fi
-        rm -rf ${WHERE}/webapp/WEB-INF/{base,lib,bin}
+        rm -rf "${WHERE}/webapp/WEB-INF/"{base,lib,bin}
         echo Copying new files to WEB-INF ...
-        cp -r ${ENTERMEDIADB_HOME}/webapp/WEB-INF/{bin,base,lib} "${WHERE}/webapp/WEB-INF/"
+        cp -r "${ENTERMEDIADB_HOME}/webapp/WEB-INF/"{bin,base,lib} "${WHERE}/webapp/WEB-INF/"
 
         rm -f "${WHERE}/webapp/WEB-INF/web.xml"
         echo Updating web.xml ...
-        cp ${ENTERMEDIADB_HOME}/webapp/WEB-INF/web.xml ${WHERE}/webapp/WEB-INF/
-        chown -R entermedia. ${WHERE}/webapp/WEB-INF/bin ${WHERE}/webapp/WEB-INF/base ${WHERE}/webapp/WEB-INF/lib ${WHERE}/webapp/WEB-INF/web.xml
+        cp "${ENTERMEDIADB_HOME}/webapp/WEB-INF/web.xml" "${WHERE}/webapp/WEB-INF/"
+        chown -R entermedia. "${WHERE}/webapp/WEB-INF/bin" "${WHERE}/webapp/WEB-INF/base" "${WHERE}/webapp/WEB-INF/lib" "${WHERE}/webapp/WEB-INF/web.xml"
 
         # patch gs-imagegick
+	echo Patching gs-ImageMagick ...
         mv /etc/ImageMagick-6/delegates.xml /etc/ImageMagick-6/delegates.old
         cp "${ENTERMEDIADB_HOME}/conf/im/delegates.xml" /etc/ImageMagick-6/
+
+	echo Restarting Tomcat ...
+	"${WHERE}/tomcat/bin/shutdown.sh"
+	sleep 3
+	su entermedia -c "${WHERE}/tomcat/bin/startup.sh"
+
+	echo "Update of ${WHERE} complete!"
         ;;
 *)
         echo -e "Usage\tentermedidb install\n\tentermediadb update [path]\n\tentermediadb delete [path]";
