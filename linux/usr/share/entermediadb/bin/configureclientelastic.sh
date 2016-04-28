@@ -1,10 +1,10 @@
 #!/bin/bash
 # Specify client in first argument from CLI
+SITE_ROOT=/opt/entermediadb
 SUB_DOMAIN=$1
 CLIENT_ID=$2
 CLIENT_NAME=$3
-
-WEBAPP="/opt/entermediadb/webapp"
+WEBAPP="${SITE_ROOT}/webapp"
 CATALOG="$WEBAPP/WEB-INF/data/$CLIENT_ID/catalog"
 
 mkdir $WEBAPP/$CLIENT_ID/
@@ -17,7 +17,6 @@ mkdir -p $CATALOG/groups
 cp -rp $WEBAPP/WEB-INF/data/system/groups/*.xml $CATALOG/groups
 echo 'Linking base.xml'
 mkdir -p $WEBAPP/$CLIENT_ID/catalog
-ln -s /usr/share/entermediadb/common/catalog/configuration $WEBAPP/$CLIENT_ID/catalog/
 
 mkdir -p $CATALOG/lists/app/
 sed "s:%client_id:$CLIENT_ID:g;s:%client_name:$CLIENT_NAME:g;s:%sub_domain:$SUB_DOMAIN:g" < /usr/share/entermediadb/common/catalog/lists/app/custom.xml >$CATALOG/lists/app/custom.xml
@@ -36,7 +35,7 @@ echo -e $outfile > $WEBAPP/$CLIENT_ID/index.xconf
 outfile="<page> <property name=\"fallbackdirectory\">/WEB-INF/base/emshare</property> <property name=\"title\">$CLIENT_NAME - EMShare</property> <property name=\"appmodule\">asset</property> <property name=\"themeid\">emsharedefault</property> <property name=\"catalogid\">$CLIENT_ID/catalog</property> <property name=\"applicationid\">$CLIENT_ID/emshare</property></page>"
 echo -e $outfile > $WEBAPP/$CLIENT_ID/emshare/_site.xconf
 
-outfile="<page> <property name=\"fallbackdirectory\">/WEB-INF/base/mediadb</property> <property name=\"title\">$CLIENT_NAME - EMShare</property> <property name=\"appmodule\">asset</property> <property name=\"themeid\">emsharedefault</property> <property name=\"catalogid\">$CLIENT_ID/catalog</property> <property name=\"applicationid\">$CLIENT_ID/emshare</property></page>"
+outfile="<page> <property name=\"fallbackdirectory\">/WEB-INF/base/mediadb</property> <property name=\"title\">$CLIENT_NAME - MediaDB</property> <property name=\"appmodule\">asset</property> <property name=\"themeid\">emsharedefault</property> <property name=\"catalogid\">$CLIENT_ID/catalog</property> <property name=\"applicationid\">$CLIENT_ID/mediadb</property></page>"
 echo -e $outfile > $WEBAPP/$CLIENT_ID/mediadb/_site.xconf
 
 outfile="<page><property name=\"fallbackdirectory\">/media/catalog</property><property name=\"catalogid\">$CLIENT_ID/catalog</property></page>"
