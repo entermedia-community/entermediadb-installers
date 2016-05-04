@@ -41,3 +41,5 @@ echo -e $outfile > $WEBAPP/$CLIENT_ID/mediadb/_site.xconf
 outfile="<page><property name=\"fallbackdirectory\">/media/catalog</property><property name=\"catalogid\">$CLIENT_ID/catalog</property></page>"
 echo -e $outfile > $WEBAPP/$CLIENT_ID/catalog/_site.xconf
 
+cp -rp $WEBAPP/WEB-INF/data/template/catalog/{originals,generated,dataexport} $CATALOG/
+
