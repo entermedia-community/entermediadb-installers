@@ -212,6 +212,9 @@ case ${COMMAND} in
         mv /etc/ImageMagick-6/delegates.xml /etc/ImageMagick-6/delegates.old
         cp "${ENTERMEDIADB_HOME}/conf/im/delegates.xml" /etc/ImageMagick-6/
 
+	mv /etc/ImageMagick-6/policy.xml /etc/ImageMagick-6/policy.old
+	cp "${ENTERMEDIADB_HOME}/conf/im/policy.xml" /etc/ImageMagick-6/
+
 	echo Restarting Tomcat ...
 	"${WHERE}/tomcat/bin/shutdown.sh"
 	sleep 3
