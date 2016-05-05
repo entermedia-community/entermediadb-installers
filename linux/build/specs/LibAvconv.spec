@@ -1,6 +1,6 @@
 Summary:        Libav provides cross-platform tools and libraries to convert, manipulate and stream a wide range of multimedia formats and protocols.
 Name:           libav
-Version:        11.4
+Version:        11.6
 Release:        0
 Epoch:			0
 Group:          System Environment/Libraries

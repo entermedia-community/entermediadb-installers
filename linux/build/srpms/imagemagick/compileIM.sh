@@ -1,6 +1,6 @@
 #!/bin/bash
 CWD=$(pwd)
-source ../functions.sh
+source ../../functions.sh
 
 if [ ! -f "~/.rpmmacros" ]; then
 	echoWhite -n "rpmmacros not found, creating... "
@@ -23,13 +23,15 @@ mkdir -p "${TOPLEVEL}/SOURCES"
 #wget http://www.imagemagick.org/download/releases/ImageMagick-6.9.1-9.tar.bz2
 #wget http://ftp.sunet.se/pub/multimedia/graphics/ImageMagick/releases/ImageMagick-6.9.1-9.tar.bz2
 #wget http://www.imagemagick.org/download/releases/ImageMagick-6.9.2-4.tar.bz2
-wget http://www.imagemagick.org/download/releases/ImageMagick-6.9.3-0.tar.gz
+#wget http://www.imagemagick.org/download/releases/ImageMagick-6.9.3-0.tar.gz
 
-cp ImageMagick-6.9.3-0.tar.gz ${TOPLEVEL}/SOURCES
-cp ../specs/ImageMagick.spec ${TOPLEVEL}/SPECS
-cp ../specs/*.patch ${TOPLEVEL}/SOURCES
+#wget http://www.imagemagick.org/download/releases/ImageMagick-6.9.3-7.tar.gz
+
+cp ImageMagick-6.9.3-7.tar.gz ${TOPLEVEL}/SOURCES
+cp ImageMagick.spec ${TOPLEVEL}/SPECS
+cp *.patch ${TOPLEVEL}/SOURCES
 
 rpmbuild -bs -vv ${TOPLEVEL}/SPECS/ImageMagick.spec
-sudo yum-builddep -v ${TOPLEVEL}/SRPMS/ImageMagick-6.9.3-0.src.rpm 
-rpmbuild --rebuild -vv ${TOPLEVEL}/SRPMS/ImageMagick-6.9.3-0.src.rpm 
+sudo yum-builddep -v ${TOPLEVEL}/SRPMS/ImageMagick-6.9.3-7.src.rpm 
+rpmbuild --rebuild -vv ${TOPLEVEL}/SRPMS/ImageMagick-6.9.3-7.src.rpm 
 
