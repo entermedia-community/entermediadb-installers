@@ -144,7 +144,7 @@ function deploy() {
                 ln -s /opt/libreoffice5.0/program/soffice /usr/bin/soffice
         fi
         # start tomcat
-        su entermedia -c "${ENDPOINT}/tomcat/bin/startup.sh"
+        sudo -u entermedia "${ENDPOINT}/tomcat/bin/startup.sh"
 }
 
 case ${COMMAND} in
