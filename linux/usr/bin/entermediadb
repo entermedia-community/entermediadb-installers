@@ -16,7 +16,7 @@ function valid_port() {
 
         if [[ -z "${1}" ]]; then
                 # just make sure nobody uses a port that requires root or is generally used by system
-                # maybe do something else here to prevent duplicates
+                # maybe do something else here to prevent duplicate
                 echo "${1} is a reserved port. Please choose a value larger than 1025"
                 exit 0
         fi
@@ -144,7 +144,7 @@ function deploy() {
                 ln -s /opt/libreoffice5.0/program/soffice /usr/bin/soffice
         fi
         # start tomcat
-        sudo -u entermedia "${ENDPOINT}/tomcat/bin/startup.sh"
+        su -s /bin/bash -c "${ENDPOINT}/tomcat/bin/startup.sh" entermedia
 }
 
 case ${COMMAND} in
@@ -218,7 +218,7 @@ case ${COMMAND} in
 	echo Restarting Tomcat ...
 	"${WHERE}/tomcat/bin/shutdown.sh"
 	sleep 3
-	su entermedia -c "${WHERE}/tomcat/bin/startup.sh"
+        su -s /bin/bash -c "${ENDPOINT}/tomcat/bin/startup.sh" entermedia
 
 	echo "Update of ${WHERE} complete!"
         ;;
