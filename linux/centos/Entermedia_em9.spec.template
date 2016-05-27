@@ -38,6 +38,7 @@ cp -rp * ${RPM_BUILD_ROOT}
 #elif [ "$1" == "2" ]; then
 #  %{_bindir}/entermediadb upgrade
 #fi
+echo fs.inotify.max_user_watches=524288 | tee -a /etc/sysctl.conf && sysctl -p
 
 %preun
 
