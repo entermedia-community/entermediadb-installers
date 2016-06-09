@@ -144,7 +144,7 @@ function deploy() {
                 ln -s /opt/libreoffice5.0/program/soffice /usr/bin/soffice
         fi
         # start tomcat
-        su -s /bin/bash -c "${ENDPOINT}/tomcat/bin/startup.sh" entermedia
+        sudo -u entermedia "${ENDPOINT}/tomcat/bin/startup.sh"
 }
 
 case ${COMMAND} in
@@ -218,7 +218,7 @@ case ${COMMAND} in
 	echo Restarting Tomcat ...
 	"${WHERE}/tomcat/bin/shutdown.sh"
 	sleep 3
-        su -s /bin/bash -c "${ENDPOINT}/tomcat/bin/startup.sh" entermedia
+        sudo -u entermedia "${ENDPOINT}/tomcat/bin/startup.sh"
 
 	echo "Update of ${WHERE} complete!"
         ;;
