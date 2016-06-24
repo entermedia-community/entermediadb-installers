@@ -12,6 +12,8 @@ if [[ "$BRANCH" == "_dev" ]] ; then
 	DOWNLOAD="dev_"
 elif [[ "$BRANCH" == "_em9" ]] ; then
 	DOWNLOAD="em9_"
+elif [[ "$BRANCH" == "_em9dev" ]] ; then
+	DOWNLOAD="em9dev_"
 fi
 
 set -x 
