@@ -145,7 +145,7 @@ function deploy() {
         fi
         # start tomcat
 	# We have to assume that there may be no shell for entermedia
-	export ENDPOINT && sudo -u entermedia "${ENDPOINT}/tomcat/bin/startup.sh"
+	service tomcat${PORT} start
 }
 
 case ${COMMAND} in
@@ -217,9 +217,10 @@ case ${COMMAND} in
 	cp "${ENTERMEDIADB_HOME}/conf/im/policy.xml" /etc/ImageMagick-6/
 
 	echo Restarting Tomcat ...
-	"${WHERE}/tomcat/bin/shutdown.sh"
+	PORT=$(grep Connector ${WHERE}/tomcat/conf/server.xml | cut -d'"' -f2)
+	service tomcat${PORT} stop
 	sleep 3
-	export ENDPOINT && sudo -u entermedia "${ENDPOINT}/tomcat/bin/startup.sh"
+	service tomcat${PORT} start
 
 	echo "Update of ${WHERE} complete!"
         ;;
