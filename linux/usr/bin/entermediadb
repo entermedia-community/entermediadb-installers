@@ -199,6 +199,12 @@ case ${COMMAND} in
 	  echo "Aborting update of ${WHERE} ..."
 	  exit
 	fi
+
+	echo Stopping tomcat ...
+	PORT=$(grep Connector ${WHERE}/tomcat/conf/server.xml | cut -d'"' -f2)
+	service tomcat${PORT} stop
+	sleep 3
+
         rm -rf "${WHERE}/webapp/WEB-INF/"{base,lib,bin}
         echo Copying new files to WEB-INF ...
         cp -r "${ENTERMEDIADB_HOME}/webapp/WEB-INF/"{bin,base,lib} "${WHERE}/webapp/WEB-INF/"
@@ -217,9 +223,6 @@ case ${COMMAND} in
 	cp "${ENTERMEDIADB_HOME}/conf/im/policy.xml" /etc/ImageMagick-6/
 
 	echo Restarting Tomcat ...
-	PORT=$(grep Connector ${WHERE}/tomcat/conf/server.xml | cut -d'"' -f2)
-	service tomcat${PORT} stop
-	sleep 3
 	service tomcat${PORT} start
 
 	echo "Update of ${WHERE} complete!"
