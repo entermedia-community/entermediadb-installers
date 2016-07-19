@@ -48,7 +48,8 @@ echo fs.inotify.max_user_watches=524288 | tee -a /etc/sysctl.conf && sysctl -p >
 rm -rf ${RPM_BUILD_ROOT}
 
 %files
-%{_bindir}
+%{_bindir}/entermediadb
+%{_bindir}/entermediadb-deploy
 /usr/share/entermediadb
 
 %changelog

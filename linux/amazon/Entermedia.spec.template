@@ -47,7 +47,8 @@ rm -rf ${RPM_BUILD_ROOT}
 
 %files
 /home/entermedia/.ffmpeg
-%{_bindir}
+%{_bindir}/entermediadb
+%{_bindir}/entermediadb-deploy
 /usr/share/entermediadb
 
 %changelog

@@ -47,7 +47,8 @@ cp -rp * ${RPM_BUILD_ROOT}
 rm -rf ${RPM_BUILD_ROOT}
 
 %files
-%{_bindir}
+%{_bindir}/entermediadb
+%{_bindir}/entermediadb-deploy
 /usr/share/entermediadb
 
 %changelog
