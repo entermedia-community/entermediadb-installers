@@ -48,8 +48,7 @@ echo fs.inotify.max_user_watches=524288 | tee -a /etc/sysctl.conf && sysctl -p >
 rm -rf ${RPM_BUILD_ROOT}
 
 %files
-%{_bindir}/entermediadb
-%{_bindir}/qt-faststart
+%{_bindir}
 /usr/share/entermediadb
 
 %changelog

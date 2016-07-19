@@ -47,8 +47,7 @@ rm -rf ${RPM_BUILD_ROOT}
 
 %files
 /home/entermedia/.ffmpeg
-%{_bindir}/entermediadb
-%{_bindir}/qt-faststart
+%{_bindir}
 /usr/share/entermediadb
 
 %changelog
