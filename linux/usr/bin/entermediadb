@@ -85,17 +85,7 @@ function deploy() {
 
 	# No port awareness in deletion with the current logic anyway
 
-        # init_proc="/etc/init.d/tomcat${PORT}"
-        # if [[ -f "${init_proc}" ]]; then
-        #  if ! confirm "Found existing init.d script for ${init_proc}.\nOverwrite?"; then
-        #    echo "Exiting! Please try again with a different port." && exit
-	#  else
-	#    echo "Okay. Overwriting /etc/init.d/tomcat${PORT} ..."
-
-	    rm -f /etc/init.d/tomcat${PORT}
-
-        #  fi
-        #fi
+	rm -f /etc/init.d/tomcat${PORT}
 
 	ln -s "${ENDPOINT}/tomcat/bin/tomcat" /etc/init.d/tomcat${PORT}
 
@@ -119,6 +109,13 @@ function deploy() {
 
         cp -rp "${ENTERMEDIADB_HOME}/webapp/theme" "${ENDPOINT}/webapp/"
         cp "${ENTERMEDIADB_HOME}/webapp/WEB-INF/node.xml" "${ENDPOINT}/webapp/WEB-INF/"
+
+	echo Updating node.xml cluster name ...
+
+	HOSTNAME=$(cat /etc/hostname)
+	CLUSTERNAME=$HOSTNAME$PORT
+	
+
         cp "${ENTERMEDIADB_HOME}/webapp/WEB-INF/web.xml" "${ENDPOINT}/webapp/WEB-INF/"
         cp -r "${ENTERMEDIADB_HOME}/webapp/WEB-INF/"{bin,base,lib} "${ENDPOINT}/webapp/WEB-INF/"
         if [[ ! -d "${DATA}" ]]; then
