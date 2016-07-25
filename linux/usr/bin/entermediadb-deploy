@@ -27,23 +27,6 @@ ENTERMEDIADB_HOME=/usr/share/entermediadb
         sed "s|%ENDPOINT%|${ENDPOINT}|g" <"${ENTERMEDIADB_HOME}/tomcat/bin/tomcat.template" >"${ENDPOINT}/tomcat/bin/tomcat"
         chmod 755 "${ENDPOINT}/tomcat/bin/tomcat"
 
-	echo Constructing INIT script ...
-	rm -f /etc/init.d/tomcat${PORT}
-
-	ln -s "${ENDPOINT}/tomcat/bin/tomcat" /etc/init.d/tomcat${PORT}
-
-        if command -v chkconfig >/dev/null 2>&1;
-        then
-                # chkconfig exists
-                chkconfig --add tomcat${PORT}
-                chkconfig --level 3 tomcat${PORT} on
-                chkconfig --level 5 tomcat${PORT} on
-        else
-                # assume debian environment and use update-rc.d
-                update-rc.d tomcat${PORT} defaults
-                update-rc.d tomcat${PORT} start 20 3 5
-        fi
-
 	echo Constructing webapp paths ...
         mkdir -p "${ENDPOINT}/webapp"/{WEB-INF,media}
         cp "${ENTERMEDIADB_HOME}/webapp/media/_site.xconf" "${ENDPOINT}/webapp/media"
@@ -78,6 +61,3 @@ ENTERMEDIADB_HOME=/usr/share/entermediadb
         else
                 ln -s /opt/libreoffice5.0/program/soffice /usr/bin/soffice
         fi
-
-	echo Starting server ...
-	service tomcat${PORT} start
