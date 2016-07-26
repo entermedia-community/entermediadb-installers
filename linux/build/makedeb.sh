@@ -30,7 +30,7 @@ fi
 # qt-faststart comes with libav-tools
 # cp -rp ../$PLATFORM/qt-faststart ${TMPDEST}/usr/bin
 
-wget  -N  http://dev.entermediasoftware.com/jenkins/job/${DOWNLOAD}demoall/lastSuccessfulBuild/artifact/deploy/ROOT.war -O /tmp/ROOT.WAR >/dev/null 2>&1
+wget  -N  http://dev.entermediadb.org/jenkins/job/${DOWNLOAD}demoall/lastSuccessfulBuild/artifact/deploy/ROOT.war -O /tmp/ROOT.WAR >/dev/null 2>&1
 
 
 mkdir -p ${TMPDEST}/usr/share/entermediadb/webapp

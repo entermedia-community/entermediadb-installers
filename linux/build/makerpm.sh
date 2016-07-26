@@ -21,6 +21,8 @@ cp ./RPMS/x86_64/*.rpm $REPO/$PLATFORM/6/x86_64/rpms
 cp ./RPMS/x86_64/*.rpm $REPO/$PLATFORM/7/x86_64/rpms
 
 #yum install createrepo
+
+#this is not done on the build server in manual_rpms_em9dev.sh
 #createrepo --update  $REPO/$PLATFORM/6/x86_64/rpms
 #createrepo --update  $REPO/$PLATFORM/7/x86_64/rpms
 
