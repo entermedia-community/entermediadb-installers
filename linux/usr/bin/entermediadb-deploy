@@ -1,57 +1,20 @@
 #!/bin/bash
 # Assumes that EnterMedia has been installed in /usr/share/entermediadb
 ENDPOINT=${1}
-DATA=${2}
-PORT=${3}
-NODE_ID=${4}
-CLUSTER_NAME=${5}
 ENTERMEDIADB_HOME=/usr/share/entermediadb
 
-        echo Starting installation ...
-        cd /
-        mkdir -p "${ENDPOINT}"
+        echo Starting EnterMedia ...
 
-	echo Creating entermedia user ...
         adduser entermedia
         cp -rp "${ENTERMEDIADB_HOME}/conf/ffmpeg" "/home/entermedia/.ffmpeg"
 
 	echo Patching ImageMagick ...
         cp "${ENTERMEDIADB_HOME}/conf/im/delegates.xml" /etc/ImageMagick-6/delegates.xml
 
-	echo Copying tomcat files ...
-        # make links and copy stuff
-        mkdir -p "${ENDPOINT}/tomcat"/{logs,temp}
-        cp -rp "${ENTERMEDIADB_HOME}/tomcat/conf" "${ENDPOINT}/tomcat"
-        cp -rp "${ENTERMEDIADB_HOME}/tomcat/bin" "${ENDPOINT}/tomcat"
-        sed "s/%PORT%/${PORT}/g;s/%NODE_ID%/${NODE_ID}/g" <"${ENTERMEDIADB_HOME}/tomcat/conf/server.xml.cluster" >"${ENDPOINT}/tomcat/conf/server.xml"
-        sed "s|%ENDPOINT%|${ENDPOINT}|g" <"${ENTERMEDIADB_HOME}/tomcat/bin/tomcat.template" >"${ENDPOINT}/tomcat/bin/tomcat"
-        chmod 755 "${ENDPOINT}/tomcat/bin/tomcat"
+	#echo Updating node.xml cluster name ...
+        #sed "s|%CLUSTER_NAME%|${CLUSTER_NAME}|g" <"${ENTERMEDIADB_HOME}/conf/node.xml.cluster" >"${ENDPOINT}/webapp/WEB-INF/node.xml"
 
-	echo Constructing webapp paths ...
-        mkdir -p "${ENDPOINT}/webapp"/{WEB-INF,media}
-        cp "${ENTERMEDIADB_HOME}/webapp/media/_site.xconf" "${ENDPOINT}/webapp/media"
-        cp "${ENTERMEDIADB_HOME}/webapp/"* "${ENDPOINT}/webapp/" 2> /dev/null
-        cp -rp "${ENTERMEDIADB_HOME}/webapp/assets" "${ENDPOINT}/webapp/" 2> /dev/null
-        cp -rp "${ENTERMEDIADB_HOME}/webapp/theme" "${ENDPOINT}/webapp/"
-
-	echo Updating node.xml cluster name ...
-        sed "s|%CLUSTER_NAME%|${CLUSTER_NAME}|g" <"${ENTERMEDIADB_HOME}/conf/node.xml.cluster" >"${ENDPOINT}/webapp/WEB-INF/node.xml"
-
-	echo Copying WEB-INF files ...
-        cp "${ENTERMEDIADB_HOME}/webapp/WEB-INF/web.xml" "${ENDPOINT}/webapp/WEB-INF/"
-        cp -r "${ENTERMEDIADB_HOME}/webapp/WEB-INF/"{bin,base,lib} "${ENDPOINT}/webapp/WEB-INF/"
-
-	echo Constructing data directories ...
-        mkdir -p ${DATA}
-        cp -rp "${ENTERMEDIADB_HOME}/webapp/WEB-INF/data/"* "${DATA}"
-        ln -s "${DATA}" "${ENDPOINT}/webapp/WEB-INF/data"
-        chown -R entermedia. "${ENDPOINT}"
-        chown -R entermedia. "${DATA}"
         chown -R entermedia:entermedia /home/entermedia
-
-	echo Associating TOMCAT home ...
-        cd ${ENDPOINT}/tomcat/bin
-        echo "export CATALINA_BASE=\"${ENDPOINT}/tomcat\"" >> "${ENDPOINT}/tomcat/bin/setenv.sh"
 
 	echo Linking soffice ...
         if command -v /usr/bin/soffice >/dev/null 2>&1;
@@ -61,3 +24,4 @@ ENTERMEDIADB_HOME=/usr/share/entermediadb
         else
                 ln -s /opt/libreoffice5.0/program/soffice /usr/bin/soffice
         fi
+	/opt/entermediadb/tomcat/bin/catalina.sh run 
