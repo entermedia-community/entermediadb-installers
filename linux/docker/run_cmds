@@ -1,0 +1,2 @@
+# docker run -it -v mountpoint --name container_name image_name:tag
+

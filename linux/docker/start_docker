@@ -1,0 +1,2 @@
+# Have not seen below variables work properly
+# sudo docker run -p 8080:8080 -e 'CLUSTER_NAME=testcluster;NODE_ID=dockernode1' --rm centos:7
