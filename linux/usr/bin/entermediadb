@@ -72,7 +72,7 @@ function deploy() {
 
         # patch gs-imagegick
         mv /etc/ImageMagick-6/delegates.xml /etc/ImageMagick-6/delegates.old
-        cp "${ENTERMEDIADB_HOME}/conf/im/delegates.xml" /etc/ImageMagick-6/
+        cp -p "${ENTERMEDIADB_HOME}/conf/im/delegates.xml" /etc/ImageMagick-6/
 
 
         # make links and copy stuff
@@ -103,12 +103,12 @@ function deploy() {
         fi
 
         mkdir -p "${ENDPOINT}/webapp"/{WEB-INF,media}
-        cp "${ENTERMEDIADB_HOME}/webapp/media/_site.xconf" "${ENDPOINT}/webapp/media"
-        cp "${ENTERMEDIADB_HOME}/webapp/"* "${ENDPOINT}/webapp/" 2> /dev/null
+        cp -p "${ENTERMEDIADB_HOME}/webapp/media/_site.xconf" "${ENDPOINT}/webapp/media"
+        cp -rp "${ENTERMEDIADB_HOME}/webapp/"* "${ENDPOINT}/webapp/" 2> /dev/null
         cp -rp "${ENTERMEDIADB_HOME}/webapp/assets" "${ENDPOINT}/webapp/" 2> /dev/null
 
         cp -rp "${ENTERMEDIADB_HOME}/webapp/theme" "${ENDPOINT}/webapp/"
-        cp "${ENTERMEDIADB_HOME}/webapp/WEB-INF/node.xml" "${ENDPOINT}/webapp/WEB-INF/"
+        cp -p "${ENTERMEDIADB_HOME}/webapp/WEB-INF/node.xml" "${ENDPOINT}/webapp/WEB-INF/"
 
 	echo Updating node.xml cluster name ...
 
@@ -116,8 +116,8 @@ function deploy() {
 	CLUSTERNAME=$HOSTNAME$PORT
 	
 
-        cp "${ENTERMEDIADB_HOME}/webapp/WEB-INF/web.xml" "${ENDPOINT}/webapp/WEB-INF/"
-        cp -r "${ENTERMEDIADB_HOME}/webapp/WEB-INF/"{bin,base,lib} "${ENDPOINT}/webapp/WEB-INF/"
+        cp -p "${ENTERMEDIADB_HOME}/webapp/WEB-INF/web.xml" "${ENDPOINT}/webapp/WEB-INF/"
+        cp -rp "${ENTERMEDIADB_HOME}/webapp/WEB-INF/"{bin,base,lib} "${ENDPOINT}/webapp/WEB-INF/"
         if [[ ! -d "${DATA}" ]]; then
               mkdir -p ${DATA}
         fi
@@ -208,16 +208,16 @@ case ${COMMAND} in
 
         rm -f "${WHERE}/webapp/WEB-INF/web.xml"
         echo Updating web.xml ...
-        cp "${ENTERMEDIADB_HOME}/webapp/WEB-INF/web.xml" "${WHERE}/webapp/WEB-INF/"
+        cp -p "${ENTERMEDIADB_HOME}/webapp/WEB-INF/web.xml" "${WHERE}/webapp/WEB-INF/"
         chown -R entermedia. "${WHERE}/webapp/WEB-INF/bin" "${WHERE}/webapp/WEB-INF/base" "${WHERE}/webapp/WEB-INF/lib" "${WHERE}/webapp/WEB-INF/web.xml"
 
         # patch gs-imagegick
 	echo Patching gs-ImageMagick ...
         mv /etc/ImageMagick-6/delegates.xml /etc/ImageMagick-6/delegates.old
-        cp "${ENTERMEDIADB_HOME}/conf/im/delegates.xml" /etc/ImageMagick-6/
+        cp -p "${ENTERMEDIADB_HOME}/conf/im/delegates.xml" /etc/ImageMagick-6/
 
 	mv /etc/ImageMagick-6/policy.xml /etc/ImageMagick-6/policy.old
-	cp "${ENTERMEDIADB_HOME}/conf/im/policy.xml" /etc/ImageMagick-6/
+	cp -p "${ENTERMEDIADB_HOME}/conf/im/policy.xml" /etc/ImageMagick-6/
 
 	echo Restarting Tomcat ...
 	service tomcat${PORT} start
