@@ -1,0 +1,1 @@
+sudo docker run --name mysqldb -v /tmp/mysql_data:/var/lib/mysql -e MYSQL_USER=mysql -e MYSQL_PASSWORD=mysql -e MYSQL_DATABASE=sample -e MYSQL_ROOT_PASSWORD=supersecret -it -p 3306:3306 mysql

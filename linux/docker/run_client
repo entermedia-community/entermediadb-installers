@@ -7,6 +7,9 @@ CLUSTER_NAME=${CLIENT}
 
 ENTERMEDIA_SHARE=/usr/share/entermediadb
 ENDPOINT=/opt/entermediadb/clients/${CLIENT}
+
+# Fix networking
+# echo 'DOCKER_OPTS="--dns 8.8.4.4"' > /etc/default/docker
 # Build image for client
 sudo docker build -t "clients:${CLIENT}" ./entermedia-docker
 

@@ -1,0 +1,23 @@
+#!/bin/bash
+CLIENT=testclient
+DIR_ROOT=/opt/entermediadb/clients/$CLIENT
+#sudo groupadd -g 105 mysql
+#sudo useradd -ms /bin/bash mysql -g mysql -u 102
+#sudo groupadd -g 33 www-data
+#sudo useradd -ms /bin/bash www-data -g www-data -u 33
+#sudo mkdir -p $DIR_ROOT/mysql_data
+#sudo chown -R mysql. $DIR_ROOT/mysql_data
+#sudo chmod 777 $DIR_ROOT/mysql_data
+#sudo mkdir -p $DIR_ROOT/sites/default
+#sudo chown -R www-data. $DIR_ROOT/sites
+#sudo chmod 777 $DIR_ROOT/sites
+sudo docker run -ti \
+	-e "DRUPAL_VERSION=drupal-8" \
+	-e "DRUPAL_DEBUG=true" \
+	-p 8081:80 \
+	-v $DIR_ROOT/sites:/var/www/html/sites \
+	-v $DIR_ROOT/mysql_data:/var/lib/mysql \
+	-v $DIR_ROOT/sites:/tmp/sites \
+	--name drupal8-test boran/drupal /bin/bash
+# Get in it
+#  sudo docker exec -it drupal8-test bash

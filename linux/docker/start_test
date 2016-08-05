@@ -1,0 +1,42 @@
+#!/bin/bash
+sudo docker stop $(sudo docker ps -q) 2>/dev/null
+#sudo docker stop mediadb09
+#sudo docker rm mediadb09
+sudo docker stop mysqldb
+sudo docker rm mysqldb
+#sudo docker stop mysql-db
+#sudo docker rm mysql-db
+#sudo docker stop drupaltest
+#sudo docker rm drupaltest
+sudo rm -rf /tmp/drupal80*
+sudo rm -rf /tmp/mysql_data
+sudo mkdir -p /tmp/drupal8003/www
+sudo mkdir -p /tmp/drupal80003/data
+#sudo mkdir -p /tmp/mysql
+#172.17.0.2
+
+#sudo csf -f
+#sudo service docker restart
+
+#sudo docker run -d --name mysqldb -v my.cnf:/etc/mysql/conf.d/port.cnf -v /tmp/mysql_data:/var/lib/mysql -e MYSQL_USER=mysql -e MYSQL_PASSWORD=mysql -e MYSQL_DATABASE=sample -e MYSQL_ROOT_PASSWORD=supersecret -it -p 8082:8082 mysql
+sudo docker run -d --name mysqldb -v my.cnf:/etc/mysql/conf.d/port.cnf -v /tmp/mysql_data:/var/lib/mysql -e MYSQL_USER=mysql -e MYSQL_PASSWORD=mysql -e MYSQL_DATABASE=sample -e MYSQL_ROOT_PASSWORD=supersecret -it -p 8082:8082 mysql
+
+#sudo docker run -d -t -p 8003:80 -v /tmp/drupal8003/www:/var/www/html -v /tmp/drupal80003/data:/data -e "VIRTUAL_HOST=mediadb09.entermediadb.net" \
+#	-e "MYSQL_HOST=172.17.0.2" -e "MYSQL_DATABASE=sample" -e "MYSQL_USER=mysql" -e "MYSQL_PASSWORD=mysql" \
+#	--name mediadb09 boran/drupal
+
+#sudo docker run -d -t -p 8003:80 -v /tmp/drupal8003/www:/var/www/html -v /tmp/drupal80003/data:/data -e "VIRTUAL_HOST=mediadb09.entermediadb.net" --name mediadb09 boran/drupal
+#sudo docker exec -it mediadb09 bash
+#sudo docker run -d -t -p 8003:80 -v /tmp/drupal8003/www:/var/www/html -v /tmp/drupal80003/data:/data -v /tmp/mysql:/var/lib/mysql -e "VIRTUAL_HOST=mediadb09.entermediadb.net" --name mediadb09 boran/drupal
+#sudo docker stop mediadb09
+#sudo docker start mediadb09
+#sudo docker run --name mysql-db -e MYSQL_ROOT_PASSWORD=my-secret-pw -d mysql:5.6 $ sudo docker run --link mysql-db:mysql-db -d -p 8003:80 -v /tmp/drupal8003/www:/var/www/html
+#sudo docker logs -f mediadb09
+#sudo docker exec -it mediadb09 /bin/bash
+
+# mysql -p mysql -u mysql -h 172.17.0.2 
+echo mysql --password=supersecret -u root 
+echo "CREATE USER 'mysql'@'%' IDENTIFIED BY 'mysql'";
+echo "GRANT ALL PRIVILEGES ON *.* TO 'mysql'@'%' IDENTIFIED BY 'mysql' WITH GRANT OPTION";
+sudo docker exec -it mysqldb /bin/bash
+echo mysql -p mysql -u mysql -h 172.17.0.2 -P 7036
