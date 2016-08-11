@@ -5,22 +5,4 @@ ENTERMEDIADB_HOME=/usr/share/entermediadb
 
         echo Starting EnterMedia ...
 
-        cp -rp "${ENTERMEDIADB_HOME}/conf/ffmpeg" "/home/entermedia/.ffmpeg"
-
-	echo Patching ImageMagick ...
-        cp -rp "${ENTERMEDIADB_HOME}/conf/im/delegates.xml" /etc/ImageMagick-6/delegates.xml
-
-	#echo Updating node.xml cluster name ...
-        #sed "s|%CLUSTER_NAME%|${CLUSTER_NAME}|g" <"${ENTERMEDIADB_HOME}/conf/node.xml.cluster" >"${ENDPOINT}/webapp/WEB-INF/node.xml"
-
-        chown -R entermedia:entermedia /home/entermedia
-
-	echo Linking soffice ...
-        if command -v /usr/bin/soffice >/dev/null 2>&1;
-        then
-                # debian: soffice is already installed in right place
-                :
-        else
-                ln -s /opt/libreoffice5.0/program/soffice /usr/bin/soffice
-        fi
 	su - entermedia -c /opt/entermediadb/tomcat/bin/catalina.sh run 
