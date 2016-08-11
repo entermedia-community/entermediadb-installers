@@ -26,9 +26,9 @@ RUN curl -sS https://getcomposer.org/installer | php && \
     COMPOSER_HOME=/opt/composer composer --quiet global require drush/drush:dev-master && \
     ln -sf /opt/composer/vendor/drush/drush/drush /bin/drush
 # Add drush comand https://www.drupal.org/project/registry_rebuild
-RUN wget http://ftp.drupal.org/files/projects/registry_rebuild-7.x-2.2.tar.gz && \
-    tar xzf registry_rebuild-7.x-2.2.tar.gz && \
-    rm registry_rebuild-7.x-2.2.tar.gz && \
+RUN wget https://ftp.drupal.org/files/projects/registry_rebuild-7.x-2.3.tar.gz && \
+    tar xzf registry_rebuild-7.x-2.23.tar.gz && \
+    rm registry_rebuild-7.x-2.3.tar.gz && \
     mv registry_rebuild /opt/composer/vendor/drush/drush/commands
 #RUN sed -i '1i export PATH="$HOME/.composer/vendor/bin:$PATH"' /root/.bashrc
 RUN /bin/drush --version
