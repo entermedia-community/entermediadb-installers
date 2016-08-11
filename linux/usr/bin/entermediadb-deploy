@@ -5,7 +5,6 @@ ENTERMEDIADB_HOME=/usr/share/entermediadb
 
         echo Starting EnterMedia ...
 
-        adduser entermedia
         cp -rp "${ENTERMEDIADB_HOME}/conf/ffmpeg" "/home/entermedia/.ffmpeg"
 
 	echo Patching ImageMagick ...
