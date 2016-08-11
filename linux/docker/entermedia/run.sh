@@ -1,6 +1,6 @@
 #!/bin/bash -x
 PORT=8081
-CLIENT=test2
+CLIENT=unitednations
 
 NODE_ID=test2${PORT}
 CLUSTER_NAME=${CLIENT}
