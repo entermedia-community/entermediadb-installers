@@ -5,4 +5,4 @@ ENTERMEDIADB_HOME=/usr/share/entermediadb
 
         echo Starting EnterMedia ...
 
-	su - entermedia -c ${ENDPOINT}/tomcat/bin/catalina.sh run 
+	${ENDPOINT}/tomcat/bin/catalina.sh run 
