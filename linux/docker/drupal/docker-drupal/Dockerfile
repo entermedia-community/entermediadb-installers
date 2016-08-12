@@ -21,15 +21,15 @@ RUN apt-get -qy install git vim-tiny curl wget pwgen \
 
 # drush: instead of installing a package, pull via composer into /opt/composer
 # http://www.whaaat.com/installing-drush-7-using-composer
-RUN curl -sS https://getcomposer.org/installer | php && \
-    mv composer.phar /usr/local/bin/composer && \
-    COMPOSER_HOME=/opt/composer composer --quiet global require drush/drush:dev-master && \
-    ln -sf /opt/composer/vendor/drush/drush/drush /bin/drush
+RUN curl -sS https://getcomposer.org/installer | php
+RUN mv composer.phar /usr/local/bin/composer
+RUN HOME=/opt/composer && COMPOSER_HOME=/opt/composer && composer global require drush/drush:~8
+RUN ln -sf /opt/composer/.composer/vendor/drush/drush/drush /bin/drush
 # Add drush comand https://www.drupal.org/project/registry_rebuild
 RUN wget https://ftp.drupal.org/files/projects/registry_rebuild-7.x-2.3.tar.gz && \
-    tar xzf registry_rebuild-7.x-2.23.tar.gz && \
+    tar xzf registry_rebuild-7.x-2.3.tar.gz && \
     rm registry_rebuild-7.x-2.3.tar.gz && \
-    mv registry_rebuild /opt/composer/vendor/drush/drush/commands
+    mv registry_rebuild /opt/composer/.composer/vendor/drush/drush/commands
 #RUN sed -i '1i export PATH="$HOME/.composer/vendor/bin:$PATH"' /root/.bashrc
 RUN /bin/drush --version
 RUN /bin/drush dl drush_language-7.x
@@ -59,7 +59,7 @@ ENV \
    
   # B) a specific vanilla version via drush 
   # What version of drupal is to be installed (see drush sl syntax): drupal-6, drupal-7, drupal-7.x (dev), 8.0.x-dev
-  #DRUPAL_VERSION=drupal-7
+  DRUPAL_VERSION=drupal-7.x \
    
   # C) Install via Drush make
   #DRUPAL_MAKE_DIR=drupal-make1
@@ -135,6 +135,7 @@ VOLUME ["/var/www/html", "/data"]
 WORKDIR /var
 # Automate starting of mysql+apache, allow bash for debugging
 RUN chmod 755 /start.sh /etc/apache2/foreground.sh
+RUN chown -R www-data. /var/www/html
 EXPOSE 80
 CMD ["/bin/bash", "/start.sh"]
 

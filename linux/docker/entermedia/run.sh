@@ -37,6 +37,7 @@ chown -R entermedia. "${ENDPOINT}"
 docker build -t "clients:${CLIENT}" ./entermedia-docker
 
 # Run catalina in image to keep alive
+# If you want to run catalina.sh yourself (better logs), then append /bin/bash to the following command to override default
 docker run --name ${CLIENT}_entermedia -p $PORT:$PORT \
 	-v ${ENDPOINT}/webapp:/opt/entermediadb/webapp \
 	-v ${ENDPOINT}/data:/opt/entermediadb/webapp/WEB-INF/data \
