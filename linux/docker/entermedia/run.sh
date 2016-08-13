@@ -1,4 +1,10 @@
 #!/bin/bash -x
+# To start and stop this, do the following:
+# sudo docker stop unitednations_entermedia
+# sudo docker start unitednations_entermedia
+#
+# This process will remount any drives that were attached at runtime
+
 PORT=8899
 CLIENT=unitednations
 
