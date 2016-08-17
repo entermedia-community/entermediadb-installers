@@ -26,10 +26,10 @@ RUN mv composer.phar /usr/local/bin/composer
 RUN HOME=/opt/composer && COMPOSER_HOME=/opt/composer && composer global require drush/drush:~8
 RUN ln -sf /opt/composer/.composer/vendor/drush/drush/drush /bin/drush
 # Add drush comand https://www.drupal.org/project/registry_rebuild
-RUN wget https://ftp.drupal.org/files/projects/registry_rebuild-7.x-2.3.tar.gz && \
-    tar xzf registry_rebuild-7.x-2.3.tar.gz && \
-    rm registry_rebuild-7.x-2.3.tar.gz && \
-    mv registry_rebuild /opt/composer/.composer/vendor/drush/drush/commands
+RUN wget https://ftp.drupal.org/files/projects/registry_rebuild-7.x-2.3.tar.gz
+RUN tar xzf registry_rebuild-7.x-2.3.tar.gz
+RUN rm registry_rebuild-7.x-2.3.tar.gz
+RUN mv registry_rebuild /opt/composer/.composer/vendor/drush/drush/commands
 #RUN sed -i '1i export PATH="$HOME/.composer/vendor/bin:$PATH"' /root/.bashrc
 RUN /bin/drush --version
 RUN /bin/drush dl drush_language-7.x
