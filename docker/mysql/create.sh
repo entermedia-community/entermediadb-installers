@@ -13,7 +13,7 @@ sudo docker stop unmysql
 sudo docker rm unmysql
 
 
-sudo docker run --name unmysql -v $DIR_ROOT/mysql:/var/lib/mysql -p 3306:3306 -d emmysql  /sbin/my_init
+sudo docker run --name unmysql -v $DIR_ROOT/mysql:/var/lib/mysql -p 127.0.0.1:3306:3306 -d emmysql  /sbin/my_init
 echo mysql -u root -h 172.17.0.2 -P 3306 -p
 echo mysql --password=supersecret -u root 
 echo "CREATE USER 'drupal';"
