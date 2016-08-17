@@ -5,14 +5,14 @@
 #
 # This process will remount any drives that were attached at runtime
 
-PORT=8899
-CLIENT=unitednations
+PORT=$2
+CLIENT=$1
 
-NODE_ID=test2${PORT}
+NODE_ID=${PORT}
 CLUSTER_NAME=${CLIENT}
 
 ENTERMEDIA_SHARE=/usr/share/entermediadb
-ENDPOINT=/opt/entermediadb/clients/${CLIENT}
+ENDPOINT=/media/clients/${CLIENT}
 
 
 # Make client mount area
@@ -44,11 +44,12 @@ docker build -t "clients:${CLIENT}" ./entermedia-docker
 
 # Run catalina in image to keep alive
 # If you want to run catalina.sh yourself (better logs), then append /bin/bash to the following command to override default
-docker run --name ${CLIENT}_entermedia -p $PORT:$PORT \
+docker run -d --name ${CLIENT}_entermedia -p $PORT:$PORT \
 	-v ${ENDPOINT}/webapp:/opt/entermediadb/webapp \
 	-v ${ENDPOINT}/data:/opt/entermediadb/webapp/WEB-INF/data \
 	-v ${ENDPOINT}/tomcat${PORT}:/opt/entermediadb/tomcat \
 	-v ${ENDPOINT}/.ffmpeg:/home/entermedia/ \
 	-v ${ENDPOINT}/delegates.xml:/etc/ImageMagick-6/delegates.xml \
+	-v ${ENDPOINT}/elastic:/opt/entermediadb/webapp/WEB-INF/elastic \
 	clients:${CLIENT}
 #	/usr/bin/entermediadb-deploy /opt/entermediadb
