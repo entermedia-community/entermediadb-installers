@@ -1,8 +1,0 @@
-#!/bin/bash
-# Assumes that EnterMedia has been installed in /usr/share/entermediadb
-ENDPOINT=${1}
-ENTERMEDIADB_HOME=/usr/share/entermediadb
-
-        echo Starting EnterMedia ...
-
-	${ENDPOINT}/tomcat/bin/catalina.sh run 
