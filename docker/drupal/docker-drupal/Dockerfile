@@ -22,7 +22,7 @@ RUN { \
 
 RUN curl -sS https://getcomposer.org/installer | php
 RUN mv composer.phar /usr/local/bin/composer
-RUN PATH="$HOME/.composer/vendor/bin:$PATH" && composer --quiet global require drush/drush:7.x
+RUN PATH="$HOME/.composer/vendor/bin:$PATH" && composer --quiet global require drush/drush:dev-master
 RUN ln -sf ~/.composer/vendor/bin/drush /bin/drush
 RUN /bin/drush dl drush_language-7.x
 
