@@ -5,6 +5,8 @@
 #
 # This process will remount any drives that were attached at runtime
 
+# To build: sudo docker build -t entermediadb9:latest entermedia-docker
+
 PORT=$2
 CLIENT=$1
 
@@ -55,5 +57,5 @@ docker run -d --name ${CLIENT}_entermedia -p $PORT:$PORT \
 	-v ${ENDPOINT}/data:/opt/entermediadb/webapp/WEB-INF/data \
 	-v ${ENDPOINT}/logs${PORT}:/opt/entermediadb/tomcat/logs \
 	-v ${ENDPOINT}/elastic:/opt/entermediadb/webapp/WEB-INF/elastic \
-	clients:${CLIENT}
+	entermediadb9
 #	/usr/bin/entermediadb-deploy /opt/entermediadb
