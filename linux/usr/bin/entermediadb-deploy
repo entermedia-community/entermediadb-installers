@@ -1,10 +1,10 @@
 #!/bin/bash
 # Variables CLIENT_NAME and INSTANCE_PORT should be coming from Docker ENV
-	if [[ ! -d /opt/entermediadb/webapp/WEB-INF ]]; do
+	if [[ ! -d /opt/entermediadb/webapp/WEB-INF ]]; then
 	  cp -rp /usr/share/entermediadb/webapp /opt/entermediadb/
 	  # This includes the internal data directory which should be mapped out by run volume
 	fi
-	if [[ ! -d /opt/entermediadb/tomcat/conf ]]; do
+	if [[ ! -d /opt/entermediadb/tomcat/conf ]]; then
 	  # make links and copy stuff
           mkdir -p "/opt/entermediadb/tomcat"/{logs,temp}
           cp -rp "/usr/share/entermediadb/tomcat/conf" "/opt/entermediadb/tomcat"
