@@ -1,5 +1,5 @@
 # from https://www.drupal.org/requirements/php#drupalversions
-FROM php:7.0-apache
+FROM php:5-apache
 
 RUN a2enmod rewrite
 
@@ -19,6 +19,12 @@ RUN { \
 		echo 'opcache.fast_shutdown=1'; \
 		echo 'opcache.enable_cli=1'; \
 	} > /usr/local/etc/php/conf.d/opcache-recommended.ini
+
+RUN curl -sS https://getcomposer.org/installer | php
+RUN mv composer.phar /usr/local/bin/composer
+RUN PATH="$HOME/.composer/vendor/bin:$PATH" && composer --quiet global require drush/drush:dev-master
+RUN ln -sf ~/.composer/vendor/bin/drush /bin/drush
+RUN /bin/drush dl drush_language-7.x
 
 WORKDIR /var/www/html
 RUN chown -R www-data. ./
