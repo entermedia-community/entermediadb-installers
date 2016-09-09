@@ -121,6 +121,11 @@ done
 # Get standard environment variables
 PRGDIR=`dirname "$PRG"`
 
+if [ -n "$2" ]
+then	
+	_RUNJAVA="$_RUNJAVA $2"
+fi
+
 # Only set CATALINA_HOME if not already set
 [ -z "$CATALINA_HOME" ] && CATALINA_HOME=`cd "$PRGDIR/.." >/dev/null; pwd`
 
