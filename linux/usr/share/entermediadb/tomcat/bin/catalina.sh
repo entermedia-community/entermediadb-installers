@@ -121,16 +121,12 @@ done
 # Get standard environment variables
 PRGDIR=`dirname "$PRG"`
 
-if [ -n "$2" ]
-then	
-	_RUNJAVA="$_RUNJAVA $2"
-fi
-
 # Only set CATALINA_HOME if not already set
 [ -z "$CATALINA_HOME" ] && CATALINA_HOME=`cd "$PRGDIR/.." >/dev/null; pwd`
 
 # Copy CATALINA_BASE from CATALINA_HOME if not already set
 [ -z "$CATALINA_BASE" ] && CATALINA_BASE="$CATALINA_HOME"
+
 
 # Ensure that neither CATALINA_HOME nor CATALINA_BASE contains a colon
 # as this is used as the separator in the classpath and Java provides no
@@ -421,35 +417,12 @@ elif [ "$1" = "stop" ] ; then
 
   shift
 
-  SLEEP=5
+  SLEEP=30
   if [ ! -z "$1" ]; then
     echo $1 | grep "[^0-9]" >/dev/null 2>&1
     if [ $? -gt 0 ]; then
       SLEEP=$1
       shift
-    fi
-  fi
-
-  FORCE=0
-  if [ "$1" = "-force" ]; then
-    shift
-    FORCE=1
-  fi
-
-  if [ ! -z "$CATALINA_PID" ]; then
-    if [ -f "$CATALINA_PID" ]; then
-      if [ -s "$CATALINA_PID" ]; then
-        kill -0 `cat "$CATALINA_PID"` >/dev/null 2>&1
-        if [ $? -gt 0 ]; then
-          echo "PID file found but no matching process was found. Stop aborted."
-          exit 1
-        fi
-      else
-        echo "PID file is empty and has been ignored."
-      fi
-    else
-      echo "\$CATALINA_PID was set but the specified file does not exist. Is Tomcat running? Stop aborted."
-      exit 1
     fi
   fi
 
@@ -460,82 +433,26 @@ elif [ "$1" = "stop" ] ; then
     -Djava.io.tmpdir="\"$CATALINA_TMPDIR\"" \
     org.apache.catalina.startup.Bootstrap "$@" stop
 
-  # stop failed. Shutdown port disabled? Try a normal kill.
-  if [ $? != 0 ]; then
-    if [ ! -z "$CATALINA_PID" ]; then
-      echo "The stop command failed. Attempting to signal the process to stop through OS signal."
-      kill -15 `cat "$CATALINA_PID"` >/dev/null 2>&1
-    fi
-  fi
-
-  if [ ! -z "$CATALINA_PID" ]; then
-    if [ -f "$CATALINA_PID" ]; then
+     CATALINAPID=`pgrep -f "$CATALINA_BASE/conf/logging.properties"`
+     if [ -n "$CATALINAPID" ]; then
+	echo "Tomcat stopping pid: $CATALINAPID"
+      kill -15 $CATALINAPID >/dev/null 2>&1
       while [ $SLEEP -ge 0 ]; do
-        kill -0 `cat "$CATALINA_PID"` >/dev/null 2>&1
+        kill -0 $CATALINAPID >/dev/null 2>&1
         if [ $? -gt 0 ]; then
-          rm -f "$CATALINA_PID" >/dev/null 2>&1
-          if [ $? != 0 ]; then
-            if [ -w "$CATALINA_PID" ]; then
-              cat /dev/null > "$CATALINA_PID"
-              # If Tomcat has stopped don't try and force a stop with an empty PID file
-              FORCE=0
-            else
-              echo "The PID file could not be removed or cleared."
-            fi
-          fi
-          echo "Tomcat stopped."
+          echo "Tomcat stopped. $CATALINAPID"
           break
         fi
         if [ $SLEEP -gt 0 ]; then
           sleep 1
-        fi
-        if [ $SLEEP -eq 0 ]; then
-          if [ $FORCE -eq 0 ]; then
-            echo "Tomcat did not stop in time. PID file was not removed. To aid diagnostics a thread dump has been written to standard out."
-            kill -3 `cat "$CATALINA_PID"`
-          fi
+	else
+	  echo "Tomcat could not be stopped, killing pid. $CATALINAPID"
+          kill -9 $CATALINAPID
         fi
         SLEEP=`expr $SLEEP - 1 `
+	printf .
       done
     fi
-  fi
-
-  KILL_SLEEP_INTERVAL=5
-  if [ $FORCE -eq 1 ]; then
-    if [ -z "$CATALINA_PID" ]; then
-      echo "Kill failed: \$CATALINA_PID not set"
-    else
-      if [ -f "$CATALINA_PID" ]; then
-        PID=`cat "$CATALINA_PID"`
-        echo "Killing Tomcat with the PID: $PID"
-        kill -9 $PID
-        while [ $KILL_SLEEP_INTERVAL -ge 0 ]; do
-            kill -0 `cat "$CATALINA_PID"` >/dev/null 2>&1
-            if [ $? -gt 0 ]; then
-                rm -f "$CATALINA_PID" >/dev/null 2>&1
-                if [ $? != 0 ]; then
-                    if [ -w "$CATALINA_PID" ]; then
-                        cat /dev/null > "$CATALINA_PID"
-                    else
-                        echo "The PID file could not be removed."
-                    fi
-                fi
-                # Set this to zero else a warning will be issued about the process still running
-                KILL_SLEEP_INTERVAL=0
-                echo "The Tomcat process has been killed."
-                break
-            fi
-            if [ $KILL_SLEEP_INTERVAL -gt 0 ]; then
-                sleep 1
-            fi
-            KILL_SLEEP_INTERVAL=`expr $KILL_SLEEP_INTERVAL - 1 `
-        done
-        if [ $KILL_SLEEP_INTERVAL -gt 0 ]; then
-            echo "Tomcat has not been killed completely yet. The process might be waiting on some system call or might be UNINTERRUPTIBLE."
-        fi
-      fi
-    fi
-  fi
 
 elif [ "$1" = "configtest" ] ; then
 
