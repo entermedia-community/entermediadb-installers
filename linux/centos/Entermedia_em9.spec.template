@@ -50,7 +50,6 @@ rm -rf ${RPM_BUILD_ROOT}
 %files
 %{_bindir}/entermediadb
 %{_bindir}/qt-faststart
-%{_bindir}/entermediadb-deploy
 /usr/share/entermediadb
 
 %changelog

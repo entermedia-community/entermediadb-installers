@@ -33,7 +33,7 @@ if [ "$TOMCAT7_SECURITY" = "yes" ]; then
 fi
 
 # Define other required variables
-CATALINA_PID="/var/run/$NAME.pid"
+CATALINA_PID="/var/run/$0.pid"
 CATALINA_SH="$CATALINA_BASE/bin/catalina.sh"
 
 if [ -z "${JSSE_HOME}" -a -r "${JAVA_HOME}/jre/lib/jsse.jar" ]; then
