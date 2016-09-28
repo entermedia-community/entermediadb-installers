@@ -1,0 +1,5 @@
+[btsync]
+name=Resilio Sync $basearch
+baseurl=http://linux-packages.resilio.com/resilio-sync/rpm/$basearch
+enabled=1
+gpgcheck=1
