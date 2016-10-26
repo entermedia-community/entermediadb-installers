@@ -25,6 +25,7 @@ if [ ! $USER = "entermedia" ]; then
     exit
 fi
 
+
 # Better OS/400 detection: see Bugzilla 31132
 os400=false
 case "`uname`" in
