@@ -3,7 +3,7 @@ DOMAIN=$1
 PASS=qazwsxedc
 #https://letsencrypt.org/getting-started/
 
-sudo yum install -y git
+[[ -f $(which git) ]] || sudo yum install -y git
 git clone https://github.com/letsencrypt/letsencrypt
 
 cd letsencrypt
