@@ -51,6 +51,7 @@ rm -rf ${RPM_BUILD_ROOT}
 %{_bindir}/entermediadb
 %{_bindir}/qt-faststart
 /usr/share/entermediadb
+%attr(755, entermedia, entermedia, -) /usr/share/entermediadb/webapp/WEB-INF/bin/linux/*.sh
 
 %changelog
 * Tue Jul 19 2016 Adam Bellows <adam@entermediadb.org> 1.0-3
