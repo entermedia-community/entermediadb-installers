@@ -1,5 +1,5 @@
-%global VERSION  6.9.3
-%global Patchlevel  7
+%global VERSION  7.0.6
+%global Patchlevel  1
 
 Name:           ImageMagick
 Version:        %{VERSION}
