@@ -20,20 +20,15 @@ fi
 #sudo yum install -y 
 
 mkdir -p "${TOPLEVEL}/SOURCES"
-#wget http://www.imagemagick.org/download/releases/ImageMagick-6.9.1-9.tar.bz2
-#wget http://ftp.sunet.se/pub/multimedia/graphics/ImageMagick/releases/ImageMagick-6.9.1-9.tar.bz2
-#wget http://www.imagemagick.org/download/releases/ImageMagick-6.9.2-4.tar.bz2
-#wget http://www.imagemagick.org/download/releases/ImageMagick-6.9.3-0.tar.gz
 
-#wget http://www.imagemagick.org/download/releases/ImageMagick-6.9.3-7.tar.gz
-wget http://www.imagemagick.org/download/releases/ImageMagick-7.0.6-1.tar.gz
+### Get Latest URL from: https://www.imagemagick.org/download/
+wget https://www.imagemagick.org/download/ImageMagick-7.0.7-11.tar.bz2
 
-
-cp ImageMagick-7.0.6-1.tar.gz ${TOPLEVEL}/SOURCES
+cp ImageMagick-7.0.7-11.tar.bz2 ${TOPLEVEL}/SOURCES
 cp ImageMagick.spec ${TOPLEVEL}/SPECS
 cp *.patch ${TOPLEVEL}/SOURCES
 
 rpmbuild -bs -vv ${TOPLEVEL}/SPECS/ImageMagick.spec
-sudo yum-builddep -v ${TOPLEVEL}/SRPMS/ImageMagick-7.0.6-1.src.rpm 
-rpmbuild --rebuild -vv ${TOPLEVEL}/SRPMS/ImageMagick-7.0.6-1.src.rpm 
+sudo yum-builddep -v ${TOPLEVEL}/SRPMS/ImageMagick-7.0.7-11.src.rpm 
+rpmbuild --rebuild -vv ${TOPLEVEL}/SRPMS/ImageMagick-7.0.7-11.src.rpm
 

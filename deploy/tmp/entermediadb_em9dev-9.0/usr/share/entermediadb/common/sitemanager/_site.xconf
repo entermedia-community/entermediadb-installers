@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<page>
+
+  <property name="fallbackdirectory">/WEB-INF/base/emfrontend</property>
+
+  <property name="title">Site Manager</property>
+  <property name="catalogid">system</property>
+  <property name="applicationid">sitemanager</property>
+  <property name="hostingdomain">learningmediadb.com</property>
+
+  <Xstyle id="app-css" href="${themeprefix}/styles/theme.css"/>
+  <style id="bootstrap" href='/${applicationid}/components/bootstrap/css/bootstrap.min.css' />
+ 
+  <script id="jquery" src="/${applicationid}/components/javascript/jquery-1.11.0.min.js"/>
+  <script id="jquery-ui" src="/${applicationid}/components/javascript/jquery-ui-1.8.12.custom.min.js"/>
+  <script id="jquery-livequery" src="/${applicationid}/components/javascript/jquery.livequery.js"/>
+  <script id="bootstrap" src="/${applicationid}/components/bootstrap/js/bootstrap.js" />
+  
+   	<path-action name="MediaArchiveModule.loadApplicationId" />
+  
+  	<path-action bean="pageManager" name="PageValue.loadPageVariable" allowduplicates="true" />		
+  	<path-action bean="searcherManager" name="PageValue.loadPageVariable" allowduplicates="true" />		
+    <path-action name="SessionValue.loadSessionVariable" bean="moduleManager" allowduplicates="true" />
+  
+ 
+  <layout>/${applicationid}/theme/layouts/layout.html</layout>
+
+
+</page>

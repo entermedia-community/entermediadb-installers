@@ -23,11 +23,15 @@ fi
 #cp ../sources/* ${TOPLEVEL}/SOURCES
 #wget ftp://rpmfind.net/linux/fedora-secondary/updates/19/source/SRPMS/g/ghostscript-9.07-10.fc19.src.rpm
 
-cp ghostscript-9.18.tar.gz  ${TOPLEVEL}/SOURCES
+#wget https://github.com/ArtifexSoftware/ghostpdl-downloads/releases/download/gs922/ghostscript-9.22.tar.gz
+
+cp ghostscript-9.22.tar.gz  ${TOPLEVEL}/SOURCES
 cp cidfmap ${TOPLEVEL}/SOURCES
 cp CIDFnmap ${TOPLEVEL}/SOURCES
-cp ../../specs/ghostscript.spec ${TOPLEVEL}/SPECS
+#Patches
+cp ghostscript-9.20-run* ${TOPLEVEL}/SOURCES
+cp ghostscript.spec ${TOPLEVEL}/SPECS
 
 rpmbuild -bs -vv ${TOPLEVEL}/SPECS/ghostscript.spec
-sudo yum-builddep ${TOPLEVEL}/SRPMS/ghostscript-9.18-7.el7.centos.src.rpm 
-rpmbuild --rebuild ${TOPLEVEL}/SRPMS/ghostscript-9.18-7.el7.centos.src.rpm
+sudo yum-builddep ${TOPLEVEL}/SRPMS/ghostscript-9.22-7.el7.centos.src.rpm 
+#rpmbuild --rebuild ${TOPLEVEL}/SRPMS/ghostscript-9.22-7.el7.centos.src.rpm

@@ -1,0 +1,6 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<root> 
+  <data id="1428692544535" name="EM Share" module="asset" deploypath="/%client_id/emshare"/> 
+  <data id="1428692544536" name="MediaDB" module="asset" deploypath="/%client_id/mediadb"/>
+</root>
