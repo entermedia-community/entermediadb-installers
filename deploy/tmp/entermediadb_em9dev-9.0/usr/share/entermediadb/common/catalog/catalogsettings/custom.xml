@@ -1,6 +1,0 @@
-<?xml version="1.0" encoding="UTF-8"?>
-
-<root> 
-  <data id="mediadbappid" name="MediaDB Application ID" value="%client_id/mediadb"/>  
-  <data id="cdn_prefix" name="CDN Prefix" namesorted="CDN Prefix" value="http://d3lx96450149dy.cloudfront.net"/> 
-</root>

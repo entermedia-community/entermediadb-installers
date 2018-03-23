@@ -1,7 +1,0 @@
-<page>
-
-    <path-action name="Script.run">
-		<script>./savecatalog.groovy</script>
-	</path-action>
-
-</page>

@@ -1,4 +1,0 @@
-PROD_SERVER=
-PULL_DATA=false
-EMAIL_NOTIFICATION=true
-EMAIL_ADDRESS=test@emailaddress.com
