@@ -14,8 +14,8 @@ if [[ ! -d "$TOPLEVEL/SPECS" ]]; then
 	mkdir -p ${TOPLEVEL}/SPECS
 fi
 
-cp -p specs/* ${TOPLEVEL}/SPECS
-cp -p sources/* ${TOPLEVEL}/SOURCES
+cp -p $CWD/specs/* ${TOPLEVEL}/SPECS
+cp -p $CWD/sources/* ${TOPLEVEL}/SOURCES
 
 ALL=true
 if [ "$#" -eq 1 ]; then

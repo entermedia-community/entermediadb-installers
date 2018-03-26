@@ -9,7 +9,7 @@ USER=$WHOAMI
 RPM="/bin/rpm"
 GREEN='\e[0;32m' # '\e[1;32m' is too bright for white bg.
 ENDCOLOR='\e[0m'
-TOPLEVEL=/home/$USER/workspace/git/entermediadb-installers/deploy
+TOPLEVEL=/workspace/git/entermediadb-installers/deploy
 RPMFOLDER="${TOPLEVEL}/RPMS"
 
 if [[ "$WHOAMI" != "root" ]]; then
