@@ -19,13 +19,6 @@
 # Start Script for the CATALINA Server
 # -----------------------------------------------------------------------------
 
-if [ ! $USER = "entermedia" ]; then
-    echo "For system reliability, you must run as entermedia user."
-    echo "Aborting..."
-    exit
-fi
-
-
 # Better OS/400 detection: see Bugzilla 31132
 os400=false
 case "`uname`" in
