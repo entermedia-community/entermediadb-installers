@@ -17,7 +17,7 @@ sed "s/{{RELEASE}}/${RELEASE}/g;s/{{VERSION}}/${VERSION}/g;" $INPUT/Entermedia${
 cd $DEPLOY
 rpmbuild --rebuild SRPMS/entermediadb*  || { echo "rpmbuild failed"; exit 1; }
 
-cp ./RPMS/x86_64/*.rpm $REPO/$PLATFORM/6/x86_64/rpms
+#cp ./RPMS/x86_64/*.rpm $REPO/$PLATFORM/6/x86_64/rpms
 cp ./RPMS/x86_64/*.rpm $REPO/$PLATFORM/7/x86_64/rpms
 
 #this is not done on the build server in manual_rpms_em9dev.sh
