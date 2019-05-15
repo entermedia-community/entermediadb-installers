@@ -10,7 +10,7 @@ License: 	GPL
 URL:		https://github.com/entermedia-community
 Vendor: 	EnterMedia Software, Inc.
 BuildRoot: 	%{_tmppath}/%{name}-root
-Requires: 	java-1.8.0-openjdk  lame ImageMagick libav perl-Image-ExifTool ghostscript gimp  libreoffice5.0-en-US libreoffice5.0-draw libreoffice5.0-impress libreoffice5.0-calc libreoffice5.0-writer libGL ufraw libwebp-tools
+Requires: 	jdk-12  lame ImageMagick libav perl-Image-ExifTool ghostscript gimp  libreoffice5.0-en-US libreoffice5.0-draw libreoffice5.0-impress libreoffice5.0-calc libreoffice5.0-writer libGL ufraw libwebp-tools
 Source0: 	entermediadb-%{version}.tar.gz
 BuildArch: 	x86_64
 
