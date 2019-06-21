@@ -115,6 +115,9 @@ esac
 # resolve links - $0 may be a softlink
 PRG="$0"
 
+ ulimit -u 20000;ulimit -n 1024000
+
+
 while [ -h "$PRG" ]; do
   ls=`ls -ld "$PRG"`
   link=`expr "$ls" : '.*-> \(.*\)$'`
