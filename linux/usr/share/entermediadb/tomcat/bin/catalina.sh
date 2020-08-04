@@ -206,7 +206,7 @@ fi
 CLASSPATH="$CLASSPATH""$CATALINA_HOME"/bin/bootstrap.jar
 
 if [ -z "$CATALINA_OUT" ] ; then
-  CATALINA_OUT="$CATALINA_BASE"/logs/catalina.out
+  CATALINA_OUT=/dev/console
 fi
 
 if [ -z "$CATALINA_TMPDIR" ] ; then
@@ -417,7 +417,7 @@ elif [ "$1" = "start" ] ; then
   fi
 
   shift
-  touch "$CATALINA_OUT"
+  #touch "$CATALINA_OUT"
   if [ "$1" = "-security" ] ; then
     if [ $have_tty -eq 1 ]; then
       echo "Using Security Manager"
