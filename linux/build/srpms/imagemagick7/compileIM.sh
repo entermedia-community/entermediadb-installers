@@ -18,7 +18,7 @@ fi
 #sudo rpm -Uvh rpmforge-release-0.5.2-2.el6.rf.x86_64.rpm
 
 #sudo yum install -y 
-
+#sudo yum install -y libtool-ltdl-devel
 mkdir -p "${TOPLEVEL}/SOURCES"
 
 IMGVERSION=7.0.10-31
