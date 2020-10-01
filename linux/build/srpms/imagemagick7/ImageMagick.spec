@@ -1,5 +1,5 @@
-%global VERSION  7.0.7
-%global Patchlevel  11
+%global VERSION  7.0.10
+%global Patchlevel  31
 
 
 Name:           ImageMagick

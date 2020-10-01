@@ -21,14 +21,15 @@ fi
 
 mkdir -p "${TOPLEVEL}/SOURCES"
 
+IMGVERSION=7.0.10-31
 ### Get Latest URL from: https://www.imagemagick.org/download/
-wget https://www.imagemagick.org/download/ImageMagick-7.0.7-11.tar.bz2
+wget https://www.imagemagick.org/download/ImageMagick-$IMGVERSION.tar.bz2
 
-cp ImageMagick-7.0.7-11.tar.bz2 ${TOPLEVEL}/SOURCES
+cp ImageMagick-$IMGVERSION.tar.bz2 ${TOPLEVEL}/SOURCES
 cp ImageMagick.spec ${TOPLEVEL}/SPECS
 cp *.patch ${TOPLEVEL}/SOURCES
 
 rpmbuild -bs -vv ${TOPLEVEL}/SPECS/ImageMagick.spec
-sudo yum-builddep -v ${TOPLEVEL}/SRPMS/ImageMagick-7.0.7-11.src.rpm 
-rpmbuild --rebuild -vv ${TOPLEVEL}/SRPMS/ImageMagick-7.0.7-11.src.rpm
+sudo yum-builddep -v ${TOPLEVEL}/SRPMS/ImageMagick-$IMGVERSION.src.rpm 
+rpmbuild --rebuild -vv ${TOPLEVEL}/SRPMS/ImageMagick-$IMGVERSION.src.rpm
 
