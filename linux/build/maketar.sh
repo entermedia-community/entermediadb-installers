@@ -9,13 +9,13 @@ DOWNLOAD=
 VERSION=$(cat ../../VERSION${BRANCH}.md)
 
 if [[ "$BRANCH" == "_dev" ]] ; then
-	DOWNLOAD="dev_"
+	DOWNLOAD="dev_demoall"
 elif [[ "$BRANCH" == "_em9" ]] ; then
-	DOWNLOAD="em9_"
+	DOWNLOAD="em9_"demoall
 elif [[ "$BRANCH" == "_em9dev" ]] ; then
-	DOWNLOAD="em9dev_"
+	DOWNLOAD="em9dev_demoall"
 elif [[ "$BRANCH" == "_em10dev" ]] ; then
-	DOWNLOAD="em10_"
+	DOWNLOAD="em10_release"
 fi
 
 set -x 
@@ -27,7 +27,8 @@ mkdir -p ${TMPDEST}
 cp -rp ../../linux/usr ${TMPDEST}
 cp -rp ../../linux/$PLATFORM/qt-faststart ${TMPDEST}/usr/bin
 
-wget  -N  http://dev.entermediadb.org/jenkins/job/${DOWNLOAD}demoall/lastSuccessfulBuild/artifact/deploy/ROOT.war -O /tmp/ROOT.WAR >/dev/null 2>&1
+#wget  -N  http://dev.entermediadb.org/jenkins/job/${DOWNLOAD}demoall/lastSuccessfulBuild/artifact/deploy/ROOT.war -O /tmp/ROOT.WAR >/dev/null 2>&1
+wget  -N  http://dev.entermediadb.org/jenkins/job/${DOWNLOAD}/lastSuccessfulBuild/artifact/deploy/ROOT.war -O /tmp/ROOT.WAR >/dev/null 2>&1
 
 mkdir -p ${TMPDEST}/usr/share/entermediadb/webapp
 unzip  /tmp/ROOT.WAR -d ${TMPDEST}/usr/share/entermediadb/webapp > /dev/null
