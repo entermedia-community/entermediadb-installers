@@ -1,17 +1,18 @@
 <node id="singlenode" name="Default Single Node">
 
     <property id="cluster.name">%CLUSTER_NAME%</property>
-     <property id="index.number_of_replicas">1</property>
-     <property id="index.number_of_shards">5</property>
-     <property id="index.mapping._id.indexed">true</property>
+    <property id="index.number_of_replicas">0</property>
+    <property id="index.number_of_shards">5</property>
+    <property id="index.mapping._id.indexed">true</property>
     <property id="path.home">${webroot}/WEB-INF/elastic/${nodeid}</property>
 
     <property id="path.data">${webroot}/WEB-INF/elastic/${nodeid}/data</property>
-     <property id="path.logs">${webroot}/WEB-INF/elastic/${nodeid}/logs</property>
-     <property id="path.work">${webroot}/WEB-INF/elastic/${nodeid}/work</property>
-     <property id="repo.root.location">${webroot}/WEB-INF/elastic/repos</property>     
-     <property id="path.repo">${webroot}/WEB-INF/elastic/repos</property>     
+    <property id="path.logs">${webroot}/WEB-INF/elastic/${nodeid}/logs</property>
+    <property id="path.work">${webroot}/WEB-INF/elastic/${nodeid}/work</property>
+    <property id="repo.root.location">${webroot}/WEB-INF/elastic/repos</property>     
+    <property id="path.repo">${webroot}/WEB-INF/elastic/repos</property>     
 
-	 <property id="discovery.zen.ping.unicast.hosts">localhost</property>
-	  
+	<property id="discovery.zen.ping.unicast.hosts">localhost</property>
+    <property id="network.bind_host">0.0.0.0</property>
+
 </node>
