@@ -4,9 +4,10 @@ PLATFORM=$2
 BRANCH=$3
 INPUT=../$PLATFORM
 DEPLOY=../../deploy
-DOWNLOAD=
+#DOWNLOAD=
 
-VERSION=$(cat ../../VERSION${BRANCH}.md)
+#VERSION=$(cat ../../VERSION${BRANCH}.md)
+VERSION="11.0"
 
 if [[ "$BRANCH" == "_dev" ]] ; then
 	DOWNLOAD="dev_demoall"
@@ -22,7 +23,8 @@ fi
 
 set -x 
 RELEASE_VERSION="${VERSION}"
-TMPDEST="$DEPLOY/tmp/entermediadb${BRANCH}-${RELEASE_VERSION}"
+echo "Building ${VERSION} ..."
+TMPDEST="$DEPLOY/tmp/entermediadb${BRANCH}-${VERSION}"
 
 rm -rf ${TMPDEST}
 mkdir -p ${TMPDEST}
@@ -34,8 +36,13 @@ wget  -N  http://dev.entermediadb.org/jenkins/job/${DOWNLOAD}/lastSuccessfulBuil
 
 mkdir -p ${TMPDEST}/usr/share/entermediadb/webapp
 unzip  /tmp/ROOT.WAR -d ${TMPDEST}/usr/share/entermediadb/webapp > /dev/null
-mkdir $DEPLOY/SOURCES
+mkdir -p $DEPLOY/SOURCES
 cd $DEPLOY/tmp
 chmod 755 $DEPLOY/tmp/entermediadb${BRANCH}-${RELEASE_VERSION}/usr/share/entermediadb/webapp/WEB-INF/bin/linux/exiftoolthumb.sh
 tar -pczf /tmp/entermediadb${BRANCH}-${RELEASE_VERSION}.tar.gz .
-mv  /tmp/entermediadb${BRANCH}-${RELEASE_VERSION}.tar.gz $DEPLOY/SOURCES/
+#mv  /tmp/entermediadb${BRANCH}-${VERSION}.tar.gz $DEPLOY/SOURCES/
+
+echo "Publishing tar file"
+mv /tmp/entermediadb${BRANCH}-${VERSION}.tar.gz /workspace/drive/emdev/repo/src/
+
+
