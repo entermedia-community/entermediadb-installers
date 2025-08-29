@@ -25,13 +25,15 @@ fi
 
 #wget https://github.com/ArtifexSoftware/ghostpdl-downloads/releases/download/gs922/ghostscript-9.22.tar.gz
 
-cp ghostscript-9.22.tar.gz  ${TOPLEVEL}/SOURCES
-cp cidfmap ${TOPLEVEL}/SOURCES
-cp CIDFnmap ${TOPLEVEL}/SOURCES
-#Patches
-cp ghostscript-9.20-run* ${TOPLEVEL}/SOURCES
-cp ghostscript.spec ${TOPLEVEL}/SPECS
+#wget https://github.com/ArtifexSoftware/ghostpdl-downloads/releases/download/gs950/ghostscript-9.50.tar.gz
 
-rpmbuild -bs -vv ${TOPLEVEL}/SPECS/ghostscript.spec
-sudo yum-builddep ${TOPLEVEL}/SRPMS/ghostscript-9.22-7.el7.centos.src.rpm 
-#rpmbuild --rebuild ${TOPLEVEL}/SRPMS/ghostscript-9.22-7.el7.centos.src.rpm
+#cp ghostscript-9.50.tar.gz  ${TOPLEVEL}/SOURCES
+#cp cidfmap ${TOPLEVEL}/SOURCES
+#cp CIDFnmap ${TOPLEVEL}/SOURCES
+##Patches
+#cp ghostscript-9.20-run* ${TOPLEVEL}/SOURCES
+#cp ghostscript.spec ${TOPLEVEL}/SPECS
+
+#rpmbuild -bs -vv ${TOPLEVEL}/SPECS/ghostscript.spec
+sudo yum-builddep ${TOPLEVEL}/SRPMS/ghostscript-9.50-1.el7.src.rpm
+rpmbuild --rebuild ${TOPLEVEL}/SRPMS/ghostscript-9.50-1.el7.src.rpm
