@@ -27,6 +27,7 @@ echo "Building ${VERSION} ..."
 TMPDEST="$DEPLOY/tmp/entermediadb${BRANCH}-${VERSION}"
 
 rm -rf ${TMPDEST}
+rm -rf /tmp/
 mkdir -p ${TMPDEST}
 cp -rp ../../linux/usr ${TMPDEST}
 cp -rp ../../linux/$PLATFORM/qt-faststart ${TMPDEST}/usr/bin
