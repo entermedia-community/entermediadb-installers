@@ -2,6 +2,7 @@
 RELEASE=$1
 PLATFORM=$2
 BRANCH=$3
+DIRPATH=$(dirname $0)
 INPUT=../$PLATFORM
 DEPLOY=../../deploy
 #DOWNLOAD=
@@ -21,29 +22,35 @@ elif [[ "$BRANCH" == "_em11" ]] ; then
         DOWNLOAD="em11_demoall"
 fi
 
-set -x 
 RELEASE_VERSION="${VERSION}"
-echo "Building ${VERSION} ..."
-TMPDEST="$DEPLOY/tmp/entermediadb${BRANCH}-${VERSION}"
+echo "Building ${BRANCH} ..."
+TMPDEST="$DEPLOY/tmp/entermediadb${BRANCH}"
 
 rm -rf ${TMPDEST}
-rm -rf /tmp/
+rm -rf /tmp/*
+rm -rf $DEPLOY/tmp/*
+
+
 mkdir -p ${TMPDEST}
-cp -rp ../../linux/usr ${TMPDEST}
-cp -rp ../../linux/$PLATFORM/qt-faststart ${TMPDEST}/usr/bin
+cd $DIRPATH
+cp -rp ../usr ${TMPDEST}
+cp -rp ../$PLATFORM/qt-faststart ${TMPDEST}/usr/bin
 
 #wget  -N  http://dev.entermediadb.org/jenkins/job/${DOWNLOAD}demoall/lastSuccessfulBuild/artifact/deploy/ROOT.war -O /tmp/ROOT.WAR >/dev/null 2>&1
 wget  -N  http://dev.entermediadb.org/jenkins/job/${DOWNLOAD}/lastSuccessfulBuild/artifact/deploy/ROOT.war -O /tmp/ROOT.WAR >/dev/null 2>&1
 
 mkdir -p ${TMPDEST}/usr/share/entermediadb/webapp
-unzip  /tmp/ROOT.WAR -d ${TMPDEST}/usr/share/entermediadb/webapp > /dev/null
-mkdir -p $DEPLOY/SOURCES
+cd $DIRPATH
+unzip  -v /tmp/ROOT.WAR -d ${TMPDEST}/usr/share/entermediadb/webapp
+# > /dev/null
+#mkdir -p ${DEPLOY}/SOURCES
+
 cd $DEPLOY/tmp
-chmod 755 $DEPLOY/tmp/entermediadb${BRANCH}-${RELEASE_VERSION}/usr/share/entermediadb/webapp/WEB-INF/bin/linux/exiftoolthumb.sh
-tar -pczf /tmp/entermediadb${BRANCH}-${RELEASE_VERSION}.tar.gz .
-#mv  /tmp/entermediadb${BRANCH}-${VERSION}.tar.gz $DEPLOY/SOURCES/
+chmod 755 $DEPLOY/tmp/entermediadb${BRANCH}/usr/share/entermediadb/webapp/WEB-INF/bin/linux/exiftoolthumb.sh
+tar -pczf /tmp/entermediadb${BRANCH}.tar.gz .
+#mv  /tmp/entermediadb${BRANCH}.tar.gz $DEPLOY/SOURCES/
 
 echo "Publishing tar file"
-mv /tmp/entermediadb${BRANCH}-${VERSION}.tar.gz /workspace/drive/emdev/repo/src/
+cp /tmp/entermediadb${BRANCH}.tar.gz /workspace/drive/emdev/repo/src/
 
 
